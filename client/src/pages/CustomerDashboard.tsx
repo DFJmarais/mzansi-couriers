@@ -2,12 +2,12 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/DashboardLayout";
-import { MapPin, Package, Clock, TrendingUp } from "lucide-react";
+import { MapPin, Package, Clock, DollarSign, Plus, ArrowRight, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 export default function CustomerDashboard() {
   const { user, isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [showBooking, setShowBooking] = useState(false);
 
   if (!isAuthenticated || user?.role !== 'customer') {
     return <div>Access denied</div>;
@@ -20,29 +20,31 @@ export default function CustomerDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold">Send a Package</h1>
-            <p className="text-muted-foreground">Quick, affordable, and reliable delivery across South Africa</p>
+            <p className="text-muted-foreground">Quick, reliable, and affordable delivery</p>
           </div>
-          <Button size="lg" onClick={() => setActiveTab("book")}>
-            + New Delivery
+          <Button size="lg" className="gap-2" onClick={() => setShowBooking(!showBooking)}>
+            <Plus className="w-4 h-4" />
+            New Delivery
           </Button>
         </div>
 
-        {/* Stats */}
+        {/* Quick Stats */}
         <div className="grid md:grid-cols-4 gap-4">
           {[
-            { icon: Package, label: "Total Deliveries", value: "12" },
-            { icon: Clock, label: "In Progress", value: "1" },
-            { icon: TrendingUp, label: "Total Spent", value: "R2,450" },
-            { icon: MapPin, label: "Addresses Saved", value: "5" }
+            { icon: Package, label: "Total Deliveries", value: "24", change: "+2 this month" },
+            { icon: DollarSign, label: "Total Spent", value: "R2,480", change: "+R340 this month" },
+            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "-5 mins vs last month" },
+            { icon: TrendingUp, label: "Saved with Bulk", value: "R245", change: "12% discount" }
           ].map((stat, i) => (
-            <Card key={i}>
+            <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">{stat.label}</p>
-                    <p className="text-2xl font-bold mt-1">{stat.value}</p>
+                    <p className="text-2xl font-bold mt-2">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground mt-2">{stat.change}</p>
                   </div>
-                  <stat.icon className="w-8 h-8 text-accent opacity-50" />
+                  <stat.icon className="w-8 h-8 text-accent/50" />
                 </div>
               </CardContent>
             </Card>
@@ -50,92 +52,72 @@ export default function CustomerDashboard() {
         </div>
 
         {/* Booking Form */}
-        {activeTab === "book" && (
-          <Card className="border-2 border-accent/50">
+        {showBooking && (
+          <Card className="border-accent/50 bg-gradient-to-br from-background to-accent/5">
             <CardHeader>
-              <CardTitle>Create New Delivery</CardTitle>
-              <CardDescription>Enter package details and select delivery type</CardDescription>
+              <CardTitle>Book a Delivery</CardTitle>
+              <CardDescription>Enter your package details for an instant quote</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Pickup */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-accent" />
-                    Pickup Location
-                  </h3>
-                  <div className="space-y-3">
-                    <input type="text" placeholder="Street address" className="input-field" />
-                    <input type="text" placeholder="City/Town" className="input-field" />
-                    <input type="text" placeholder="Postal code" className="input-field" />
+                <div className="space-y-3">
+                  <label className="text-sm font-semibold">Pickup Location</label>
+                  <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
+                    <MapPin className="w-4 h-4 text-muted-foreground" />
+                    <input type="text" placeholder="Enter pickup address" className="flex-1 bg-transparent outline-none text-sm" />
                   </div>
                 </div>
 
-                {/* Dropoff */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold flex items-center gap-2">
+                <div className="space-y-3">
+                  <label className="text-sm font-semibold">Dropoff Location</label>
+                  <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
                     <MapPin className="w-4 h-4 text-accent" />
-                    Dropoff Location
-                  </h3>
-                  <div className="space-y-3">
-                    <input type="text" placeholder="Street address" className="input-field" />
-                    <input type="text" placeholder="City/Town" className="input-field" />
-                    <input type="text" placeholder="Postal code" className="input-field" />
+                    <input type="text" placeholder="Enter dropoff address" className="flex-1 bg-transparent outline-none text-sm" />
                   </div>
                 </div>
-              </div>
 
-              {/* Package Details */}
-              <div className="space-y-4">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Package className="w-4 h-4 text-accent" />
-                  Package Details
-                </h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Package Size</label>
-                    <select className="input-field">
-                      <option>Small (up to 2kg)</option>
-                      <option>Medium (2-10kg)</option>
-                      <option>Large (10-50kg)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Weight (kg)</label>
-                    <input type="number" placeholder="0.5" className="input-field" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Delivery Type</label>
-                    <select className="input-field">
-                      <option>Standard (24-48h)</option>
-                      <option>Same-day</option>
-                      <option>Express (2-4h)</option>
-                    </select>
-                  </div>
+                <div className="space-y-3">
+                  <label className="text-sm font-semibold">Package Size</label>
+                  <select className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
+                    <option>Small (up to 1kg)</option>
+                    <option>Medium (up to 10kg)</option>
+                    <option>Large (up to 50kg)</option>
+                  </select>
                 </div>
-                <textarea placeholder="Describe your package..." className="input-field h-24" />
+
+                <div className="space-y-3">
+                  <label className="text-sm font-semibold">Weight (kg)</label>
+                  <input type="number" placeholder="0.5" className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent" />
+                </div>
+
+                <div className="md:col-span-2 space-y-3">
+                  <label className="text-sm font-semibold">Package Description</label>
+                  <textarea placeholder="What are you sending?" className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent resize-none" rows={3}></textarea>
+                </div>
               </div>
 
               {/* Price Estimate */}
-              <div className="bg-accent/10 border border-accent/30 rounded-lg p-4">
+              <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Estimated Price</p>
-                    <p className="text-3xl font-bold text-accent">R87.50</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Estimated Time</p>
-                    <p className="text-lg font-semibold">25 minutes</p>
-                  </div>
+                  <span className="text-sm text-muted-foreground">Base fare</span>
+                  <span className="font-semibold">R75</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Distance (12 km)</span>
+                  <span className="font-semibold">R54</span>
+                </div>
+                <div className="border-t border-accent/20 pt-3 flex items-center justify-between">
+                  <span className="font-semibold">Total Estimate</span>
+                  <span className="text-2xl font-bold text-accent">R129</span>
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-3 pt-4">
-                <Button size="lg" className="flex-1">
-                  Confirm & Pay
+              <div className="flex gap-3">
+                <Button className="flex-1 gap-2" onClick={() => setShowBooking(false)}>
+                  Confirm Booking
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="flex-1" onClick={() => setActiveTab("overview")}>
+                <Button variant="outline" className="flex-1" onClick={() => setShowBooking(false)}>
                   Cancel
                 </Button>
               </div>
@@ -143,38 +125,88 @@ export default function CustomerDashboard() {
           </Card>
         )}
 
-        {/* Active Deliveries */}
-        {activeTab === "overview" && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold">Active Deliveries</h2>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center py-12">
-                  <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <p className="text-muted-foreground">No active deliveries</p>
-                  <Button className="mt-4" onClick={() => setActiveTab("book")}>
-                    Send Your First Package
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
         {/* Recent Deliveries */}
-        {activeTab === "overview" && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold">Recent Deliveries</h2>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center py-12">
-                  <Clock className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <p className="text-muted-foreground">No delivery history yet</p>
-                </div>
-              </CardContent>
-            </Card>
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">Recent Deliveries</h2>
+          <div className="space-y-3">
+            {[
+              {
+                id: "DEL-1024",
+                from: "Sandton, Johannesburg",
+                to: "Midrand, Johannesburg",
+                status: "delivered",
+                date: "Today at 2:30 PM",
+                amount: "R145"
+              },
+              {
+                id: "DEL-1023",
+                from: "Rosebank, Johannesburg",
+                to: "Bryanston, Johannesburg",
+                status: "delivered",
+                date: "Yesterday at 11:15 AM",
+                amount: "R98"
+              },
+              {
+                id: "DEL-1022",
+                from: "Fourways, Johannesburg",
+                to: "Sunninghill, Johannesburg",
+                status: "delivered",
+                date: "2 days ago at 3:45 PM",
+                amount: "R75"
+              }
+            ].map((delivery, i) => (
+              <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-md">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <p className="font-semibold text-sm">{delivery.id}</p>
+                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                          {delivery.status}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-1">{delivery.from} → {delivery.to}</p>
+                      <p className="text-xs text-muted-foreground">{delivery.date}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-bold text-accent">{delivery.amount}</p>
+                      <Button size="sm" variant="ghost" className="mt-2">View</Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        )}
+        </div>
+
+        {/* Saved Addresses */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">Saved Addresses</h2>
+            <Button size="sm" variant="outline" className="gap-2">
+              <Plus className="w-4 h-4" />
+              Add Address
+            </Button>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { label: "Home", address: "123 Main Street, Johannesburg, 2000" },
+              { label: "Work", address: "456 Business Avenue, Sandton, 2146" }
+            ].map((addr, i) => (
+              <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-semibold">{addr.label}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{addr.address}</p>
+                    </div>
+                    <Button size="sm" variant="ghost">Edit</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );

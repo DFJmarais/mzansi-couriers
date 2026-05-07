@@ -181,24 +181,20 @@
     @apply w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all;
   }
 
-  .badge-status {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
-  }
-
   .badge-pending {
-    @apply badge-status bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
   }
 
   .badge-assigned {
-    @apply badge-status bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
   }
 
   .badge-in-transit {
-    @apply badge-status bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
   }
 
   .badge-delivered {
-    @apply badge-status bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
   }
 
   .section-padding {
