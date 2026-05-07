@@ -35,6 +35,14 @@ export const appRouter = router({
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    
+    selectRole: protectedProcedure.input(z.object({
+      role: z.enum(['customer', 'courier']),
+    })).mutation(async ({ ctx, input }) => {
+      await db.updateUserRole(ctx.user.id, input.role);
+      return { success: true, role: input.role };
+    }),
+    
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

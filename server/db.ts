@@ -99,6 +99,12 @@ export async function getUserById(userId: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function updateUserRole(userId: number, role: 'customer' | 'courier' | 'admin') {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(users).set({ role }).where(eq(users.id, userId));
+}
+
 // ============ COURIER PROFILE QUERIES ============
 
 export async function getCourierProfile(userId: number) {
