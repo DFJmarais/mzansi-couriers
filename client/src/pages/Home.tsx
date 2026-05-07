@@ -32,10 +32,10 @@ export default function Home() {
             <span className="font-bold text-lg">Mzansi Couriers</span>
           </div>
           <div className="flex items-center gap-3">
-            <a href={getLoginUrl('/customer/dashboard')} className="text-sm font-medium hover:text-accent transition-colors">
+            <a href={getLoginUrl()} className="text-sm font-medium hover:text-accent transition-colors">
               Sign In
             </a>
-            <Button size="sm" onClick={() => { window.location.href = getLoginUrl('/customer/dashboard'); }}>
+            <Button size="sm" onClick={() => { window.location.href = getLoginUrl(); }}>
               Get Started
             </Button>
           </div>
@@ -61,10 +61,10 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" onClick={() => { window.location.href = getLoginUrl('/customer/dashboard'); }}>
+                <Button size="lg" onClick={() => { window.location.href = getLoginUrl(); }}>
                   Send a Package
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => { window.location.href = getLoginUrl('/courier/dashboard'); }}>
+                <Button size="lg" variant="outline" onClick={() => { window.location.href = getLoginUrl(); }}>
                   Become a Courier
                 </Button>
               </div>
@@ -234,10 +234,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={() => { window.location.href = getLoginUrl('/customer/dashboard'); }}>
+            <Button size="lg" onClick={() => { window.location.href = getLoginUrl(); }}>
               Send Your First Package
             </Button>
-            <Button size="lg" variant="outline" onClick={() => { window.location.href = getLoginUrl('/courier/dashboard'); }}>
+            <Button size="lg" variant="outline" onClick={() => { window.location.href = getLoginUrl(); }}>
               Start Earning as a Courier
             </Button>
           </div>
