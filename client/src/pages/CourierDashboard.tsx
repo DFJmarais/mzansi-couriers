@@ -20,7 +20,7 @@ export default function CourierDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold">Courier Dashboard</h1>
-            <p className="text-muted-foreground">Manage deliveries and track your earnings</p>
+            <p className="text-muted-foreground">Manage deliveries and earn big in South Africa 🇿🇦</p>
           </div>
           <div className="flex items-center gap-3">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
@@ -47,7 +47,7 @@ export default function CourierDashboard() {
           {[
             { icon: TrendingUp, label: "Today's Earnings", value: "R450", subtext: "3 deliveries" },
             { icon: Clock, label: "Active Deliveries", value: "2", subtext: "On the way" },
-            { icon: Zap, label: "Total Deliveries", value: "247", subtext: "This month" },
+            { icon: Zap, label: "Total Deliveries", value: "247", subtext: "Ayoba! 🚀" },
             { icon: Star, label: "Rating", value: "4.9", subtext: "Based on 156 reviews" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-md">

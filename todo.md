@@ -39,8 +39,8 @@
 - [x] Customer profile: saved addresses, payment methods
 - [x] Courier profile: vehicle information, availability status, ratings
 - [x] Notification system: job alerts for couriers, status updates for customers
-- [ ] WhatsApp integration for notifications (phase 2)
-- [ ] SMS fallback for low-data users (phase 2)
+- [ ] WhatsApp integration for notifications (phase 2 - future enhancement)
+- [ ] SMS fallback for low-data users (phase 2 - future enhancement)
 
 ## Phase 7: Testing & Polish
 - [x] Unit tests for pricing engine and dispatch logic
@@ -52,3 +52,12 @@
 ## Phase 8: Delivery
 - [x] Final checkpoint and deployment
 - [x] Documentation and handoff
+
+## South African Cultural Enhancements
+- [x] Update copy with SA language and local references (Sawubona, Ayoba, 🇿🇦)
+- [ ] Add SA-inspired color accents and patterns (Ndebele-inspired)
+- [ ] Incorporate local imagery and icons (SA-specific)
+- [x] Add Zulu/Xhosa greetings and cultural elements (Sawubona greeting)
+- [x] Use South African pricing currency (Rand) consistently
+- [ ] Add local success stories and testimonials (dedicated section)
+- [ ] Implement SA-specific delivery zones and regions (structured data)

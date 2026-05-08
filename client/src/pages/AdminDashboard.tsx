@@ -35,7 +35,7 @@ export default function AdminDashboard() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Monitor deliveries, couriers, and platform analytics</p>
+          <p className="text-muted-foreground">Monitor South Africa's delivery network 🇿🇦</p>
         </div>
 
         {/* Key Metrics */}

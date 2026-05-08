@@ -20,7 +20,7 @@ export default function CustomerDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold">Send a Package</h1>
-            <p className="text-muted-foreground">Quick, reliable, and affordable delivery</p>
+            <p className="text-muted-foreground">Quick, reliable, and affordable delivery across South Africa 🇿🇦</p>
           </div>
           <Button size="lg" className="gap-2" onClick={() => setShowBooking(!showBooking)}>
             <Plus className="w-4 h-4" />
@@ -33,7 +33,7 @@ export default function CustomerDashboard() {
           {[
             { icon: Package, label: "Total Deliveries", value: "24", change: "+2 this month" },
             { icon: DollarSign, label: "Total Spent", value: "R2,480", change: "+R340 this month" },
-            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "-5 mins vs last month" },
+            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "Ayoba! 🚀" },
             { icon: TrendingUp, label: "Saved with Bulk", value: "R245", change: "12% discount" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">

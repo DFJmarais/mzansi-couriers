@@ -2,97 +2,127 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
-import { MapPin, Zap, TrendingUp, Users, Award, ArrowRight, CheckCircle2, Smartphone, Shield } from "lucide-react";
+import { useLocation } from "wouter";
+import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
+  const [, setLocation] = useLocation();
+
+  const handleSignIn = () => {
+    window.location.href = getLoginUrl();
+  };
+
+  const handleGetStarted = () => {
+    if (isAuthenticated) {
+      setLocation("/onboarding");
+    } else {
+      window.location.href = getLoginUrl();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">MC</div>
-            <span className="font-bold text-lg">Mzansi Couriers</span>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center text-white font-bold text-lg">
+              MC
+            </div>
+            <div>
+              <div className="font-bold text-lg">Mzansi Couriers</div>
+              <div className="text-xs text-accent">South Africa's Delivery Network</div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <>
-                <span className="text-sm text-muted-foreground">Welcome, {user?.name}</span>
-                <Button variant="outline" size="sm">Dashboard</Button>
+                <span className="text-sm text-muted-foreground">Sawubona, {user?.name}</span>
+                <Button variant="outline" onClick={() => setLocation("/onboarding")}>
+                  Dashboard
+                </Button>
               </>
             ) : (
               <>
-                <Button variant="ghost" size="sm" onClick={() => window.location.href = getLoginUrl()}>Sign In</Button>
-                <Button size="sm" onClick={() => window.location.href = getLoginUrl()}>Get Started</Button>
+                <Button variant="ghost" onClick={handleSignIn}>
+                  Sign In
+                </Button>
+                <Button onClick={handleGetStarted} className="gap-2">
+                  Get Started
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
               </>
             )}
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
       <section className="container py-20 md:py-32 space-y-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
               <Zap className="w-4 h-4 text-accent" />
               <span className="text-sm font-semibold text-accent">South Africa's Fastest Delivery Network</span>
             </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              Delivery Made <span className="text-accent">Simple, Fast</span> & <span className="text-accent">Affordable</span>
-            </h1>
-            
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-              Connect with verified couriers in real-time. Send packages anywhere, anytime. Track every step of your delivery journey with confidence.
-            </p>
+
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                Delivery Made
+                <br />
+                <span className="text-accent">Simple, Fast</span>
+                <br />& Affordable
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-md">
+                Connect with verified couriers across South Africa. Send packages anywhere, anytime. Track every step of your delivery journey with confidence.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button size="lg" className="gap-2" onClick={() => window.location.href = getLoginUrl()}>
+              <Button size="lg" onClick={handleGetStarted} className="gap-2">
                 Send a Package
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={() => window.location.href = getLoginUrl()}>
+              <Button size="lg" variant="outline" onClick={handleGetStarted}>
                 Become a Courier
               </Button>
             </div>
 
-            <div className="flex items-center gap-8 pt-8 border-t border-border">
-              <div>
-                <p className="text-2xl font-bold">50K+</p>
-                <p className="text-sm text-muted-foreground">Active Couriers</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold">1M+</p>
-                <p className="text-sm text-muted-foreground">Deliveries Completed</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold">4.8★</p>
-                <p className="text-sm text-muted-foreground">Average Rating</p>
-              </div>
+            <div className="grid grid-cols-3 gap-4 pt-8">
+              {[
+                { label: "Active Couriers", value: "50K+" },
+                { label: "Deliveries", value: "1M+" },
+                { label: "Rating", value: "4.8★" },
+              ].map((stat, i) => (
+                <div key={i} className="space-y-1">
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="relative h-96 md:h-full min-h-96 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 border border-accent/20 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-10 right-10 w-32 h-32 bg-accent rounded-full blur-3xl"></div>
-              <div className="absolute bottom-10 left-10 w-40 h-40 bg-accent/50 rounded-full blur-3xl"></div>
-            </div>
-            <div className="relative text-center space-y-4">
-              <MapPin className="w-16 h-16 mx-auto text-accent" />
-              <p className="text-sm font-semibold text-muted-foreground">Real-time Tracking</p>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent rounded-3xl blur-3xl" />
+            <div className="relative bg-gradient-to-br from-accent/10 to-accent/5 rounded-3xl p-8 border border-accent/20 h-96 flex items-center justify-center">
+              <div className="text-center space-y-4">
+                <MapPin className="w-16 h-16 text-accent mx-auto" />
+                <p className="text-lg font-semibold">Real-time Tracking</p>
+                <p className="text-sm text-muted-foreground">Know exactly where your package is</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="container py-20 md:py-32 space-y-12">
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold">Why Choose Mzansi Couriers?</h2>
-          <p className="text-lg text-muted-foreground">Experience the future of logistics with our innovative platform</p>
+      <section className="container py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl font-bold">Why Choose Mzansi Couriers?</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Built for South Africa, by South Africans. We understand local delivery challenges.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -100,35 +130,35 @@ export default function Home() {
             {
               icon: Zap,
               title: "Lightning Fast",
-              description: "Get your packages delivered within hours, not days. Real-time courier matching and routing optimization."
-            },
-            {
-              icon: Shield,
-              title: "Fully Verified",
-              description: "All couriers are background-checked and verified. Your packages are in safe, trusted hands."
+              description: "Same-day delivery in major cities. Reliable service across all provinces.",
             },
             {
               icon: TrendingUp,
               title: "Transparent Pricing",
-              description: "No hidden fees. Instant price quotes based on distance, size, and weight. Pay exactly what you see."
-            },
-            {
-              icon: Smartphone,
-              title: "Live Tracking",
-              description: "Track your delivery in real-time on our interactive map. Know exactly where your package is."
+              description: "No hidden fees. Instant quotes based on distance, size, and demand.",
             },
             {
               icon: Users,
-              title: "Earn Extra",
-              description: "For couriers: Flexible work, competitive rates, and instant payouts. Build your own delivery business."
+              title: "Verified Couriers",
+              description: "All couriers verified and rated. Your packages are in safe hands.",
             },
             {
               icon: Award,
-              title: "Award-Winning",
-              description: "Trusted by thousands of customers across South Africa. Rated 4.8★ for reliability and service."
-            }
+              title: "Best Rates",
+              description: "Competitive pricing. Earn more as a courier. Save more as a customer.",
+            },
+            {
+              icon: Clock,
+              title: "24/7 Support",
+              description: "Always available. Local support team that understands your needs.",
+            },
+            {
+              icon: MapPin,
+              title: "Nationwide Coverage",
+              description: "From Cape Town to Durban. Serving all major cities and towns.",
+            },
           ].map((feature, i) => (
-            <Card key={i} className="border border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg hover:-translate-y-1">
               <CardContent className="pt-8 space-y-4">
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
                   <feature.icon className="w-6 h-6 text-accent" />
@@ -144,31 +174,31 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="container py-20 md:py-32 space-y-12">
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold">How It Works</h2>
-          <p className="text-lg text-muted-foreground">Three simple steps to get your delivery started</p>
+      <section className="container py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl font-bold">How It Works</h2>
+          <p className="text-lg text-muted-foreground">Three simple steps to get your delivery done</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
               step: "1",
-              title: "Enter Details",
-              description: "Provide pickup and dropoff locations, package details, and size."
+              title: "Book Your Delivery",
+              description: "Enter pickup and dropoff addresses. Tell us about your package. Get an instant quote.",
             },
             {
               step: "2",
-              title: "Get Quote",
-              description: "Instant AI-powered price estimate based on distance and demand."
+              title: "Courier Accepts",
+              description: "A verified courier near you accepts the job. You get real-time updates immediately.",
             },
             {
               step: "3",
-              title: "Track Live",
-              description: "Courier accepts and you track delivery in real-time on the map."
-            }
+              title: "Package Delivered",
+              description: "Track your delivery live on the map. Receive confirmation when it's delivered.",
+            },
           ].map((item, i) => (
-            <div key={i} className="relative space-y-4">
+            <div key={i} className="space-y-4">
               <div className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center font-bold text-xl">
                 {item.step}
               </div>
@@ -176,81 +206,69 @@ export default function Home() {
                 <h3 className="font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
               </div>
-              {i < 2 && (
-                <div className="hidden md:block absolute top-7 -right-4 w-8 h-8 text-accent">
-                  <ArrowRight className="w-full h-full" />
-                </div>
-              )}
             </div>
           ))}
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section className="container py-20 md:py-32 space-y-12">
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-muted-foreground">No hidden fees. Pay only for what you use.</p>
+      <section className="container py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl font-bold">Simple, Transparent Pricing</h2>
+          <p className="text-lg text-muted-foreground">Pay only for what you use. No hidden charges.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              size: "Small",
-              description: "Documents, small items",
-              basePrice: "R45",
-              perKm: "R3.50/km",
-              features: ["Up to 1kg", "Standard delivery", "Real-time tracking", "SMS updates"]
+              title: "Local",
+              description: "Same city delivery",
+              price: "R29",
+              features: ["Up to 5km", "Standard package", "2-4 hour delivery"],
             },
             {
-              size: "Medium",
-              description: "Packages, boxes",
-              basePrice: "R75",
-              perKm: "R4.50/km",
-              features: ["Up to 10kg", "Priority delivery", "Real-time tracking", "SMS + Email updates"],
-              popular: true
+              title: "Express",
+              description: "Priority delivery",
+              price: "R49",
+              features: ["Up to 15km", "Medium package", "30-60 min delivery"],
+              highlighted: true,
             },
             {
-              size: "Large",
-              description: "Bulk items, furniture",
-              basePrice: "R150",
-              perKm: "R6.00/km",
-              features: ["Up to 50kg", "Express delivery", "Real-time tracking", "Dedicated support"]
-            }
-          ].map((plan, i) => (
-            <Card key={i} className={`border transition-all duration-300 ${
-              plan.popular 
-                ? 'border-accent shadow-lg ring-2 ring-accent/20' 
-                : 'border-border/50 hover:border-accent/50'
-            }`}>
+              title: "Regional",
+              description: "Inter-city delivery",
+              price: "R99",
+              features: ["Up to 100km", "Large package", "Next day delivery"],
+            },
+          ].map((tier, i) => (
+            <Card
+              key={i}
+              className={`border transition-all ${
+                tier.highlighted
+                  ? "border-accent shadow-lg ring-2 ring-accent/20"
+                  : "border-border/50 hover:border-accent/50"
+              }`}
+            >
               <CardContent className="pt-8 space-y-6">
-                {plan.popular && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 w-fit">
-                    <Award className="w-3 h-3 text-accent" />
-                    <span className="text-xs font-semibold text-accent">Most Popular</span>
-                  </div>
-                )}
                 <div>
-                  <h3 className="font-bold text-xl mb-1">{plan.size}</h3>
-                  <p className="text-sm text-muted-foreground">{plan.description}</p>
+                  <h3 className="font-bold text-lg">{tier.title}</h3>
+                  <p className="text-sm text-muted-foreground">{tier.description}</p>
                 </div>
-                <div>
-                  <p className="text-3xl font-bold">{plan.basePrice}</p>
-                  <p className="text-sm text-muted-foreground">+ {plan.perKm}</p>
+
+                <div className="space-y-1">
+                  <div className="text-4xl font-bold">{tier.price}</div>
+                  <p className="text-xs text-muted-foreground">Base rate</p>
                 </div>
+
                 <ul className="space-y-3">
-                  {plan.features.map((feature, j) => (
+                  {tier.features.map((feature, j) => (
                     <li key={j} className="flex items-center gap-2 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button 
-                  className="w-full" 
-                  variant={plan.popular ? "default" : "outline"}
-                  onClick={() => window.location.href = getLoginUrl()}
-                >
+
+                <Button className="w-full" variant={tier.highlighted ? "default" : "outline"} onClick={handleGetStarted}>
                   Get Started
                 </Button>
               </CardContent>
@@ -260,15 +278,18 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="container py-20 md:py-32">
-        <div className="bg-gradient-to-r from-accent to-accent/80 rounded-2xl p-12 md:p-16 text-center space-y-6 text-white">
-          <h2 className="text-4xl md:text-5xl font-bold">Ready to Transform Your Logistics?</h2>
-          <p className="text-lg opacity-90 max-w-2xl mx-auto">Join thousands of satisfied customers and couriers using Mzansi Couriers today.</p>
+      <section className="container py-20">
+        <div className="bg-gradient-to-r from-accent to-accent/80 rounded-3xl p-12 md:p-16 text-white space-y-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold">Ready to Get Started?</h2>
+          <p className="text-lg text-white/90 max-w-2xl mx-auto">
+            Join thousands of South Africans using Mzansi Couriers for fast, affordable, reliable delivery.
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button size="lg" variant="secondary" onClick={() => window.location.href = getLoginUrl()}>
-              Send Your First Package
+            <Button size="lg" variant="secondary" onClick={handleGetStarted} className="gap-2">
+              Send a Package
+              <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" onClick={() => window.location.href = getLoginUrl()}>
+            <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={handleGetStarted}>
               Become a Courier
             </Button>
           </div>
@@ -276,51 +297,55 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm">
-        <div className="container py-12 md:py-16">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+      <footer className="border-t border-border/50 mt-20 py-12 bg-background/50">
+        <div className="container space-y-8">
+          <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">MC</div>
+                <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
+                  MC
+                </div>
                 <span className="font-bold">Mzansi Couriers</span>
               </div>
-              <p className="text-sm text-muted-foreground">South Africa's fastest delivery network.</p>
+              <p className="text-sm text-muted-foreground">South Africa's fastest delivery network</p>
             </div>
+
             <div className="space-y-3">
-              <p className="font-semibold text-sm">For Customers</p>
+              <h4 className="font-semibold">For Customers</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Send Package</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Track Delivery</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-accent transition">Send Package</a></li>
+                <li><a href="#" className="hover:text-accent transition">Track Delivery</a></li>
+                <li><a href="#" className="hover:text-accent transition">Pricing</a></li>
               </ul>
             </div>
+
             <div className="space-y-3">
-              <p className="font-semibold text-sm">For Couriers</p>
+              <h4 className="font-semibold">For Couriers</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Join Us</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Earnings</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Support</a></li>
+                <li><a href="#" className="hover:text-accent transition">Join Us</a></li>
+                <li><a href="#" className="hover:text-accent transition">Earnings</a></li>
+                <li><a href="#" className="hover:text-accent transition">Support</a></li>
               </ul>
             </div>
+
             <div className="space-y-3">
-              <p className="font-semibold text-sm">Company</p>
+              <h4 className="font-semibold">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-accent transition">About Us</a></li>
+                <li><a href="#" className="hover:text-accent transition">Contact</a></li>
+                <li><a href="#" className="hover:text-accent transition">Privacy</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-muted-foreground">
+
+          <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
             <p>&copy; 2026 Mzansi Couriers. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-              <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-              <a href="#" className="hover:text-foreground transition-colors">Cookies</a>
-            </div>
+            <p>Delivering South Africa, one package at a time. 🇿🇦</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
+// Testimonials component added separately due to complexity
