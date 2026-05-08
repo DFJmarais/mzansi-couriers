@@ -61,3 +61,15 @@
 - [x] Use South African pricing currency (Rand) consistently
 - [x] Add dedicated testimonials/success stories section (Thabo, Naledi, Sipho)
 - [x] Implement SA delivery zones/regions (JNB, Cape Town, Durban in copy and data)
+
+## South African Context Testing
+- [ ] Test mobile responsiveness (common SA device sizes) - manual verification needed
+- [ ] Test low-bandwidth scenarios (3G/4G performance) - network throttling needed
+- [x] Verify Rand currency formatting and pricing calculations - unit tests passing
+- [ ] Test authentication flow and role-based access - end-to-end test needed
+- [ ] Test booking flow: address entry, price calculation, delivery tracking - e2e test needed
+- [ ] Test courier job feed and earnings calculations - feature test needed
+- [ ] Test admin dashboard analytics and courier management - feature test needed
+- [ ] Verify SA city names and delivery zones work correctly - structured zones needed
+- [ ] Test notifications system - delivery test needed
+- [ ] Check accessibility for screen readers and keyboard navigation - audit needed

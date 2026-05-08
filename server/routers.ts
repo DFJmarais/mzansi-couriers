@@ -216,25 +216,24 @@ export const appRouter = router({
       packageSize: z.enum(['small', 'medium', 'large']),
       packageWeight: z.number(),
     })).query(async ({ input }) => {
-      const config = await db.getPricingConfig();
-      if (!config) {
-        return { estimatedPrice: '50.00' };
-      }
-
-      let basePrice = parseFloat(config.basePrice.toString());
-      const pricePerKm = parseFloat(config.pricePerKm.toString());
+      // Use default pricing (South African Rand)
+      const basePrice = 25; // R25 base
+      const pricePerKm = 2; // R2 per km
       const distancePrice = input.distance * pricePerKm;
 
       let multiplier = 1;
       if (input.packageSize === 'small') {
-        multiplier = parseFloat((config.smallPackageMultiplier || '1.00').toString());
+        multiplier = 1.0;
       } else if (input.packageSize === 'medium') {
-        multiplier = parseFloat((config.mediumPackageMultiplier || '1.50').toString());
+        multiplier = 1.5;
       } else if (input.packageSize === 'large') {
-        multiplier = parseFloat((config.largePackageMultiplier || '2.00').toString());
+        multiplier = 2.0;
       }
+      
+      // Add weight surcharge (R0.50 per kg)
+      const weightSurcharge = input.packageWeight * 0.5;
 
-      const estimatedPrice = (basePrice + distancePrice) * multiplier;
+      const estimatedPrice = (basePrice + distancePrice) * multiplier + weightSurcharge;
       return { estimatedPrice: estimatedPrice.toFixed(2) };
     }),
   }),
