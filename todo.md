@@ -73,3 +73,15 @@
 - [ ] Verify SA city names and delivery zones work correctly - structured zones needed
 - [ ] Test notifications system - delivery test needed
 - [ ] Check accessibility for screen readers and keyboard navigation - audit needed
+
+## Deep South African Cultural Enhancement
+- [x] Enhance copy with authentic SA voice and slang (Ayoba, Lekker, Shame, etc.) - Home page complete
+- [x] Add SA color palette: Ndebele patterns, vibrant accent colors
+- [ ] Implement South African brand personality in all messaging - app-wide (dashboards, errors, notifications)
+- [ ] Add local success metrics (townships, informal settlements support)
+- [ ] Create SA-specific illustrations and icons (not generic)
+- [ ] Add South African music/audio branding (optional)
+- [ ] Implement regional pricing variations (JNB vs Cape Town vs Durban)
+- [ ] Add local language support (Zulu/Xhosa greetings and labels)
+- [ ] Create SA-specific onboarding flow with local context
+- [ ] Add South African payment methods (EFT, Capitec, etc.)

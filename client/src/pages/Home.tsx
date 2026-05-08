@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { useLocation } from "wouter";
-import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, DollarSign, Shield } from "lucide-react";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
@@ -32,7 +32,7 @@ export default function Home() {
             </div>
             <div>
               <div className="font-bold text-lg">Mzansi Couriers</div>
-              <div className="text-xs text-accent">South Africa's Delivery Network</div>
+              <div className="text-xs text-accent">🇿🇦 South Africa's Delivery Network</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -58,24 +58,24 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Section - South African Voice */}
       <section className="container py-20 md:py-32 space-y-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
               <Zap className="w-4 h-4 text-accent" />
-              <span className="text-sm font-semibold text-accent">South Africa's Fastest Delivery Network</span>
+              <span className="text-sm font-semibold text-accent">Ayoba! 🚀 South Africa's Fastest Delivery</span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Delivery Made
+                Delivery That's
                 <br />
-                <span className="text-accent">Simple, Fast</span>
-                <br />& Affordable
+                <span className="text-accent">Lekker, Fast</span>
+                <br />& Reliable
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
-                Connect with verified couriers across South Africa. Send packages anywhere, anytime. Track every step of your delivery journey with confidence.
+                Connect with verified couriers across Mzansi. Send packages anywhere, anytime. From Joburg to Cape Town, Durban to Pretoria. Track every step with confidence. No stress, no hassle.
               </p>
             </div>
 
@@ -103,81 +103,79 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent rounded-3xl blur-3xl" />
-            <div className="relative bg-gradient-to-br from-accent/10 to-accent/5 rounded-3xl p-8 border border-accent/20 h-96 flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <MapPin className="w-16 h-16 text-accent mx-auto" />
-                <p className="text-lg font-semibold">Real-time Tracking</p>
-                <p className="text-sm text-muted-foreground">Know exactly where your package is</p>
-              </div>
+          {/* Hero Image - South African themed */}
+          <div className="relative h-96 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl border border-accent/20 flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_20%_50%,#ff6b35,transparent_50%)]"></div>
+            <div className="relative z-10 text-center space-y-4">
+              <Truck className="w-24 h-24 text-accent mx-auto" />
+              <p className="text-xl font-semibold">Real-time Tracking</p>
+              <p className="text-sm text-muted-foreground">Know exactly where your package is</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - SA Focus */}
       <section className="container py-20 space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">Why Choose Mzansi Couriers?</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Built for South Africa, by South Africans. We understand local delivery challenges.
-          </p>
+          <h2 className="text-4xl font-bold">Why Mzansi Couriers is Lekker</h2>
+          <p className="text-lg text-muted-foreground">Built for South Africa, by South Africans</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              icon: Zap,
-              title: "Lightning Fast",
-              description: "Same-day delivery in major cities. Reliable service across all provinces.",
+              icon: DollarSign,
+              title: "Honest Pricing",
+              description: "No hidden charges. What you see is what you pay. Competitive rates across all regions.",
             },
             {
-              icon: TrendingUp,
-              title: "Transparent Pricing",
-              description: "No hidden fees. Instant quotes based on distance, size, and demand.",
-            },
-            {
-              icon: Users,
+              icon: Shield,
               title: "Verified Couriers",
-              description: "All couriers verified and rated. Your packages are in safe hands.",
-            },
-            {
-              icon: Award,
-              title: "Best Rates",
-              description: "Competitive pricing. Earn more as a courier. Save more as a customer.",
+              description: "All couriers are vetted and insured. Your packages are safe with us.",
             },
             {
               icon: Clock,
-              title: "24/7 Support",
-              description: "Always available. Local support team that understands your needs.",
+              title: "Fast Delivery",
+              description: "Same-day delivery in major cities. Express options available.",
             },
             {
               icon: MapPin,
               title: "Nationwide Coverage",
-              description: "From Cape Town to Durban. Serving all major cities and towns.",
+              description: "From Johannesburg to Cape Town, Durban to Pretoria. We cover all of Mzansi.",
             },
-          ].map((feature, i) => (
-            <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg hover:-translate-y-1">
-              <CardContent className="pt-8 space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <feature.icon className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+            {
+              icon: TrendingUp,
+              title: "Earn More",
+              description: "Couriers earn competitive rates. Flexible hours, real income.",
+            },
+            {
+              icon: Award,
+              title: "Top Rated",
+              description: "4.8★ rating from thousands of happy customers and couriers.",
+            },
+          ].map((feature, i) => {
+            const Icon = feature.icon;
+            return (
+              <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg">
+                <CardContent className="pt-8 space-y-4">
+                  <Icon className="w-12 h-12 text-accent" />
+                  <div>
+                    <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* How It Works - South African Context */}
       <section className="container py-20 space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">How It Works</h2>
-          <p className="text-lg text-muted-foreground">Three simple steps to get your delivery done</p>
+          <h2 className="text-4xl font-bold">How It Works - Easy Peasy</h2>
+          <p className="text-lg text-muted-foreground">Three simple steps to get your package delivered</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -185,17 +183,17 @@ export default function Home() {
             {
               step: "1",
               title: "Book Your Delivery",
-              description: "Enter pickup and dropoff addresses. Tell us about your package. Get an instant quote.",
+              description: "Enter pickup and dropoff addresses. Tell us what you're sending. Get an instant quote in Rand.",
             },
             {
               step: "2",
-              title: "Courier Accepts",
-              description: "A verified courier near you accepts the job. You get real-time updates immediately.",
+              title: "We Find a Courier",
+              description: "Our system matches your delivery with the nearest available courier. They accept and head your way.",
             },
             {
               step: "3",
-              title: "Package Delivered",
-              description: "Track your delivery live on the map. Receive confirmation when it's delivered.",
+              title: "Track & Receive",
+              description: "Watch your package in real-time. Get updates every step of the way. Delivered with confidence.",
             },
           ].map((item, i) => (
             <div key={i} className="space-y-4">
@@ -211,11 +209,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Pricing Section - South African Rand */}
       <section className="container py-20 space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-muted-foreground">Pay only for what you use. No hidden charges.</p>
+          <h2 className="text-4xl font-bold">Pricing That Won't Hurt Your Pocket</h2>
+          <p className="text-lg text-muted-foreground">Transparent, honest pricing. All prices in South African Rand.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -277,11 +275,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials Section - South African Stories */}
       <section className="container py-20 space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">Loved by South Africans</h2>
-          <p className="text-lg text-muted-foreground">Join thousands of satisfied customers and couriers</p>
+          <h2 className="text-4xl font-bold">Loved by Mzansi</h2>
+          <p className="text-lg text-muted-foreground">Real stories from real South Africans</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -295,13 +293,13 @@ export default function Home() {
             {
               name: "Naledi Khumalo",
               role: "Courier, Cape Town",
-              quote: "I earn R2,500+ per week with flexible hours. Best decision ever!",
+              quote: "I earn R2,500+ per week with flexible hours. Best decision ever! This is lekker!",
               rating: 5,
             },
             {
               name: "Sipho Ndlela",
               role: "Customer, Durban",
-              quote: "Reliable, affordable, and they actually care. Highly recommended!",
+              quote: "Reliable, affordable, and they actually care. No stress, no hassle. Highly recommended!",
               rating: 5,
             },
           ].map((testimonial, i) => (
@@ -312,7 +310,7 @@ export default function Home() {
                     <span key={j} className="text-yellow-400">★</span>
                   ))}
                 </div>
-                <p className="text-sm italic">\"{ testimonial.quote}\"</p>
+                <p className="text-sm italic">\"{testimonial.quote}\"</p>
                 <div>
                   <p className="font-semibold text-sm">{testimonial.name}</p>
                   <p className="text-xs text-muted-foreground">{testimonial.role}</p>
@@ -323,12 +321,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - South African Brand Voice */}
       <section className="container py-20">
         <div className="bg-gradient-to-r from-accent to-accent/80 rounded-3xl p-12 md:p-16 text-white space-y-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold">Ready to Get Started?</h2>
+          <h2 className="text-4xl md:text-5xl font-bold">Ready to Get Going?</h2>
           <p className="text-lg text-white/90 max-w-2xl mx-auto">
-            Join thousands of South Africans using Mzansi Couriers for fast, affordable, reliable delivery.
+            Join thousands of South Africans using Mzansi Couriers. Fast, affordable, reliable delivery across Mzansi. No stress, no hassle. Just lekker service.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg" variant="secondary" onClick={handleGetStarted} className="gap-2">
@@ -346,52 +344,40 @@ export default function Home() {
       <footer className="border-t border-border/50 mt-20 py-12 bg-background/50">
         <div className="container space-y-8">
           <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
-                  MC
-                </div>
-                <span className="font-bold">Mzansi Couriers</span>
-              </div>
-              <p className="text-sm text-muted-foreground">South Africa's fastest delivery network</p>
+            <div>
+              <h4 className="font-bold mb-4">About Mzansi</h4>
+              <p className="text-sm text-muted-foreground">South Africa's fastest delivery network. Built for Mzansi, by Mzansi.</p>
             </div>
-
-            <div className="space-y-3">
-              <h4 className="font-semibold">For Customers</h4>
+            <div>
+              <h4 className="font-bold mb-4">For Customers</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-accent transition">Send Package</a></li>
-                <li><a href="#" className="hover:text-accent transition">Track Delivery</a></li>
-                <li><a href="#" className="hover:text-accent transition">Pricing</a></li>
+                <li><a href="#" className="hover:text-accent">Send a Package</a></li>
+                <li><a href="#" className="hover:text-accent">Track Delivery</a></li>
+                <li><a href="#" className="hover:text-accent">Pricing</a></li>
               </ul>
             </div>
-
-            <div className="space-y-3">
-              <h4 className="font-semibold">For Couriers</h4>
+            <div>
+              <h4 className="font-bold mb-4">For Couriers</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-accent transition">Join Us</a></li>
-                <li><a href="#" className="hover:text-accent transition">Earnings</a></li>
-                <li><a href="#" className="hover:text-accent transition">Support</a></li>
+                <li><a href="#" className="hover:text-accent">Become a Courier</a></li>
+                <li><a href="#" className="hover:text-accent">Earnings</a></li>
+                <li><a href="#" className="hover:text-accent">Support</a></li>
               </ul>
             </div>
-
-            <div className="space-y-3">
-              <h4 className="font-semibold">Company</h4>
+            <div>
+              <h4 className="font-bold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-accent transition">About Us</a></li>
-                <li><a href="#" className="hover:text-accent transition">Contact</a></li>
-                <li><a href="#" className="hover:text-accent transition">Privacy</a></li>
+                <li><a href="#" className="hover:text-accent">Privacy</a></li>
+                <li><a href="#" className="hover:text-accent">Terms</a></li>
+                <li><a href="#" className="hover:text-accent">Contact</a></li>
               </ul>
             </div>
           </div>
-
-          <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-            <p>&copy; 2026 Mzansi Couriers. All rights reserved.</p>
-            <p>Delivering South Africa, one package at a time. 🇿🇦</p>
+          <div className="border-t border-border/50 pt-8 text-center text-sm text-muted-foreground">
+            <p>© 2026 Mzansi Couriers. South Africa's Delivery Network. 🇿🇦</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
-// Testimonials component added separately due to complexity
