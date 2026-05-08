@@ -34,7 +34,7 @@ export default function AdminDashboard() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold">Admin Dashboard - Mzansi Control Center</h1>
           <p className="text-muted-foreground">Monitor South Africa's delivery network 🇿🇦</p>
         </div>
 

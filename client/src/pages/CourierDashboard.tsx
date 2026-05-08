@@ -19,8 +19,8 @@ export default function CourierDashboard() {
         {/* Header with Online Toggle */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Courier Dashboard</h1>
-            <p className="text-muted-foreground">Manage deliveries and earn big in South Africa 🇿🇦</p>
+            <h1 className="text-3xl font-bold">Courier Dashboard - Earn Big in Mzansi</h1>
+            <p className="text-muted-foreground">Get deliveries, earn Rand, build your future in Mzansi 🇿🇦</p>
           </div>
           <div className="flex items-center gap-3">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${

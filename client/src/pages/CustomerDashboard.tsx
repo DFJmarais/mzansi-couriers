@@ -19,8 +19,8 @@ export default function CustomerDashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Send a Package</h1>
-            <p className="text-muted-foreground">Quick, reliable, and affordable delivery across South Africa 🇿🇦</p>
+            <h1 className="text-3xl font-bold">Send a Package - Lekker & Fast</h1>
+            <p className="text-muted-foreground">Quick, reliable, and affordable delivery across Mzansi 🇿🇦 No stress, no hassle!</p>
           </div>
           <Button size="lg" className="gap-2" onClick={() => setShowBooking(!showBooking)}>
             <Plus className="w-4 h-4" />
@@ -33,7 +33,7 @@ export default function CustomerDashboard() {
           {[
             { icon: Package, label: "Total Deliveries", value: "24", change: "+2 this month" },
             { icon: DollarSign, label: "Total Spent", value: "R2,480", change: "+R340 this month" },
-            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "Ayoba! 🚀" },
+            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "Ayoba! That's lekker! 🚀" },
             { icon: TrendingUp, label: "Saved with Bulk", value: "R245", change: "12% discount" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">
@@ -56,7 +56,7 @@ export default function CustomerDashboard() {
           <Card className="border-accent/50 bg-gradient-to-br from-background to-accent/5">
             <CardHeader>
               <CardTitle>Book a Delivery</CardTitle>
-              <CardDescription>Enter your package details for an instant quote</CardDescription>
+              <CardDescription>Tell us what you're sending. We'll find the perfect courier. Instant quote in Rand.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">

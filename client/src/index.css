@@ -44,75 +44,77 @@
 }
 
 :root {
-  /* Premium South African-inspired color palette */
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
+  /* Vibrant South African-inspired color palette */
+  /* Colors inspired by: Ndebele art, South African sunsets, wildlife, and landscapes */
+  --primary: oklch(0.55 0.25 280); /* Deep South African Purple */
+  --primary-foreground: oklch(0.98 0.001 286);
+  --sidebar-primary: oklch(0.50 0.28 280); /* Darker Purple */
+  --sidebar-primary-foreground: oklch(0.98 0.001 286);
+  --chart-1: oklch(0.62 0.22 25); /* Vibrant Orange */
+  --chart-2: oklch(0.55 0.25 280); /* Purple */
+  --chart-3: oklch(0.65 0.20 120); /* Teal/Green */
+  --chart-4: oklch(0.70 0.18 40); /* Gold */
+  --chart-5: oklch(0.60 0.22 15); /* Red */
   --radius: 0.75rem;
-  --background: oklch(0.98 0.001 286);
-  --foreground: oklch(0.15 0.02 260);
+  --background: oklch(0.97 0.002 286); /* Warm off-white */
+  --foreground: oklch(0.12 0.03 280); /* Deep purple-black */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 260);
+  --card-foreground: oklch(0.12 0.03 280);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 260);
-  --secondary: oklch(0.95 0.01 286);
-  --secondary-foreground: oklch(0.3 0.02 260);
-  --muted: oklch(0.88 0.008 286);
-  --muted-foreground: oklch(0.5 0.015 260);
-  --accent: oklch(0.62 0.22 25);
+  --popover-foreground: oklch(0.12 0.03 280);
+  --secondary: oklch(0.92 0.015 40); /* Warm gold tint */
+  --secondary-foreground: oklch(0.30 0.03 280);
+  --muted: oklch(0.85 0.010 286);
+  --muted-foreground: oklch(0.55 0.015 280);
+  --accent: oklch(0.62 0.22 25); /* Vibrant South African Orange */
   --accent-foreground: oklch(0.98 0.001 286);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.93 0.004 286);
-  --input: oklch(0.93 0.004 286);
+  --destructive: oklch(0.60 0.22 15); /* South African Red */
+  --destructive-foreground: oklch(0.98 0.001 286);
+  --border: oklch(0.92 0.005 286);
+  --input: oklch(0.92 0.005 286);
   --ring: oklch(0.62 0.22 25);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.15 0.02 260);
+  --sidebar: oklch(0.98 0.001 286);
+  --sidebar-foreground: oklch(0.12 0.03 280);
   --sidebar-accent: oklch(0.62 0.22 25);
   --sidebar-accent-foreground: oklch(0.98 0.001 286);
-  --sidebar-border: oklch(0.93 0.004 286);
+  --sidebar-border: oklch(0.92 0.005 286);
   --sidebar-ring: oklch(0.62 0.22 25);
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.12 0.01 260);
-  --foreground: oklch(0.92 0.005 65);
-  --card: oklch(0.18 0.008 260);
+  /* Dark mode with South African colors */
+  --primary: oklch(0.65 0.22 280); /* Bright Purple */
+  --primary-foreground: oklch(0.98 0.001 286);
+  --sidebar-primary: oklch(0.60 0.25 280); /* Medium Purple */
+  --sidebar-primary-foreground: oklch(0.98 0.001 286);
+  --background: oklch(0.10 0.01 280); /* Deep purple-dark */
+  --foreground: oklch(0.92 0.005 65); /* Light text */
+  --card: oklch(0.16 0.010 280); /* Slightly lighter purple-dark */
   --card-foreground: oklch(0.92 0.005 65);
-  --popover: oklch(0.18 0.008 260);
+  --popover: oklch(0.16 0.010 280);
   --popover-foreground: oklch(0.92 0.005 65);
-  --secondary: oklch(0.22 0.008 286);
-  --secondary-foreground: oklch(0.75 0.01 65);
-  --muted: oklch(0.28 0.008 286);
-  --muted-foreground: oklch(0.68 0.01 286);
-  --accent: oklch(0.65 0.2 25);
+  --secondary: oklch(0.30 0.015 40); /* Dark gold */
+  --secondary-foreground: oklch(0.85 0.01 65);
+  --muted: oklch(0.28 0.010 280);
+  --muted-foreground: oklch(0.70 0.01 280);
+  --accent: oklch(0.65 0.22 25); /* Vibrant Orange */
   --accent-foreground: oklch(0.98 0.001 286);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.65 0.2 25);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.18 0.008 260);
+  --destructive: oklch(0.65 0.22 15); /* Bright Red */
+  --destructive-foreground: oklch(0.98 0.001 286);
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: oklch(0.65 0.22 25);
+  --chart-1: oklch(0.62 0.22 25); /* Orange */
+  --chart-2: oklch(0.65 0.22 280); /* Purple */
+  --chart-3: oklch(0.70 0.20 120); /* Teal */
+  --chart-4: oklch(0.75 0.18 40); /* Gold */
+  --chart-5: oklch(0.65 0.22 15); /* Red */
+  --sidebar: oklch(0.14 0.008 280); /* Darker purple */
   --sidebar-foreground: oklch(0.92 0.005 65);
-  --sidebar-accent: oklch(0.65 0.2 25);
+  --sidebar-accent: oklch(0.65 0.22 25);
   --sidebar-accent-foreground: oklch(0.98 0.001 286);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.65 0.2 25);
+  --sidebar-border: oklch(1 0 0 / 15%);
+  --sidebar-ring: oklch(0.65 0.22 25);
 }
 
 @layer base {
