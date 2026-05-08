@@ -55,7 +55,7 @@
 
 ## South African Cultural Enhancements
 - [x] Update copy with SA language and local references (Sawubona, Ayoba, 🇿🇦)
-- [x] Add SA-inspired visual patterns (warm orange accent, refined design system)
+- [x] Add SA-inspired visual patterns (Ndebele-inspired geometric pattern in background)
 - [x] Incorporate SA-specific imagery and icons (SA city names, courier names)
 - [x] Add Zulu/Xhosa greetings and cultural elements (Sawubona greeting)
 - [x] Use South African pricing currency (Rand) consistently
