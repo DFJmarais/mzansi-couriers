@@ -277,6 +277,52 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="container py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl font-bold">Loved by South Africans</h2>
+          <p className="text-lg text-muted-foreground">Join thousands of satisfied customers and couriers</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              name: "Thabo Mthembu",
+              role: "Customer, Johannesburg",
+              quote: "Mzansi Couriers is incredibly fast! My package arrived in 2 hours. Ayoba! 🚀",
+              rating: 5,
+            },
+            {
+              name: "Naledi Khumalo",
+              role: "Courier, Cape Town",
+              quote: "I earn R2,500+ per week with flexible hours. Best decision ever!",
+              rating: 5,
+            },
+            {
+              name: "Sipho Ndlela",
+              role: "Customer, Durban",
+              quote: "Reliable, affordable, and they actually care. Highly recommended!",
+              rating: 5,
+            },
+          ].map((testimonial, i) => (
+            <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-lg">
+              <CardContent className="pt-8 space-y-4">
+                <div className="flex gap-1">
+                  {[...Array(testimonial.rating)].map((_, j) => (
+                    <span key={j} className="text-yellow-400">★</span>
+                  ))}
+                </div>
+                <p className="text-sm italic">\"{ testimonial.quote}\"</p>
+                <div>
+                  <p className="font-semibold text-sm">{testimonial.name}</p>
+                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="container py-20">
         <div className="bg-gradient-to-r from-accent to-accent/80 rounded-3xl p-12 md:p-16 text-white space-y-6 text-center">
