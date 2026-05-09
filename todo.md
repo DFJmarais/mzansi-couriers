@@ -75,9 +75,9 @@
 - [ ] Check accessibility for screen readers and keyboard navigation - audit needed
 
 ## Deep South African Cultural Enhancement
-- [x] Enhance copy with authentic SA voice and slang (Ayoba, Lekker, Shame, etc.) - Home page complete
-- [x] Add SA color palette: Ndebele patterns, vibrant accent colors
-- [ ] Implement South African brand personality in all messaging - app-wide (dashboards, errors, notifications)
+- [x] Enhance copy with authentic SA voice and slang (Ayoba, Lekker, Shame, etc.) - All pages
+- [x] Add authentic SA color palette: Green and Gold (SA flag colors) - Deep Green primary, Gold accent
+- [ ] Implement South African brand personality in all messaging - app-wide (errors, loading, empty states, notifications)
 - [ ] Add local success metrics (townships, informal settlements support)
 - [ ] Create SA-specific illustrations and icons (not generic)
 - [ ] Add South African music/audio branding (optional)
