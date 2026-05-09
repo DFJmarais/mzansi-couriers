@@ -316,6 +316,70 @@ export const appRouter = router({
       return { success: true };
     }),
   }),
+
+  // ============ PHASE 2: Regional Pricing & Zones ============
+  zones: router({
+    list: publicProcedure.query(async () => {
+      return db.getDeliveryZones();
+    }),
+    
+    getByName: publicProcedure.input(z.object({
+      name: z.string(),
+    })).query(async ({ input }) => {
+      return db.getZoneByName(input.name);
+    }),
+  }),
+
+  // ============ PHASE 2: Regional Pricing (getRegional added to pricing router above) ============
+
+  // ============ PHASE 2: Payment Methods ============
+  payments: router({
+    addMethod: protectedProcedure.input(z.object({
+      type: z.enum(['eft', 'capitec', 'card', 'wallet']),
+      accountName: z.string().optional(),
+      accountNumber: z.string().optional(),
+      bankName: z.string().optional(),
+      isDefault: z.boolean().optional(),
+    })).mutation(async ({ ctx, input }) => {
+      await db.createPaymentMethod(ctx.user.id, input);
+      return { success: true };
+    }),
+
+    list: protectedProcedure.query(async ({ ctx }) => {
+      return db.getUserPaymentMethods(ctx.user.id);
+    }),
+
+    getDefault: protectedProcedure.query(async ({ ctx }) => {
+      return db.getDefaultPaymentMethod(ctx.user.id);
+    }),
+  }),
+
+  // ============ PHASE 2: User Preferences ============
+  preferences: router({
+    get: protectedProcedure.query(async ({ ctx }) => {
+      return db.getUserPreferences(ctx.user.id);
+    }),
+
+    update: protectedProcedure.input(z.object({
+      language: z.enum(['en', 'zu', 'xh']).optional(),
+      notificationMethod: z.enum(['in_app', 'sms', 'whatsapp']).optional(),
+      phoneNumber: z.string().optional(),
+      whatsappNumber: z.string().optional(),
+      preferredZone: z.number().optional(),
+    })).mutation(async ({ ctx, input }) => {
+      await db.createOrUpdateUserPreferences(ctx.user.id, input);
+      return { success: true };
+    }),
+  }),
+
+  // ============ PHASE 2: Community Metrics ============
+  community: router({
+    getMetrics: publicProcedure.input(z.object({
+      zoneId: z.number(),
+    })).query(async ({ input }) => {
+      return db.getCommunityMetrics(input.zoneId);
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

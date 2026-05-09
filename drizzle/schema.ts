@@ -158,3 +158,92 @@ export const notifications = mysqlTable("notifications", {
 
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = typeof notifications.$inferInsert;
+
+/**
+ * Delivery Zones - Regional areas with specific pricing
+ */
+export const deliveryZones = mysqlTable("delivery_zones", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(), // e.g., "Johannesburg", "Cape Town"
+  region: varchar("region", { length: 100 }).notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  basePricePerKm: decimal("basePricePerKm", { precision: 8, scale: 2 }).notNull(),
+  minimumCharge: decimal("minimumCharge", { precision: 8, scale: 2 }).notNull(),
+  isActive: boolean("isActive").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type DeliveryZone = typeof deliveryZones.$inferSelect;
+export type InsertDeliveryZone = typeof deliveryZones.$inferInsert;
+
+/**
+ * Regional Pricing - Zone-specific pricing rules
+ */
+export const regionalPricing = mysqlTable("regional_pricing", {
+  id: int("id").autoincrement().primaryKey(),
+  zoneId: int("zoneId").notNull(),
+  packageSize: mysqlEnum("packageSize", ["small", "medium", "large"]).notNull(),
+  baseFee: decimal("baseFee", { precision: 8, scale: 2 }).notNull(),
+  peakHourMultiplier: decimal("peakHourMultiplier", { precision: 4, scale: 2 }).default("1.00"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RegionalPricing = typeof regionalPricing.$inferSelect;
+export type InsertRegionalPricing = typeof regionalPricing.$inferInsert;
+
+/**
+ * Payment Methods - Supported SA payment options
+ */
+export const paymentMethods = mysqlTable("payment_methods", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  type: mysqlEnum("type", ["eft", "capitec", "card", "wallet"]).notNull(),
+  accountName: varchar("accountName", { length: 100 }),
+  accountNumber: varchar("accountNumber", { length: 50 }),
+  bankName: varchar("bankName", { length: 100 }),
+  isDefault: boolean("isDefault").default(false),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PaymentMethod = typeof paymentMethods.$inferSelect;
+export type InsertPaymentMethod = typeof paymentMethods.$inferInsert;
+
+/**
+ * User Preferences - Language, notifications, etc.
+ */
+export const userPreferences = mysqlTable("user_preferences", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  language: mysqlEnum("language", ["en", "zu", "xh"]).default("en").notNull(),
+  notificationMethod: mysqlEnum("notificationMethod", ["in_app", "sms", "whatsapp"]).default("in_app").notNull(),
+  phoneNumber: varchar("phoneNumber", { length: 20 }),
+  whatsappNumber: varchar("whatsappNumber", { length: 20 }),
+  preferredZone: int("preferredZone"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type UserPreferences = typeof userPreferences.$inferSelect;
+export type InsertUserPreferences = typeof userPreferences.$inferInsert;
+
+/**
+ * Community Metrics - Track local impact
+ */
+export const communityMetrics = mysqlTable("community_metrics", {
+  id: int("id").autoincrement().primaryKey(),
+  zoneId: int("zoneId").notNull(),
+  totalDeliveries: int("totalDeliveries").default(0),
+  totalEarningsDistributed: decimal("totalEarningsDistributed", { precision: 12, scale: 2 }).default("0.00"),
+  activeCouriers: int("activeCouriers").default(0),
+  communityRating: decimal("communityRating", { precision: 3, scale: 2 }).default("5.00"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CommunityMetrics = typeof communityMetrics.$inferSelect;
+export type InsertCommunityMetrics = typeof communityMetrics.$inferInsert;

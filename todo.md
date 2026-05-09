@@ -78,10 +78,13 @@
 - [x] Enhance copy with authentic SA voice and slang (Ayoba, Lekker, Shame, etc.) - All pages
 - [x] Add authentic SA color palette: Green and Gold (SA flag colors) - Deep Green primary, Gold accent
 - [ ] Implement South African brand personality in all messaging - app-wide (errors, loading, empty states, notifications)
-- [ ] Add local success metrics (townships, informal settlements support)
-- [ ] Create SA-specific illustrations and icons (not generic)
-- [ ] Add South African music/audio branding (optional)
-- [ ] Implement regional pricing variations (JNB vs Cape Town vs Durban)
-- [ ] Add local language support (Zulu/Xhosa greetings and labels)
-- [ ] Create SA-specific onboarding flow with local context
-- [ ] Add South African payment methods (EFT, Capitec, etc.)
+## Phase 2 Enhancements (IN PROGRESS)
+- [ ] Implement regional pricing variations (JNB vs Cape Town vs Durban) - Backend ready, need frontend UI + seed data
+- [ ] Add WhatsApp integration for notifications - MCP server available
+- [ ] Add SMS fallback for low-data users - MCP server available
+- [ ] Implement local language support (Zulu/Xhosa) - Backend ready, need frontend localization UI
+- [ ] Add South African payment methods (EFT, Capitec) - Backend ready, need frontend UI integration
+- [ ] Create SA-specific onboarding flow with local context - Enhanced onboarding ready
+- [ ] Create SA-specific illustrations and icons (not generic) - Design phase
+- [ ] Add South African music/audio branding (optional) - Future phase
+- [ ] Add local success metrics (townships, informal settlements support) - Backend ready, need dashboard UI

@@ -1,9 +1,9 @@
-import { eq, and, desc, asc, lte, gte, count, sum } from "drizzle-orm";
+import { and, eq, desc, asc, lte, gte, count, sum } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser, users, courierProfiles, addresses, deliveries, deliveryTracking,
   notifications, ratings, pricingConfig, InsertDelivery, InsertCourierProfile,
-  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking
+  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -306,4 +306,112 @@ export async function getActiveCouriers() {
   if (!db) return 0;
   const result = await db.select({ count: count() }).from(courierProfiles).where(eq(courierProfiles.isAvailable, true));
   return result[0]?.count || 0;
+}
+
+// ============ PHASE 2: Regional Pricing & Zones ============
+
+export async function getDeliveryZones() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(deliveryZones).where(eq(deliveryZones.isActive, true));
+}
+
+export async function getZoneByName(name: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(deliveryZones).where(eq(deliveryZones.name, name)).limit(1);
+  return result[0];
+}
+
+export async function getRegionalPricing(zoneId: number, packageSize: "small" | "medium" | "large") {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(regionalPricing)
+    .where(and(eq(regionalPricing.zoneId, zoneId), eq(regionalPricing.packageSize, packageSize)))
+    .limit(1);
+  return result[0];
+}
+
+// ============ PHASE 2: Payment Methods ============
+
+export async function createPaymentMethod(userId: number, method: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.insert(paymentMethods).values({
+    userId,
+    type: method.type,
+    accountName: method.accountName,
+    accountNumber: method.accountNumber,
+    bankName: method.bankName,
+    isDefault: method.isDefault || false,
+    isActive: true,
+  });
+  return result;
+}
+
+export async function getUserPaymentMethods(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(paymentMethods).where(and(eq(paymentMethods.userId, userId), eq(paymentMethods.isActive, true)));
+}
+
+export async function getDefaultPaymentMethod(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(paymentMethods)
+    .where(and(eq(paymentMethods.userId, userId), eq(paymentMethods.isDefault, true)))
+    .limit(1);
+  return result[0];
+}
+
+// ============ PHASE 2: User Preferences ============
+
+export async function getUserPreferences(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(userPreferences).where(eq(userPreferences.userId, userId)).limit(1);
+  return result[0];
+}
+
+export async function createOrUpdateUserPreferences(userId: number, prefs: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const existing = await getUserPreferences(userId);
+  if (existing) {
+    return db.update(userPreferences).set(prefs).where(eq(userPreferences.userId, userId));
+  }
+  
+  return db.insert(userPreferences).values({
+    userId,
+    language: prefs.language || 'en',
+    notificationMethod: prefs.notificationMethod || 'in_app',
+    phoneNumber: prefs.phoneNumber,
+    whatsappNumber: prefs.whatsappNumber,
+    preferredZone: prefs.preferredZone,
+  });
+}
+
+// ============ PHASE 2: Community Metrics ============
+
+export async function getCommunityMetrics(zoneId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(communityMetrics).where(eq(communityMetrics.zoneId, zoneId)).limit(1);
+  return result[0];
+}
+
+export async function updateCommunityMetrics(zoneId: number, updates: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const existing = await getCommunityMetrics(zoneId);
+  if (existing) {
+    return db.update(communityMetrics).set(updates).where(eq(communityMetrics.zoneId, zoneId));
+  }
+  
+  return db.insert(communityMetrics).values({
+    zoneId,
+    ...updates,
+  });
 }
