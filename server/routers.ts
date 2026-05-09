@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { notificationRouter } from "./notifications";
 import { TRPCError } from "@trpc/server";
 
 // ============ ADMIN PROCEDURE ============
@@ -32,6 +33,7 @@ const customerProcedure = protectedProcedure.use(({ ctx, next }) => {
 
 export const appRouter = router({
   system: systemRouter,
+  notifications: notificationRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
