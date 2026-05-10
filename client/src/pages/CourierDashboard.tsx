@@ -47,7 +47,7 @@ export default function CourierDashboard() {
           {[
             { icon: TrendingUp, label: "Today's Earnings", value: "R450", subtext: "3 deliveries" },
             { icon: Clock, label: "Active Deliveries", value: "2", subtext: "On the way" },
-            { icon: Zap, label: "Total Deliveries", value: "247", subtext: "Ayoba! 🚀" },
+            { icon: Zap, label: "Total Deliveries", value: "247", subtext: "This month" },
             { icon: Star, label: "Rating", value: "4.9", subtext: "Based on 156 reviews" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-md">

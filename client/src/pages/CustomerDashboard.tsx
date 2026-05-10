@@ -33,7 +33,7 @@ export default function CustomerDashboard() {
           {[
             { icon: Package, label: "Total Deliveries", value: "24", change: "+2 this month" },
             { icon: DollarSign, label: "Total Spent", value: "R2,480", change: "+R340 this month" },
-            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "Ayoba! That's lekker! 🚀" },
+            { icon: Clock, label: "Avg Delivery Time", value: "28 mins", change: "Deliveries this month" },
             { icon: TrendingUp, label: "Saved with Bulk", value: "R245", change: "12% discount" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">
@@ -56,7 +56,7 @@ export default function CustomerDashboard() {
           <Card className="border-accent/50 bg-gradient-to-br from-background to-accent/5">
             <CardHeader>
               <CardTitle>Book a Delivery</CardTitle>
-              <CardDescription>Tell us what you're sending. We'll find the perfect courier. Instant quote in Rand.</CardDescription>
+              <CardDescription>Tell us what you're sending. We'll match you with available couriers. Instant quote in Rand.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">

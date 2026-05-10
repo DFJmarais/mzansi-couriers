@@ -218,22 +218,24 @@ export const appRouter = router({
       packageSize: z.enum(['small', 'medium', 'large']),
       packageWeight: z.number(),
     })).query(async ({ input }) => {
-      // Use default pricing (South African Rand)
-      const basePrice = 25; // R25 base
-      const pricePerKm = 2; // R2 per km
+      // Pricing based on SA fuel costs: R34/L diesel, R26/L petrol
+      // Average fuel efficiency: 10L/100km = R3.40/km (diesel), R2.60/km (petrol)
+      // Using diesel average with 35% courier margin
+      const basePrice = 35; // R35 base (covers platform, insurance, maintenance)
+      const pricePerKm = 4.50; // R4.50 per km (fuel + courier margin)
       const distancePrice = input.distance * pricePerKm;
 
       let multiplier = 1;
       if (input.packageSize === 'small') {
-        multiplier = 1.0;
+        multiplier = 1.0; // Up to 5kg
       } else if (input.packageSize === 'medium') {
-        multiplier = 1.5;
+        multiplier = 1.4; // 5-15kg
       } else if (input.packageSize === 'large') {
-        multiplier = 2.0;
+        multiplier = 1.8; // 15kg+
       }
       
-      // Add weight surcharge (R0.50 per kg)
-      const weightSurcharge = input.packageWeight * 0.5;
+      // Add weight surcharge (R1.00 per kg for items over 5kg)
+      const weightSurcharge = Math.max(0, input.packageWeight - 5) * 1.0;
 
       const estimatedPrice = (basePrice + distancePrice) * multiplier + weightSurcharge;
       return { estimatedPrice: estimatedPrice.toFixed(2) };
