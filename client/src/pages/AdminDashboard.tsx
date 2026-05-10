@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import DashboardLayout from "@/components/DashboardLayout";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from "recharts";
 import { TrendingUp, Users, Package, DollarSign, AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { LanguageSwitcher, NotificationPreferences } from "@/components/Phase2Features";
+import { useState } from "react";
 
 const chartData = [
   { name: "Mon", deliveries: 45, revenue: 2250, active: 120 },
@@ -24,6 +26,8 @@ const statusData = [
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
+  // Language managed by LocalizationContext
+  // const [currentLanguage, setCurrentLanguage] = useState('en');
 
   if (!isAuthenticated || user?.role !== 'admin') {
     return <div>Access denied</div>;
@@ -32,10 +36,13 @@ export default function AdminDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard - Mzansi Control Center</h1>
-          <p className="text-muted-foreground">Monitor South Africa's delivery network 🇿🇦</p>
+        {/* Header with Language Switcher */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Admin Dashboard - Mzansi Control Center</h1>
+            <p className="text-muted-foreground">Monitor South Africa's delivery network 🇿🇦</p>
+          </div>
+          <LanguageSwitcher  />
         </div>
 
         {/* Key Metrics */}

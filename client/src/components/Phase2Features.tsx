@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Globe, CreditCard, Bell, MapPin } from 'lucide-react';
+import { useLocalization } from '@/contexts/LocalizationContext';
 
 // ============ REGIONAL PRICING SELECTOR ============
 export const RegionalPricingSelector = ({ onZoneSelect }: { onZoneSelect: (zone: string) => void }) => {
@@ -96,7 +97,11 @@ export const PaymentMethodsManager = () => {
 };
 
 // ============ LANGUAGE SWITCHER ============
-export const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: { currentLanguage: string; onLanguageChange: (lang: string) => void }) => {
+export const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: { currentLanguage?: string; onLanguageChange?: (lang: string) => void } = {}) => {
+  const { language, setLanguage } = useLocalization();
+  const lang = currentLanguage || language;
+  const onChange = onLanguageChange || setLanguage;
+
   const languages = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
     { code: 'zu', name: 'isiZulu', flag: '🇿🇦' },
@@ -106,7 +111,7 @@ export const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: { curren
   return (
     <div className="flex items-center gap-2">
       <Globe className="w-4 h-4 text-muted-foreground" />
-      <Select value={currentLanguage} onValueChange={onLanguageChange}>
+      <Select value={lang} onValueChange={onChange}>
         <SelectTrigger className="w-32">
           <SelectValue />
         </SelectTrigger>

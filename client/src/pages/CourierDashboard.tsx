@@ -4,10 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import DashboardLayout from "@/components/DashboardLayout";
 import { MapPin, Zap, TrendingUp, Clock, Star, Navigation, CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
+import { LanguageSwitcher, NotificationPreferences, PaymentMethodsManager } from "@/components/Phase2Features";
 
 export default function CourierDashboard() {
   const { user, isAuthenticated } = useAuth();
   const [isOnline, setIsOnline] = useState(false);
+  // Language managed by LocalizationContext
+  // const [currentLanguage, setCurrentLanguage] = useState('en');
 
   if (!isAuthenticated || user?.role !== 'courier') {
     return <div>Access denied</div>;
@@ -16,13 +19,14 @@ export default function CourierDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        {/* Header with Online Toggle */}
+        {/* Header with Online Toggle and Language Switcher */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold">Courier Dashboard - Earn Big in Mzansi</h1>
             <p className="text-muted-foreground">Get deliveries, earn Rand, build your future in Mzansi 🇿🇦</p>
           </div>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher  />
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
               isOnline 
                 ? 'bg-green-100 border-green-300 dark:bg-green-900/30 dark:border-green-700' 
@@ -41,6 +45,12 @@ export default function CourierDashboard() {
             </Button>
           </div>
         </div>
+
+        {/* Payment Methods */}
+        <PaymentMethodsManager />
+
+        {/* Notification Preferences */}
+        <NotificationPreferences />
 
         {/* Stats */}
         <div className="grid md:grid-cols-4 gap-4">
