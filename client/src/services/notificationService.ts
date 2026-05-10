@@ -1,4 +1,5 @@
 // WhatsApp & SMS Notification Service for South Africa
+// Professional, factual messaging without marketing claims
 
 export interface NotificationPayload {
   recipientPhone: string;
@@ -102,9 +103,9 @@ export const notifyDeliveryStatus = async (
   method: 'sms' | 'whatsapp' = 'whatsapp'
 ): Promise<NotificationResponse> => {
   const messages = {
-    assigned: `Ayoba! Your delivery is assigned to ${courierName}. Estimated arrival: ${estimatedTime || 'Soon'}. Track live: mzansicourier.app 🚀`,
-    'in-transit': `Your package is on the way with ${courierName}! Real-time tracking: mzansicourier.app 📍`,
-    delivered: `Delivered! Salamat sa inyong order. Rate your experience: mzansicourier.app ⭐`
+    assigned: `Delivery assigned to ${courierName}. ETA: ${estimatedTime || 'Soon'}. Track: mzansicourier.app`,
+    'in-transit': `Package on the way with ${courierName}. Track: mzansicourier.app`,
+    delivered: `Delivery completed. Thank you. Rate at: mzansicourier.app`
   };
 
   return method === 'whatsapp'
@@ -129,7 +130,7 @@ export const notifyCourierNewJob = async (
   estimatedEarnings: number,
   method: 'sms' | 'whatsapp' = 'whatsapp'
 ): Promise<NotificationResponse> => {
-  const message = `🎉 New job available! Pickup: ${pickupLocation} → Dropoff: ${dropoffLocation}. Earn R${estimatedEarnings}. Accept now: mzansicourier.app`;
+  const message = `New job: ${pickupLocation} to ${dropoffLocation}. Earn R${estimatedEarnings}. Accept: mzansicourier.app`;
 
   return method === 'whatsapp'
     ? sendWhatsAppNotification({
