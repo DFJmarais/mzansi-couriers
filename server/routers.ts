@@ -6,6 +6,7 @@ import { z } from "zod";
 import * as db from "./db";
 import { notificationRouter } from "./notifications";
 import { onboardingRouter } from "./routers/onboarding";
+import { smsEarningsRouter } from "./routers/sms-earnings";
 import { TRPCError } from "@trpc/server";
 import { sendMessageWithFallback } from "./_core/twilio";
 
@@ -37,6 +38,7 @@ export const appRouter = router({
   system: systemRouter,
   notifications: notificationRouter,
   onboarding: onboardingRouter,
+  smsEarnings: smsEarningsRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
