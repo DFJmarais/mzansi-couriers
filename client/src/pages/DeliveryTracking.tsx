@@ -2,16 +2,57 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapView } from "@/components/Map";
-import { MapPin, Phone, MessageCircle, Clock, Package } from "lucide-react";
-import { useState } from "react";
+import { MapPin, Phone, MessageCircle, Clock, Package, Navigation } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function DeliveryTracking() {
   const { user, isAuthenticated } = useAuth();
   const [mapReady, setMapReady] = useState(false);
+  const [courierLocation, setCourierLocation] = useState({ lat: -25.7461, lng: 28.0332 });
+  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [courierMarker, setCourierMarker] = useState<any>(null);
 
   if (!isAuthenticated) {
     return <div>Access denied</div>;
   }
+
+  // Simulate real-time courier location updates
+  useEffect(() => {
+    if (!mapReady) return;
+
+    const interval = setInterval(() => {
+      setCourierLocation((prev) => ({
+        lat: prev.lat + (Math.random() - 0.5) * 0.002,
+        lng: prev.lng + (Math.random() - 0.5) * 0.002,
+      }));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [mapReady]);
+
+  // Update courier marker on map
+  useEffect(() => {
+    if (!mapInstance || !courierLocation) return;
+
+    if (courierMarker) {
+      courierMarker.setPosition(new google.maps.LatLng(courierLocation.lat, courierLocation.lng));
+    } else {
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(courierLocation.lat, courierLocation.lng),
+        map: mapInstance,
+        title: 'Courier Location',
+        icon: {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          scale: 5,
+          fillColor: '#FF6B35',
+          fillOpacity: 1,
+          strokeColor: '#fff',
+          strokeWeight: 2,
+        },
+      });
+      setCourierMarker(marker);
+    }
+  }, [courierLocation, mapInstance]);
 
   // Mock delivery data
   const delivery = {
@@ -63,11 +104,14 @@ export default function DeliveryTracking() {
           <div className="lg:col-span-2 space-y-6">
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle>Live Location</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Navigation className="w-4 h-4 text-accent animate-pulse" />
+                  Live Location
+                </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-96 bg-muted rounded-lg overflow-hidden">
-                  <MapView onMapReady={() => setMapReady(true)} />
+                  <MapView onMapReady={(map) => { setMapReady(true); setMapInstance(map); }} />
                 </div>
               </CardContent>
             </Card>

@@ -21,6 +21,14 @@ export default function Home() {
     }
   };
 
+  const handleBecomeCourier = () => {
+    if (isAuthenticated) {
+      setLocation("/courier/onboarding");
+    } else {
+      window.location.href = getLoginUrl();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
       {/* Header */}
@@ -83,7 +91,7 @@ export default function Home() {
                 Send a Package
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={handleGetStarted}>
+              <Button size="lg" variant="outline" onClick={handleBecomeCourier}>
                 Become a Courier
               </Button>
             </div>
