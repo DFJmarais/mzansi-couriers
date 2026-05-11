@@ -164,16 +164,48 @@ export const appRouter = router({
 
     acceptDelivery: courierProcedure.input(z.object({
       deliveryId: z.number(),
-    })).mutation(async ({ ctx, input }) => {
+    })).mutation(async ({ ctx, input }: any) => {
+      const delivery = await db.getDeliveryById(input.deliveryId);
+      if (!delivery) return { success: false, error: 'Delivery not found' };
+      const customer = await db.getUserById(delivery.customerId);
+      const courier = await db.getUserById(ctx.user.id);
+      
       await db.assignDeliveryToCourier(input.deliveryId, ctx.user.id);
+      
+      if (customer?.phone) {
+        const { sendSMSMessage } = await import('./_core/twilio');
+        const message = `Great news! A courier has been assigned.\nCourier: ${courier?.name || 'Courier'}\nPhone: ${courier?.phone || 'N/A'}\nTrack: mzansicourier.com/track/${input.deliveryId}`;
+        await sendSMSMessage(customer.phone, message).catch(e => console.error('SMS error:', e));
+      }
+      
       return { success: true };
     }),
 
     updateDeliveryStatus: courierProcedure.input(z.object({
       deliveryId: z.number(),
       status: z.enum(['pending', 'assigned', 'in-transit', 'delivered']),
-    })).mutation(async ({ input }) => {
+    })).mutation(async ({ input }: any) => {
+      const delivery = await db.getDeliveryById(input.deliveryId);
+      if (!delivery) return { success: false, error: 'Delivery not found' };
+      const customer = await db.getUserById(delivery.customerId);
+      
       await db.updateDeliveryStatus(input.deliveryId, input.status);
+      
+      if (customer?.phone) {
+        const { sendSMSMessage } = await import('./_core/twilio');
+        let message = '';
+        
+        if (input.status === 'in-transit') {
+          message = `Your package is on the way!\nTracking ID: ${input.deliveryId}\nTrack: mzansicourier.com/track/${input.deliveryId}`;
+        } else if (input.status === 'delivered') {
+          message = `Your delivery is complete!\nThank you for using Mzansi Couriers!\nTracking ID: ${input.deliveryId}`;
+        }
+        
+        if (message) {
+          await sendSMSMessage(customer.phone, message).catch(e => console.error('SMS error:', e));
+        }
+      }
+      
       return { success: true };
     }),
 
@@ -181,8 +213,19 @@ export const appRouter = router({
       deliveryId: z.number(),
       finalPrice: z.string(),
       proofOfDelivery: z.any().optional(),
-    })).mutation(async ({ input }) => {
+    })).mutation(async ({ input }: any) => {
+      const delivery = await db.getDeliveryById(input.deliveryId);
+      if (!delivery) return { success: false, error: 'Delivery not found' };
+      const customer = await db.getUserById(delivery.customerId);
+      
       await db.completeDelivery(input.deliveryId, input.finalPrice, input.proofOfDelivery);
+      
+      if (customer?.phone) {
+        const { sendSMSMessage } = await import('./_core/twilio');
+        const message = `Your delivery is complete!\nFinal Price: R${parseFloat(input.finalPrice).toFixed(2)}\nTracking ID: ${input.deliveryId}\nThank you for using Mzansi Couriers!`;
+        await sendSMSMessage(customer.phone, message).catch(e => console.error('SMS error:', e));
+      }
+      
       return { success: true };
     }),
 

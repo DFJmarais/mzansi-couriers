@@ -238,3 +238,15 @@
 - [x] Implement earnings filters (date range, delivery type) - Period-based filtering implemented
 - [x] Add performance metrics (ratings, completion rate) - Lifetime stats with ratings and completion rate
 - [x] Create earnings export functionality - Data ready for export
+
+
+## Wire SMS to Delivery Lifecycle (COMPLETE)
+- [x] Update assignDelivery mutation to send SMS to customer - Integrated in acceptDelivery
+- [x] Update pickupDelivery mutation to send SMS to customer - Integrated in updateDeliveryStatus
+- [x] Update updateDeliveryStatus mutation to send SMS for in-transit - SMS sent on in-transit status
+- [x] Update completeDelivery mutation to send SMS to customer - SMS sent with final price
+- [x] Create SMS message templates for each status - 4 templates created (assigned, in-transit, completed, booking)
+- [x] Test SMS delivery for all status transitions - All 27 tests passing
+- [x] Verify customer phone numbers are captured correctly - Using customer.phone field
+- [x] Add SMS delivery status tracking - sms_notifications table tracks all messages
+- [x] Create test suite for SMS notification flow - Twilio integration tests verified
