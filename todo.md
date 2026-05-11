@@ -212,3 +212,29 @@
 - [x] Implement map markers and info windows - Green pickup, red dropoff markers
 - [x] Add estimated arrival time display - ETA shown in header
 - [x] Test maps integration end-to-end - 27 tests passing, TypeScript 0 errors
+
+
+## Step 1: Real Courier GPS Tracking (IN PROGRESS)
+- [ ] Create delivery_tracking table for storing GPS coordinates
+- [ ] Add tRPC procedure for couriers to update location during delivery
+- [ ] Add tRPC procedure for customers to subscribe to live location updates
+- [ ] Implement WebSocket or polling mechanism for real-time updates
+- [ ] Update DeliveryTracking UI to fetch real courier locations
+- [ ] Add location history and route playback
+
+## Step 2: SMS Delivery Notifications (IN PROGRESS)
+- [ ] Create SMS notification templates for delivery events
+- [ ] Add tRPC procedure to send SMS via Twilio
+- [ ] Integrate SMS into delivery lifecycle (pickup, in-transit, delivered)
+- [ ] Add user preference for SMS vs WhatsApp
+- [ ] Test SMS delivery with real phone numbers
+- [ ] Add SMS delivery status tracking
+
+## Step 3: Courier Earnings Dashboard (IN PROGRESS)
+- [ ] Create earnings_summary table for daily/weekly/monthly totals
+- [ ] Add tRPC procedures for earnings calculations
+- [ ] Build earnings dashboard UI with charts
+- [ ] Add delivery breakdown by type/zone
+- [ ] Implement earnings filters (date range, delivery type)
+- [ ] Add performance metrics (ratings, completion rate)
+- [ ] Create earnings export functionality

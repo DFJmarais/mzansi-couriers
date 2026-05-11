@@ -98,11 +98,14 @@ export type InsertDelivery = typeof deliveries.$inferInsert;
 export const deliveryTracking = mysqlTable("delivery_tracking", {
   id: int("id").autoincrement().primaryKey(),
   deliveryId: int("deliveryId").notNull(),
+  courierId: int("courierId").notNull(),
   latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
   longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
-  accuracy: decimal("accuracy", { precision: 8, scale: 2 }),
-  speed: decimal("speed", { precision: 8, scale: 2 }), // in km/h
-  heading: int("heading"), // 0-360 degrees
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }),
+  speed: decimal("speed", { precision: 5, scale: 2 }),
+  heading: decimal("heading", { precision: 6, scale: 2 }),
+  altitude: decimal("altitude", { precision: 8, scale: 2 }),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -407,3 +410,63 @@ export const fraudDetectionFlags = mysqlTable("fraud_detection_flags", {
 
 export type FraudDetectionFlag = typeof fraudDetectionFlags.$inferSelect;
 export type InsertFraudDetectionFlag = typeof fraudDetectionFlags.$inferInsert;
+
+
+
+
+/**
+ * Earnings Summary - Daily/Weekly/Monthly earnings aggregates for couriers
+ */
+export const earningsSummary = mysqlTable("earnings_summary", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  period: mysqlEnum("period", ["daily", "weekly", "monthly"]).notNull(),
+  periodDate: varchar("periodDate", { length: 20 }).notNull(), // YYYY-MM-DD for daily, YYYY-W## for weekly, YYYY-MM for monthly
+  totalDeliveries: int("totalDeliveries").default(0),
+  completedDeliveries: int("completedDeliveries").default(0),
+  cancelledDeliveries: int("cancelledDeliveries").default(0),
+  totalEarnings: decimal("totalEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  baseFeeEarnings: decimal("baseFeeEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  distanceFeeEarnings: decimal("distanceFeeEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  bonusEarnings: decimal("bonusEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  averageRating: decimal("averageRating", { precision: 3, scale: 2 }).default("5.00"),
+  completionRate: decimal("completionRate", { precision: 5, scale: 2 }).default("100.00"), // Percentage
+  totalDistance: decimal("totalDistance", { precision: 10, scale: 2 }).default("0.00"), // km
+  totalTime: int("totalTime").default(0), // seconds
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EarningsSummary = typeof earningsSummary.$inferSelect;
+export type InsertEarningsSummary = typeof earningsSummary.$inferInsert;
+
+/**
+ * SMS Notifications - Track SMS messages sent to users
+ */
+export const smsNotifications = mysqlTable("sms_notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  deliveryId: int("deliveryId"),
+  phoneNumber: varchar("phoneNumber", { length: 20 }).notNull(),
+  messageType: mysqlEnum("messageType", [
+    "delivery_confirmed",
+    "courier_assigned",
+    "pickup_started",
+    "in_transit",
+    "delivery_completed",
+    "delivery_failed",
+    "courier_job_available",
+    "earnings_summary",
+    "verification_reminder"
+  ]).notNull(),
+  messageContent: text("messageContent").notNull(),
+  twilioSid: varchar("twilioSid", { length: 100 }), // Twilio message SID for tracking
+  status: mysqlEnum("status", ["pending", "sent", "delivered", "failed"]).default("pending"),
+  failureReason: text("failureReason"),
+  sentAt: timestamp("sentAt"),
+  deliveredAt: timestamp("deliveredAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type SmsNotification = typeof smsNotifications.$inferSelect;
+export type InsertSmsNotification = typeof smsNotifications.$inferInsert;

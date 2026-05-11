@@ -191,15 +191,19 @@ export const appRouter = router({
       accuracy: z.number().optional(),
       speed: z.number().optional(),
       heading: z.number().optional(),
-    })).mutation(async ({ input }) => {
-      await db.addDeliveryTracking({
-        deliveryId: input.deliveryId,
-        latitude: input.latitude as any,
-        longitude: input.longitude as any,
-        accuracy: input.accuracy as any,
-        speed: input.speed as any,
-        heading: input.heading,
-      });
+      altitude: z.number().optional(),
+    })).mutation(async ({ ctx, input }) => {
+      const { recordCourierLocation } = await import('./db.tracking');
+      await recordCourierLocation(
+        input.deliveryId,
+        ctx.user.id,
+        input.latitude,
+        input.longitude,
+        input.accuracy,
+        input.speed,
+        input.heading,
+        input.altitude
+      );
       return { success: true };
     }),
 
