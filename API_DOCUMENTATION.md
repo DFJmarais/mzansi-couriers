@@ -343,8 +343,107 @@ CREATE TABLE deliveries (
 );
 ```
 
+### WhatsApp Router (`whatsapp.*`)
+
+#### `whatsapp.sendDeliveryConfirmation` (Mutation)
+Send WhatsApp confirmation when customer books a delivery.
+
+**Input:**
+```typescript
+{
+  phoneNumber: string;        // Customer's phone number
+  pickupAddress: string;      // Pickup location
+  dropoffAddress: string;     // Delivery location
+  estimatedPrice: number;     // Price in Rand
+  deliveryId: string;         // Unique delivery ID
+}
+```
+
+**Returns:** `{ success: boolean; method: 'whatsapp' | 'sms'; messageId?: string; error?: string }`
+
+#### `whatsapp.sendCourierAssigned` (Mutation)
+Notify customer when courier is assigned to their delivery.
+
+**Input:**
+```typescript
+{
+  phoneNumber: string;        // Customer's phone number
+  courierName: string;        // Courier's name
+  courierPhone: string;       // Courier's contact number
+  deliveryId: string;         // Unique delivery ID
+}
+```
+
+**Returns:** `{ success: boolean; method: 'whatsapp' | 'sms'; messageId?: string; error?: string }`
+
+#### `whatsapp.sendDeliveryPickedUp` (Mutation)
+Notify customer when package is picked up.
+
+**Input:**
+```typescript
+{
+  phoneNumber: string;        // Customer's phone number
+  deliveryId: string;         // Unique delivery ID
+}
+```
+
+**Returns:** `{ success: boolean; method: 'whatsapp' | 'sms'; messageId?: string; error?: string }`
+
+#### `whatsapp.sendDeliveryComplete` (Mutation)
+Notify customer when delivery is completed.
+
+**Input:**
+```typescript
+{
+  phoneNumber: string;        // Customer's phone number
+  deliveryId: string;         // Unique delivery ID
+  actualPrice: number;        // Final price in Rand
+}
+```
+
+**Returns:** `{ success: boolean; method: 'whatsapp' | 'sms'; messageId?: string; error?: string }`
+
+#### `whatsapp.sendCourierJobAlert` (Mutation)
+Alert courier about available delivery job.
+
+**Input:**
+```typescript
+{
+  phoneNumber: string;        // Courier's phone number
+  pickupAddress: string;      // Pickup location
+  dropoffAddress: string;     // Delivery location
+  estimatedPrice: number;     // Estimated earnings in Rand
+  jobId: string;              // Unique job ID
+}
+```
+
+**Returns:** `{ success: boolean; method: 'whatsapp' | 'sms'; messageId?: string; error?: string }`
+
+## WhatsApp Integration
+
+The app uses **Twilio** for WhatsApp messaging with automatic SMS fallback for users without WhatsApp or on low-data connections.
+
+**Environment Variables Required:**
+- `TWILIO_ACCOUNT_SID` - Twilio account identifier
+- `TWILIO_AUTH_TOKEN` - Twilio authentication token
+- `TWILIO_WHATSAPP_NUMBER` - WhatsApp business number (e.g., +27064220217)
+
+**Message Flow:**
+1. Delivery event triggered (booking, assignment, pickup, completion)
+2. tRPC procedure called with customer/courier phone number
+3. WhatsApp message sent via Twilio
+4. If WhatsApp fails, SMS automatically sent as fallback
+5. Message status returned to frontend
+
+**Message Examples:**
+- Delivery Confirmation: "Hi! Your delivery has been confirmed..." with tracking link
+- Courier Assigned: "Great news! A courier has been assigned..." with courier contact
+- Picked Up: "Your package has been picked up!" with tracking link
+- Delivery Complete: "Your delivery is complete!" with final price
+- Job Alert: "New job available!" with earnings and job link
+
 ## Version
 
 - API Version: 1.0.0
-- Last Updated: May 10, 2026
-- Status: Production Ready
+- Last Updated: May 11, 2026
+- Status: Production Ready with Twilio WhatsApp Integration

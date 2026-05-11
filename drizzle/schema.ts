@@ -247,3 +247,163 @@ export const communityMetrics = mysqlTable("community_metrics", {
 
 export type CommunityMetrics = typeof communityMetrics.$inferSelect;
 export type InsertCommunityMetrics = typeof communityMetrics.$inferInsert;
+
+
+/**
+ * Courier Onboarding - Track onboarding progress and status
+ * Status: pending → requirements_check → verification → training → quiz → approved → active
+ */
+export const courierOnboarding = mysqlTable("courier_onboarding", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  status: mysqlEnum("status", [
+    "not_started",
+    "welcome",
+    "requirements_check",
+    "verification",
+    "training",
+    "quiz",
+    "agreement",
+    "pending_approval",
+    "approved",
+    "rejected",
+    "active"
+  ]).default("not_started").notNull(),
+  currentStep: int("currentStep").default(0),
+  completedSteps: json("completedSteps").default("[]"), // Array of completed step numbers
+  requirementsMet: boolean("requirementsMet").default(false),
+  verificationStatus: mysqlEnum("verificationStatus", ["pending", "verified", "rejected"]).default("pending"),
+  trainingCompleted: boolean("trainingCompleted").default(false),
+  quizAttempts: int("quizAttempts").default(0),
+  quizPassed: boolean("quizPassed").default(false),
+  quizScore: int("quizScore"),
+  agreementsAccepted: boolean("agreementsAccepted").default(false),
+  fraudFlags: json("fraudFlags").default("[]"), // Array of fraud detection flags
+  adminNotes: text("adminNotes"),
+  approvedBy: int("approvedBy"), // Admin user ID who approved
+  rejectionReason: text("rejectionReason"),
+  startedAt: timestamp("startedAt").defaultNow(),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierOnboarding = typeof courierOnboarding.$inferSelect;
+export type InsertCourierOnboarding = typeof courierOnboarding.$inferInsert;
+
+/**
+ * Courier Verification Documents - Store uploaded verification files
+ */
+export const courierVerification = mysqlTable("courier_verification", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  documentType: mysqlEnum("documentType", [
+    "sa_id",
+    "selfie",
+    "driver_license",
+    "vehicle_registration",
+    "vehicle_photo_front",
+    "vehicle_photo_side",
+    "vehicle_photo_interior"
+  ]).notNull(),
+  fileUrl: text("fileUrl").notNull(), // S3 URL
+  fileKey: varchar("fileKey", { length: 255 }).notNull(), // S3 key for reference
+  uploadedAt: timestamp("uploadedAt").defaultNow().notNull(),
+  verificationStatus: mysqlEnum("verificationStatus", ["pending", "verified", "rejected"]).default("pending"),
+  verifiedBy: int("verifiedBy"), // Admin user ID
+  verificationNotes: text("verificationNotes"),
+  verifiedAt: timestamp("verifiedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type CourierVerification = typeof courierVerification.$inferSelect;
+export type InsertCourierVerification = typeof courierVerification.$inferInsert;
+
+/**
+ * Courier Quiz Results - Track quiz attempts and scores
+ */
+export const courierQuizResults = mysqlTable("courier_quiz_results", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  attemptNumber: int("attemptNumber").notNull(),
+  totalQuestions: int("totalQuestions").notNull(),
+  correctAnswers: int("correctAnswers").notNull(),
+  score: int("score").notNull(), // Percentage 0-100
+  passed: boolean("passed").notNull(),
+  answers: json("answers").notNull(), // Array of { questionId, selectedAnswer, correct }
+  timeSpent: int("timeSpent"), // in seconds
+  completedAt: timestamp("completedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type CourierQuizResults = typeof courierQuizResults.$inferSelect;
+export type InsertCourierQuizResults = typeof courierQuizResults.$inferInsert;
+
+/**
+ * Courier Requirements Check - Track which requirements user confirmed
+ */
+export const courierRequirementsCheck = mysqlTable("courier_requirements_check", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  hasSADriversLicense: boolean("hasSADriversLicense").default(false),
+  hasVehicleAccess: boolean("hasVehicleAccess").default(false),
+  hasWorkingSmartphone: boolean("hasWorkingSmartphone").default(false),
+  noSeriousCriminalRecord: boolean("noSeriousCriminalRecord").default(false),
+  agreeBackgroundVerification: boolean("agreeBackgroundVerification").default(false),
+  agreeIdVerification: boolean("agreeIdVerification").default(false),
+  agreeVehicleVerification: boolean("agreeVehicleVerification").default(false),
+  allRequirementsMet: boolean("allRequirementsMet").default(false),
+  confirmedAt: timestamp("confirmedAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierRequirementsCheck = typeof courierRequirementsCheck.$inferSelect;
+export type InsertCourierRequirementsCheck = typeof courierRequirementsCheck.$inferInsert;
+
+/**
+ * Courier Agreements - Track which agreements user accepted
+ */
+export const courierAgreements = mysqlTable("courier_agreements", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  termsAndConditionsAccepted: boolean("termsAndConditionsAccepted").default(false),
+  courierRulesAccepted: boolean("courierRulesAccepted").default(false),
+  safetyPoliciesAccepted: boolean("safetyPoliciesAccepted").default(false),
+  independentContractorAgreementAccepted: boolean("independentContractorAgreementAccepted").default(false),
+  allAgreementsAccepted: boolean("allAgreementsAccepted").default(false),
+  acceptedAt: timestamp("acceptedAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierAgreements = typeof courierAgreements.$inferSelect;
+export type InsertCourierAgreements = typeof courierAgreements.$inferInsert;
+
+/**
+ * Fraud Detection Flags - Track suspicious activity during onboarding
+ */
+export const fraudDetectionFlags = mysqlTable("fraud_detection_flags", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  flagType: mysqlEnum("flagType", [
+    "duplicate_account",
+    "fake_id",
+    "expired_license",
+    "suspicious_selfie",
+    "multiple_attempts",
+    "rapid_submission",
+    "gps_spoofing_detected",
+    "manual_flag"
+  ]).notNull(),
+  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"]).default("medium"),
+  description: text("description"),
+  flaggedBy: int("flaggedBy"), // Admin user ID
+  resolved: boolean("resolved").default(false),
+  resolvedAt: timestamp("resolvedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type FraudDetectionFlag = typeof fraudDetectionFlags.$inferSelect;
+export type InsertFraudDetectionFlag = typeof fraudDetectionFlags.$inferInsert;

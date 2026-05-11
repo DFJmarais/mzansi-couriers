@@ -7,6 +7,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocalizationProvider } from "./contexts/LocalizationContext";
 import Home from "./pages/Home";
 import Onboarding from "./pages/Onboarding";
+import CourierOnboarding from "./pages/CourierOnboarding";
+import AdminOnboarding from "./pages/AdminOnboarding";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CourierDashboard from "./pages/CourierDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -16,6 +18,8 @@ function Router() {
     <Switch>
       <Route path={""} component={Home} />
       <Route path={"/onboarding"} component={Onboarding} />
+      <Route path={"/courier/onboarding"} component={CourierOnboarding} />
+      <Route path={"/admin/onboarding"} component={AdminOnboarding} />
       <Route path={"/customer/dashboard"} component={CustomerDashboard} />
       <Route path={"/courier/dashboard"} component={CourierDashboard} />
       <Route path={"/admin/dashboard"} component={AdminDashboard} />

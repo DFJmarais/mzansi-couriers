@@ -5,6 +5,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { notificationRouter } from "./notifications";
+import { onboardingRouter } from "./routers/onboarding";
 import { TRPCError } from "@trpc/server";
 import { sendMessageWithFallback } from "./_core/twilio";
 
@@ -35,6 +36,7 @@ const customerProcedure = protectedProcedure.use(({ ctx, next }) => {
 export const appRouter = router({
   system: systemRouter,
   notifications: notificationRouter,
+  onboarding: onboardingRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
