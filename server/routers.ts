@@ -6,6 +6,7 @@ import { z } from "zod";
 import * as db from "./db";
 import { notificationRouter } from "./notifications";
 import { TRPCError } from "@trpc/server";
+import { sendMessageWithFallback } from "./_core/twilio";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -382,6 +383,63 @@ export const appRouter = router({
       zoneId: z.number(),
     })).query(async ({ input }) => {
       return db.getCommunityMetrics(input.zoneId);
+    }),
+  }),
+
+  // ============ WHATSAPP MESSAGING ============
+  whatsapp: router({
+    sendDeliveryConfirmation: protectedProcedure.input(z.object({
+      phoneNumber: z.string(),
+      pickupAddress: z.string(),
+      dropoffAddress: z.string(),
+      estimatedPrice: z.number(),
+      deliveryId: z.string(),
+    })).mutation(async ({ input }) => {
+      const message = `Hi! Your delivery has been confirmed.\n\nPickup: ${input.pickupAddress}\nDropoff: ${input.dropoffAddress}\nEstimated Price: R${input.estimatedPrice.toFixed(2)}\n\nTracking ID: ${input.deliveryId}\n\nTrack your delivery: mzansicourier.com/track/${input.deliveryId}`;
+      const result = await sendMessageWithFallback(input.phoneNumber, message, true);
+      return result;
+    }),
+
+    sendCourierAssigned: protectedProcedure.input(z.object({
+      phoneNumber: z.string(),
+      courierName: z.string(),
+      courierPhone: z.string(),
+      deliveryId: z.string(),
+    })).mutation(async ({ input }) => {
+      const message = `Great news! A courier has been assigned to your delivery.\n\nCourier: ${input.courierName}\nPhone: ${input.courierPhone}\n\nTracking ID: ${input.deliveryId}\n\nTrack live: mzansicourier.com/track/${input.deliveryId}`;
+      const result = await sendMessageWithFallback(input.phoneNumber, message, true);
+      return result;
+    }),
+
+    sendDeliveryPickedUp: protectedProcedure.input(z.object({
+      phoneNumber: z.string(),
+      deliveryId: z.string(),
+    })).mutation(async ({ input }) => {
+      const message = `Your package has been picked up!\n\nTracking ID: ${input.deliveryId}\n\nTrack live: mzansicourier.com/track/${input.deliveryId}`;
+      const result = await sendMessageWithFallback(input.phoneNumber, message, true);
+      return result;
+    }),
+
+    sendDeliveryComplete: protectedProcedure.input(z.object({
+      phoneNumber: z.string(),
+      deliveryId: z.string(),
+      actualPrice: z.number(),
+    })).mutation(async ({ input }) => {
+      const message = `Your delivery is complete!\n\nFinal Price: R${input.actualPrice.toFixed(2)}\nTracking ID: ${input.deliveryId}\n\nThank you for using Mzansi Couriers!`;
+      const result = await sendMessageWithFallback(input.phoneNumber, message, true);
+      return result;
+    }),
+
+    sendCourierJobAlert: protectedProcedure.input(z.object({
+      phoneNumber: z.string(),
+      pickupAddress: z.string(),
+      dropoffAddress: z.string(),
+      estimatedPrice: z.number(),
+      jobId: z.string(),
+    })).mutation(async ({ input }) => {
+      const message = `New job available!\n\nPickup: ${input.pickupAddress}\nDropoff: ${input.dropoffAddress}\nEstimated Earnings: R${input.estimatedPrice.toFixed(2)}\n\nAccept now: mzansicourier.com/jobs/${input.jobId}`;
+      const result = await sendMessageWithFallback(input.phoneNumber, message, true);
+      return result;
     }),
   }),
 });
