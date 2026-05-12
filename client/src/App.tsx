@@ -14,6 +14,8 @@ import CourierDashboard from "./pages/CourierDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import CourierEarnings from "./pages/CourierEarnings";
 import CourierPerformance from "./pages/CourierPerformance";
+import ReferralStars from "./pages/ReferralStars";
+import SurgePricingPage from "./pages/SurgePricingInfo";
 
 function Router() {
   return (
@@ -27,6 +29,8 @@ function Router() {
       <Route path={"/admin/dashboard"} component={AdminDashboard} />
       <Route path={"/courier/earnings"} component={CourierEarnings} />
       <Route path={"/courier/performance"} component={CourierPerformance} />
+      <Route path={"/referral/stars"} component={ReferralStars} />
+      <Route path={"/pricing/surge"} component={SurgePricingPage} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

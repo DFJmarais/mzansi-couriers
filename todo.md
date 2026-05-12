@@ -298,3 +298,51 @@
 - [x] Implement dispute resolution workflow (open → under review → resolved/rejected) - Status tracking in disputes table
 - [x] Add dispute history and analytics - getDisputeStats procedure implemented
 - [x] Test dispute flow end-to-end - All 27 tests passing
+
+
+## Referral Program with Star Rewards (IN PROGRESS)
+- [ ] Add referral_codes table (referral code, user, expiry, active status)
+- [ ] Add user_stars table (user, star_count, star_history with timestamps)
+- [ ] Create tRPC procedure to generate referral code
+- [ ] Create tRPC procedure to redeem referral code
+- [ ] Create tRPC procedure to award stars to referrer
+- [ ] Build referral UI component with star display
+- [ ] Add share referral code functionality (copy, WhatsApp, SMS)
+- [ ] Display star badges on user profiles
+- [ ] Create star leaderboard (top referrers by stars)
+- [ ] Test referral flow end-to-end
+
+## Dynamic Surge Pricing (IN PROGRESS)
+- [ ] Add surge_pricing_config table (time_slots, multiplier, demand_threshold)
+- [ ] Create surge pricing calculation logic based on time and demand
+- [ ] Add tRPC procedure to get current surge multiplier
+- [ ] Update pricing engine to apply surge multiplier
+- [ ] Create admin dashboard to manage surge pricing rules
+- [ ] Build customer UI to show surge pricing indicator
+- [ ] Add surge pricing history and analytics
+- [ ] Test surge pricing calculations
+
+
+## Phase 7: Gamified Referral System (IN PROGRESS)
+- [x] Database schema for referral system - referral_codes, user_stars, star_history tables created
+- [x] Database helper functions (db.ts) - generateReferralCode, getReferralCode, awardStar, getStarHistory
+- [x] tRPC referral router (server/routers/referral.ts) - 6 procedures: getOrCreateCode, redeemCode, getStars, getStarHistory, awardFirstDeliveryStar, getShareLink
+- [x] Frontend Referral UI (client/src/pages/ReferralStars.tsx) - Star display, sharing via WhatsApp/SMS, achievement history
+- [x] Route integration - /referral/stars added to App.tsx
+- [ ] Integrate referral code redemption into signup flow
+- [ ] Add star badges and leaderboard
+- [ ] Implement star rewards for milestones
+- [ ] Add referral notifications
+
+## Phase 8: Dynamic Surge Pricing (IN PROGRESS)
+- [x] Database schema for surge pricing - surge_pricing_config, surge_pricing_history tables created
+- [x] Database helper functions (db.ts) - createSurgePricingConfig, getSurgePricingConfigs, updateSurgePricingConfig, recordSurgePricingHistory
+- [x] tRPC surge pricing router (server/routers/surge-pricing.ts) - 6 procedures: createConfig, getConfigs, updateConfig, calculateMultiplier, calculateFinalPrice, recordSurge
+- [x] Frontend Surge Pricing Info (client/src/pages/SurgePricingInfo.tsx) - Real-time multiplier display, price breakdown, peak hours info
+- [x] Route integration - /pricing/surge added to App.tsx
+- [ ] Integrate surge pricing into delivery booking flow
+- [ ] Add surge multiplier to delivery price calculation
+- [ ] Create admin panel for surge pricing configuration
+- [ ] Add surge pricing notifications to customers
+- [ ] Implement demand-based surge calculation
+- [ ] Add surge pricing history and analytics

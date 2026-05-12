@@ -3,7 +3,9 @@ import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser, users, courierProfiles, addresses, deliveries, deliveryTracking,
   notifications, ratings, pricingConfig, InsertDelivery, InsertCourierProfile,
-  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics
+  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics,
+  referralCodes, userStars, starHistory, surgePricingConfig, surgePricingHistory,
+  InsertReferralCode, InsertUserStars, InsertStarHistory, InsertSurgePricingConfig, InsertSurgePricingHistory
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -414,4 +416,130 @@ export async function updateCommunityMetrics(zoneId: number, updates: any): Prom
     zoneId,
     ...updates,
   });
+}
+
+// ============ REFERRAL SYSTEM ============
+
+export async function generateReferralCode(userId: number): Promise<string> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Generate unique code
+  const code = `MZANSI${userId}${Date.now().toString(36).toUpperCase()}`;
+  
+  await db.insert(referralCodes).values({
+    userId,
+    code,
+    isActive: true,
+  });
+  
+  return code;
+}
+
+export async function getReferralCode(code: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(referralCodes).where(eq(referralCodes.code, code)).limit(1);
+  return result[0];
+}
+
+export async function getUserReferralCode(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(referralCodes).where(eq(referralCodes.userId, userId)).limit(1);
+  return result[0];
+}
+
+export async function initializeUserStars(userId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const existing = await db.select().from(userStars).where(eq(userStars.userId, userId)).limit(1);
+  if (!existing.length) {
+    await db.insert(userStars).values({
+      userId,
+      starCount: 0,
+      totalReferred: 0,
+    });
+  }
+}
+
+export async function getUserStars(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(userStars).where(eq(userStars.userId, userId)).limit(1);
+  return result[0];
+}
+
+export async function awardStar(userId: number, referrerId: number, reason: string, starsAwarded: number = 1): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Record star award in history
+  await db.insert(starHistory).values({
+    userId,
+    referrerId,
+    reason,
+    starsAwarded,
+  });
+  
+  // Update user stars
+  const userStar = await getUserStars(userId);
+  if (userStar) {
+    await db.update(userStars)
+      .set({
+        starCount: (userStar.starCount || 0) + starsAwarded,
+        totalReferred: reason === 'referral_signup' ? (userStar.totalReferred || 0) + 1 : (userStar.totalReferred || 0),
+      })
+      .where(eq(userStars.userId, userId));
+  } else {
+    await initializeUserStars(userId);
+    await awardStar(userId, referrerId, reason, starsAwarded);
+  }
+}
+
+export async function getStarHistory(userId: number, limit: number = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(starHistory).where(eq(starHistory.userId, userId)).limit(limit);
+}
+
+// ============ SURGE PRICING ============
+
+export async function createSurgePricingConfig(config: InsertSurgePricingConfig): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(surgePricingConfig).values(config);
+}
+
+export async function getSurgePricingConfigs(isActive: boolean = true) {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(surgePricingConfig).where(eq(surgePricingConfig.isActive, isActive));
+}
+
+export async function getSurgePricingConfigById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(surgePricingConfig).where(eq(surgePricingConfig.id, id)).limit(1);
+  return result[0];
+}
+
+export async function updateSurgePricingConfig(id: number, updates: Partial<InsertSurgePricingConfig>): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(surgePricingConfig).set(updates).where(eq(surgePricingConfig.id, id));
+}
+
+export async function recordSurgePricingHistory(history: InsertSurgePricingHistory): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(surgePricingHistory).values(history);
+}
+
+export async function getSurgePricingHistory(deliveryId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(surgePricingHistory).where(eq(surgePricingHistory.deliveryId, deliveryId)).limit(1);
+  return result[0];
 }

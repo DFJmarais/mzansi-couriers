@@ -626,3 +626,78 @@ export const disputeComments = mysqlTable("dispute_comments", {
 
 export type DisputeComment = typeof disputeComments.$inferSelect;
 export type InsertDisputeComment = typeof disputeComments.$inferInsert;
+
+
+/**
+ * Referral Codes (for fun star rewards)
+ */
+export const referralCodes = mysqlTable("referral_codes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  code: varchar("code", { length: 20 }).notNull().unique(),
+  isActive: boolean("isActive").default(true),
+  expiresAt: timestamp("expiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type ReferralCode = typeof referralCodes.$inferSelect;
+export type InsertReferralCode = typeof referralCodes.$inferInsert;
+
+/**
+ * User Stars (fun reward system)
+ */
+export const userStars = mysqlTable("user_stars", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id).unique(),
+  starCount: int("starCount").default(0),
+  totalReferred: int("totalReferred").default(0),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type UserStars = typeof userStars.$inferSelect;
+export type InsertUserStars = typeof userStars.$inferInsert;
+
+/**
+ * Star History (track star awards)
+ */
+export const starHistory = mysqlTable("star_history", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  referrerId: int("referrerId").notNull().references(() => users.id),
+  reason: varchar("reason", { length: 255 }).notNull(),
+  starsAwarded: int("starsAwarded").default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type StarHistory = typeof starHistory.$inferSelect;
+export type InsertStarHistory = typeof starHistory.$inferInsert;
+
+/**
+ * Surge Pricing Configuration
+ */
+export const surgePricingConfig = mysqlTable("surge_pricing_config", {
+  id: int("id").autoincrement().primaryKey(),
+  timeSlot: varchar("timeSlot", { length: 50 }).notNull(),
+  startHour: int("startHour").notNull(),
+  endHour: int("endHour").notNull(),
+  dayOfWeek: varchar("dayOfWeek", { length: 20 }),
+  multiplier: decimal("multiplier", { precision: 3, scale: 2 }).default("1.0"),
+  demandThreshold: int("demandThreshold").default(5),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type SurgePricingConfig = typeof surgePricingConfig.$inferSelect;
+export type InsertSurgePricingConfig = typeof surgePricingConfig.$inferInsert;
+
+/**
+ * Surge Pricing History
+ */
+export const surgePricingHistory = mysqlTable("surge_pricing_history", {
+  id: int("id").autoincrement().primaryKey(),
+  deliveryId: int("deliveryId").notNull().references(() => deliveries.id),
+  basePrice: decimal("basePrice", { precision: 10, scale: 2 }).notNull(),
+  surgeMultiplier: decimal("surgeMultiplier", { precision: 3, scale: 2 }).notNull(),
+  finalPrice: decimal("finalPrice", { precision: 10, scale: 2 }).notNull(),
+  reason: varchar("reason", { length: 255 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type SurgePricingHistory = typeof surgePricingHistory.$inferSelect;
+export type InsertSurgePricingHistory = typeof surgePricingHistory.$inferInsert;
