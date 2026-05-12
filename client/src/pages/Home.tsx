@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { useLocation } from "wouter";
-import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, DollarSign, Shield } from "lucide-react";
+import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, Shield } from "lucide-react";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
@@ -123,7 +123,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <DollarSign className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
+                    <div className="w-6 h-6 text-accent flex-shrink-0 mt-1 font-bold text-lg">R</div>
                     <div>
                       <h3 className="font-semibold">Transparent Pricing</h3>
                       <p className="text-sm text-muted-foreground">Instant quotes based on distance and package size</p>
@@ -158,9 +158,9 @@ export default function Home() {
               description: "Provide pickup and dropoff addresses"
             },
             {
-              icon: DollarSign,
+              icon: MapPin,
               title: "Get Quote",
-              description: "Instant pricing based on distance and package details"
+              description: "Instant pricing in Rand (R) based on distance and package details"
             },
             {
               icon: Truck,
@@ -183,7 +183,7 @@ export default function Home() {
       <section className="container py-20 space-y-12">
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <h2 className="text-4xl font-bold">Delivery Zones & Pricing</h2>
-          <p className="text-muted-foreground">Transparent rates across South Africa</p>
+          <p className="text-muted-foreground">We deliver in your town, your settlement, and across South Africa. Local deliveries (5-150km radius) or national coverage.</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-6">
@@ -247,7 +247,7 @@ export default function Home() {
         <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl border border-accent/20 p-12 text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Get Started?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Send packages across South Africa with transparent pricing and real-time tracking.
+            Send packages locally in your town or across South Africa. Coverage from your settlement to any destination. Transparent pricing in Rand and real-time tracking.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg" onClick={handleGetStarted} className="gap-2">
