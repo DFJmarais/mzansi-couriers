@@ -542,3 +542,87 @@ export const whatsappMessages = mysqlTable("whatsapp_messages", {
 
 export type WhatsappMessage = typeof whatsappMessages.$inferSelect;
 export type InsertWhatsappMessage = typeof whatsappMessages.$inferInsert;
+
+
+/**
+ * Real-time GPS Location Tracking
+ */
+export const gpsLocations = mysqlTable("gps_locations", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull().references(() => users.id),
+  deliveryId: int("deliveryId").notNull().references(() => deliveries.id),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  accuracy: int("accuracy"), // GPS accuracy in meters
+  altitude: decimal("altitude", { precision: 8, scale: 2 }), // Altitude in meters
+  speed: decimal("speed", { precision: 5, scale: 2 }), // Speed in km/h
+  heading: int("heading"), // Direction in degrees (0-360)
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type GPSLocation = typeof gpsLocations.$inferSelect;
+export type InsertGPSLocation = typeof gpsLocations.$inferInsert;
+
+/**
+ * Dispute Resolution System
+ */
+export const disputes = mysqlTable("disputes", {
+  id: int("id").autoincrement().primaryKey(),
+  deliveryId: int("deliveryId").notNull().references(() => deliveries.id),
+  customerId: int("customerId").notNull().references(() => users.id),
+  courierId: int("courierId").notNull().references(() => users.id),
+  reason: mysqlEnum("reason", [
+    "wrong_address",
+    "damaged_package",
+    "missing_items",
+    "late_delivery",
+    "courier_behavior",
+    "lost_package",
+    "other"
+  ]).notNull(),
+  description: text("description").notNull(),
+  status: mysqlEnum("status", ["open", "under_review", "resolved", "rejected"]).default("open"),
+  priority: mysqlEnum("priority", ["low", "medium", "high", "critical"]).default("medium"),
+  resolution: text("resolution"), // Admin's resolution notes
+  refundAmount: decimal("refundAmount", { precision: 10, scale: 2 }), // If applicable
+  customerRating: int("customerRating"), // 1-5 star rating of dispute resolution
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  resolvedAt: timestamp("resolvedAt"),
+});
+
+export type Dispute = typeof disputes.$inferSelect;
+export type InsertDispute = typeof disputes.$inferInsert;
+
+/**
+ * Dispute Evidence (photos, documents, etc.)
+ */
+export const disputeEvidence = mysqlTable("dispute_evidence", {
+  id: int("id").autoincrement().primaryKey(),
+  disputeId: int("disputeId").notNull().references(() => disputes.id),
+  uploadedBy: int("uploadedBy").notNull().references(() => users.id), // Customer or Courier
+  evidenceType: mysqlEnum("evidenceType", ["photo", "document", "video", "other"]).notNull(),
+  fileUrl: varchar("fileUrl", { length: 500 }).notNull(),
+  fileName: varchar("fileName", { length: 255 }).notNull(),
+  description: text("description"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DisputeEvidence = typeof disputeEvidence.$inferSelect;
+export type InsertDisputeEvidence = typeof disputeEvidence.$inferInsert;
+
+/**
+ * Dispute Comments/Timeline
+ */
+export const disputeComments = mysqlTable("dispute_comments", {
+  id: int("id").autoincrement().primaryKey(),
+  disputeId: int("disputeId").notNull().references(() => disputes.id),
+  userId: int("userId").notNull().references(() => users.id),
+  userRole: mysqlEnum("userRole", ["customer", "courier", "admin"]).notNull(),
+  comment: text("comment").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DisputeComment = typeof disputeComments.$inferSelect;
+export type InsertDisputeComment = typeof disputeComments.$inferInsert;

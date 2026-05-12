@@ -9,6 +9,7 @@ import { onboardingRouter } from "./routers/onboarding";
 import { smsEarningsRouter } from "./routers/sms-earnings";
 import { TRPCError } from "@trpc/server";
 import { sendMessageWithFallback } from "./_core/twilio";
+import { gpsDisputesRouter } from "./routers/gps-disputes";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -39,6 +40,7 @@ export const appRouter = router({
   notifications: notificationRouter,
   onboarding: onboardingRouter,
   smsEarnings: smsEarningsRouter,
+  gpsDisputes: gpsDisputesRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

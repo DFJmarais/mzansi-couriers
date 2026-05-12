@@ -278,3 +278,23 @@
 - [x] Update CTA with coverage messaging - National and local coverage
 - [x] Verify all pricing displays use Rand - All updated to R
 - [x] Test build and deployment - Build successful, 27 tests passing
+
+
+## Real GPS Integration (IN PROGRESS)
+- [ ] Add GPS tracking database schema (gps_locations table with latitude, longitude, accuracy, timestamp)
+- [ ] Create tRPC procedures for GPS updates (recordGPSLocation, getLatestGPS, getLocationHistory)
+- [ ] Implement real-time location polling mechanism (5-10 second intervals)
+- [ ] Build GPS tracking UI component with live map updates
+- [ ] Add geofencing for delivery zones
+- [ ] Implement location accuracy validation
+- [ ] Test GPS tracking end-to-end
+
+## Dispute Resolution System (IN PROGRESS)
+- [ ] Add dispute tickets database schema (disputes table with status, reason, evidence)
+- [ ] Create dispute ticket creation form for customers
+- [ ] Implement evidence upload system (photos, documents)
+- [ ] Add courier response/defense mechanism
+- [ ] Create admin dispute review dashboard
+- [ ] Implement dispute resolution workflow (open → under review → resolved/rejected)
+- [ ] Add dispute history and analytics
+- [ ] Test dispute flow end-to-end
