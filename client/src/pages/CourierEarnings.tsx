@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
-export function CourierEarnings() {
+export default function CourierEarnings() {
   const [period, setPeriod] = useState<"daily" | "weekly" | "monthly">("daily");
 
   // Fetch earnings data

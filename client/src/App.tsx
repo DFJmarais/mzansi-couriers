@@ -12,6 +12,8 @@ import AdminOnboarding from "./pages/AdminOnboarding";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CourierDashboard from "./pages/CourierDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import CourierEarnings from "./pages/CourierEarnings";
+import CourierPerformance from "./pages/CourierPerformance";
 
 function Router() {
   return (
@@ -23,6 +25,8 @@ function Router() {
       <Route path={"/customer/dashboard"} component={CustomerDashboard} />
       <Route path={"/courier/dashboard"} component={CourierDashboard} />
       <Route path={"/admin/dashboard"} component={AdminDashboard} />
+      <Route path={"/courier/earnings"} component={CourierEarnings} />
+      <Route path={"/courier/performance"} component={CourierPerformance} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
