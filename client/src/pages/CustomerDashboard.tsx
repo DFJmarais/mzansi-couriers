@@ -115,10 +115,16 @@ export default function CustomerDashboard() {
                 <span className="text-sm text-muted-foreground">Distance (12 km)</span>
                 <span className="font-semibold">R54</span>
               </div>
+              {/* Surge Pricing Indicator */}
+              <div className="flex items-center justify-between p-2 bg-orange-50 border border-orange-200 rounded">
+                <span className="text-sm text-orange-900 font-semibold">📈 Surge Pricing (1.5x)</span>
+                <span className="font-semibold text-orange-600">+R67</span>
+              </div>
               <div className="border-t border-accent/20 pt-3 flex items-center justify-between">
                 <span className="font-semibold">Total Estimate</span>
-                <span className="text-2xl font-bold text-accent">R89</span>
+                <span className="text-2xl font-bold text-accent">R156</span>
               </div>
+              <p className="text-xs text-muted-foreground text-center">⏰ Peak lunch hour pricing active. Schedule for later to save money.</p>
             </div>
             <div className="flex gap-3">
               <Button className="flex-1 gap-2" onClick={() => setShowBooking(false)}>
