@@ -72,17 +72,17 @@ export default function Home() {
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
               <Zap className="w-4 h-4 text-accent" />
-              <span className="text-sm font-semibold text-accent">🇿🇦 South Africa's Delivery Network</span>
+              <span className="text-sm font-semibold text-accent">The easiest way to earn with your vehicle</span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Reliable Delivery
+                The Easiest Way for Ordinary South Africans
                 <br />
-                <span className="text-accent">Across Mzansi</span>
+                <span className="text-accent">to Earn Money with Their Vehicles</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
-                Connect with verified couriers across South Africa. Send packages from Johannesburg to Cape Town, Durban to Pretoria. Track your delivery in real-time. Simple, transparent pricing.
+                Join thousands of couriers earning extra income. Send packages across South Africa with verified, friendly couriers. Real-time tracking, transparent pricing, instant payouts.
               </p>
             </div>
 

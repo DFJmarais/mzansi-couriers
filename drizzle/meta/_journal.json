@@ -36,6 +36,13 @@
       "when": 1778500286277,
       "tag": "0004_open_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1778501002191,
+      "tag": "0005_wealthy_captain_cross",
+      "breakpoints": true
     }
   ]
 }

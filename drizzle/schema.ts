@@ -470,3 +470,75 @@ export const smsNotifications = mysqlTable("sms_notifications", {
 
 export type SmsNotification = typeof smsNotifications.$inferSelect;
 export type InsertSmsNotification = typeof smsNotifications.$inferInsert;
+
+
+/**
+ * Courier ratings and reviews from customers
+ */
+export const courierRatings = mysqlTable("courier_ratings", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  customerId: int("customerId").notNull(),
+  deliveryId: int("deliveryId").notNull(),
+  rating: int("rating").notNull(), // 1-5 stars
+  review: text("review"),
+  categories: varchar("categories", { length: 500 }), // JSON: {professionalism, speed, communication, packaging}
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierRating = typeof courierRatings.$inferSelect;
+export type InsertCourierRating = typeof courierRatings.$inferInsert;
+
+/**
+ * Courier performance metrics
+ */
+export const courierMetrics = mysqlTable("courier_metrics", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  totalDeliveries: int("totalDeliveries").default(0),
+  completedDeliveries: int("completedDeliveries").default(0),
+  cancelledDeliveries: int("cancelledDeliveries").default(0),
+  averageRating: decimal("averageRating", { precision: 3, scale: 2 }).default("5.00"),
+  totalRatings: int("totalRatings").default(0),
+  responseTime: int("responseTime"), // Average response time in seconds
+  completionRate: decimal("completionRate", { precision: 5, scale: 2 }).default("100.00"), // Percentage
+  cancellationRate: decimal("cancellationRate", { precision: 5, scale: 2 }).default("0.00"), // Percentage
+  totalEarnings: decimal("totalEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  lastDeliveryAt: timestamp("lastDeliveryAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierMetrics = typeof courierMetrics.$inferSelect;
+export type InsertCourierMetrics = typeof courierMetrics.$inferInsert;
+
+/**
+ * WhatsApp message tracking
+ */
+export const whatsappMessages = mysqlTable("whatsapp_messages", {
+  id: int("id").autoincrement().primaryKey(),
+  recipientId: int("recipientId").notNull(),
+  deliveryId: int("deliveryId"),
+  messageType: mysqlEnum("messageType", [
+    "delivery_confirmed",
+    "courier_assigned",
+    "in_transit",
+    "delivery_completed",
+    "delivery_failed",
+    "courier_job_available",
+    "earnings_summary"
+  ]).notNull(),
+  messageContent: text("messageContent").notNull(),
+  mediaUrl: varchar("mediaUrl", { length: 500 }), // For delivery photos
+  twilioSid: varchar("twilioSid", { length: 100 }), // Twilio message SID
+  status: mysqlEnum("status", ["pending", "sent", "delivered", "read", "failed"]).default("pending"),
+  failureReason: text("failureReason"),
+  sentAt: timestamp("sentAt"),
+  deliveredAt: timestamp("deliveredAt"),
+  readAt: timestamp("readAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type WhatsappMessage = typeof whatsappMessages.$inferSelect;
+export type InsertWhatsappMessage = typeof whatsappMessages.$inferInsert;

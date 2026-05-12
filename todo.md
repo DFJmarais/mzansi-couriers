@@ -250,3 +250,22 @@
 - [x] Verify customer phone numbers are captured correctly - Using customer.phone field
 - [x] Add SMS delivery status tracking - sms_notifications table tracks all messages
 - [x] Create test suite for SMS notification flow - Twilio integration tests verified
+
+
+## WhatsApp Message Templates (IN PROGRESS)
+- [ ] Create WhatsApp template for courier assigned notification
+- [ ] Create WhatsApp template for in-transit notification
+- [ ] Create WhatsApp template for delivery completed notification
+- [ ] Wire WhatsApp to delivery lifecycle mutations
+- [ ] Test WhatsApp delivery with real numbers
+- [ ] Add WhatsApp media support (delivery photos)
+
+## Courier Performance Dashboard (IN PROGRESS)
+- [ ] Add ratings and reviews table to database
+- [ ] Add courier metrics table (completion rate, response time, cancellation rate)
+- [ ] Create tRPC procedures for ratings and feedback
+- [ ] Build CourierPerformance.tsx dashboard component
+- [ ] Add rating submission form for customers
+- [ ] Display performance metrics and customer reviews
+- [ ] Integrate into courier profile
+- [ ] Test end-to-end
