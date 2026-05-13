@@ -12,6 +12,7 @@ import { sendMessageWithFallback } from "./_core/twilio";
 import { gpsDisputesRouter } from "./routers/gps-disputes";
 import { referralRouter } from "./routers/referral";
 import { surgePricingRouter } from "./routers/surge-pricing";
+import { zapierWorkflowsRouter } from "./routers/zapier-workflows";
 import { courierReferralRouter } from "./routers/courier-referral";
 
 // ============ ADMIN PROCEDURE ============
@@ -47,6 +48,7 @@ export const appRouter = router({
   referral: referralRouter,
   surgePricing: surgePricingRouter,
   courierReferral: courierReferralRouter,
+  zapierWorkflows: zapierWorkflowsRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -278,11 +280,10 @@ export const appRouter = router({
       packageSize: z.enum(['small', 'medium', 'large']),
       packageWeight: z.number(),
     })).query(async ({ input }) => {
-      // Pricing based on SA fuel costs: R34/L diesel, R26/L petrol
-      // Average fuel efficiency: 10L/100km = R3.40/km (diesel), R2.60/km (petrol)
-      // Using diesel average with 35% courier margin
-      const basePrice = 35; // R35 base (covers platform, insurance, maintenance)
-      const pricePerKm = 4.50; // R4.50 per km (fuel + courier margin)
+      // Unified pricing: R10/km across all South Africa
+      // Base fare covers platform, insurance, maintenance, and courier margin
+      const basePrice = 40; // R40 base (covers platform, insurance, maintenance)
+      const pricePerKm = 10.0; // R10 per km (unified across all regions)
       const distancePrice = input.distance * pricePerKm;
 
       let multiplier = 1;
