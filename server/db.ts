@@ -4,8 +4,8 @@ import {
   InsertUser, users, courierProfiles, addresses, deliveries, deliveryTracking,
   notifications, ratings, pricingConfig, InsertDelivery, InsertCourierProfile,
   InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics,
-  referralCodes, userStars, starHistory, surgePricingConfig, surgePricingHistory,
-  InsertReferralCode, InsertUserStars, InsertStarHistory, InsertSurgePricingConfig, InsertSurgePricingHistory
+  referralCodes, userStars, starHistory, surgePricingConfig, surgePricingHistory, courierReferrals,
+  InsertReferralCode, InsertUserStars, InsertStarHistory, InsertSurgePricingConfig, InsertSurgePricingHistory, InsertCourierReferral
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -542,4 +542,75 @@ export async function getSurgePricingHistory(deliveryId: number) {
   if (!db) return undefined;
   const result = await db.select().from(surgePricingHistory).where(eq(surgePricingHistory.deliveryId, deliveryId)).limit(1);
   return result[0];
+}
+
+
+// Courier Referral Bonus Functions
+export async function createCourierReferral(referral: InsertCourierReferral): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(courierReferrals).values(referral);
+}
+
+export async function getCourierReferralByCode(code: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(courierReferrals).where(eq(courierReferrals.referralCode, code)).limit(1);
+  return result[0];
+}
+
+export async function getCourierReferralsByReferrer(referrerCourierId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(courierReferrals).where(eq(courierReferrals.referrerCourierId, referrerCourierId));
+}
+
+export async function updateCourierReferralDeliveries(referralId: number, deliveryCount: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const updates: Record<string, unknown> = { referredCourierDeliveries: deliveryCount };
+  
+  // Check if bonus should be earned (after 10 deliveries)
+  if (deliveryCount >= 10) {
+    updates.bonusStatus = "earned";
+    updates.bonusEarnedAt = new Date();
+  }
+  
+  await db.update(courierReferrals).set(updates).where(eq(courierReferrals.id, referralId));
+}
+
+export async function markCourierReferralBonusPaid(referralId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(courierReferrals).set({
+    bonusStatus: "paid",
+    bonusPaidAt: new Date()
+  }).where(eq(courierReferrals.id, referralId));
+}
+
+export async function getCourierReferralStats(courierId: string) {
+  const db = await getDb();
+  if (!db) return { totalEarned: 0, totalReferrals: 0, pendingBonuses: 0, earnedBonuses: 0 };
+  
+  const referrals = await db.select().from(courierReferrals).where(eq(courierReferrals.referrerCourierId, courierId));
+  
+  let totalEarned = 0;
+  let pendingBonuses = 0;
+  let earnedBonuses = 0;
+  
+  referrals.forEach(ref => {
+    if (ref.bonusStatus === "paid") {
+      totalEarned += parseFloat(ref.bonusAmount.toString());
+    }
+    if (ref.bonusStatus === "pending") pendingBonuses++;
+    if (ref.bonusStatus === "earned") earnedBonuses++;
+  });
+  
+  return {
+    totalEarned,
+    totalReferrals: referrals.length,
+    pendingBonuses,
+    earnedBonuses
+  };
 }

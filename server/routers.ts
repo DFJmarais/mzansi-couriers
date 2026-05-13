@@ -12,6 +12,7 @@ import { sendMessageWithFallback } from "./_core/twilio";
 import { gpsDisputesRouter } from "./routers/gps-disputes";
 import { referralRouter } from "./routers/referral";
 import { surgePricingRouter } from "./routers/surge-pricing";
+import { courierReferralRouter } from "./routers/courier-referral";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -45,6 +46,7 @@ export const appRouter = router({
   gpsDisputes: gpsDisputesRouter,
   referral: referralRouter,
   surgePricing: surgePricingRouter,
+  courierReferral: courierReferralRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

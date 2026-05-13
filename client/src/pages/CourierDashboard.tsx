@@ -5,6 +5,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { MapPin, Zap, TrendingUp, Clock, Star, Navigation, CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { LanguageSwitcher, NotificationPreferences, PaymentMethodsManager } from "@/components/Phase2Features";
+import CourierReferralSection from "@/components/CourierReferralSection";
 
 export default function CourierDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -45,6 +46,24 @@ export default function CourierDashboard() {
             </Button>
           </div>
         </div>
+
+        {/* Earnings Potential Card */}
+        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 dark:from-green-950 dark:to-emerald-950 dark:border-green-800">
+          <CardContent className="pt-6">
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-green-700 dark:text-green-300">💰 Your Earning Potential</p>
+              <p className="text-lg font-bold text-green-900 dark:text-green-100">
+                Do you have a car? Be your own boss.
+              </p>
+              <p className="text-base text-green-800 dark:text-green-200">
+                If you do <span className="font-bold">15 to 20 deliveries a day</span>, you can earn between <span className="font-bold">R16,000 and R17,000 per month</span>.
+              </p>
+              <p className="text-xs text-green-700 dark:text-green-400 mt-3">
+                ✓ Use your own vehicle • ✓ Flexible hours • ✓ Weekly payouts
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Payment Methods */}
         <PaymentMethodsManager />
@@ -208,6 +227,9 @@ export default function CourierDashboard() {
             ))}
           </div>
         </div>
+
+        {/* Courier Referral Bonus Section */}
+        <CourierReferralSection />
       </div>
     </DashboardLayout>
   );

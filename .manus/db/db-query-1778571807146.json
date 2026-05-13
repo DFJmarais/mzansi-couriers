@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `courier_referrals` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`referrer_courier_id` varchar(255) NOT NULL,\n\t`referred_courier_id` varchar(255) NOT NULL,\n\t`referral_code` varchar(50) NOT NULL,\n\t`bonus_amount` decimal(8,2) NOT NULL DEFAULT '50.00',\n\t`bonus_status` varchar(20) NOT NULL DEFAULT 'pending',\n\t`referred_courier_deliveries` int NOT NULL DEFAULT 0,\n\t`delivery_threshold` int NOT NULL DEFAULT 10,\n\t`created_at` timestamp DEFAULT (now()),\n\t`bonus_earned_at` timestamp,\n\t`bonus_paid_at` timestamp,\n\tCONSTRAINT `courier_referrals_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `courier_referrals_referral_code_unique` UNIQUE(`referral_code`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4Y9XDrdN1russzh.9efa080d348c --database nSebzqBtETAo6UmLfNmVJM --execute CREATE TABLE `courier_referrals` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`referrer_courier_id` varchar(255) NOT NULL,\n\t`referred_courier_id` varchar(255) NOT NULL,\n\t`referral_code` varchar(50) NOT NULL,\n\t`bonus_amount` decimal(8,2) NOT NULL DEFAULT '50.00',\n\t`bonus_status` varchar(20) NOT NULL DEFAULT 'pending',\n\t`referred_courier_deliveries` int NOT NULL DEFAULT 0,\n\t`delivery_threshold` int NOT NULL DEFAULT 10,\n\t`created_at` timestamp DEFAULT (now()),\n\t`bonus_earned_at` timestamp,\n\t`bonus_paid_at` timestamp,\n\tCONSTRAINT `courier_referrals_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `courier_referrals_referral_code_unique` UNIQUE(`referral_code`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 371
+}

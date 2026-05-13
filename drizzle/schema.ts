@@ -701,3 +701,21 @@ export const surgePricingHistory = mysqlTable("surge_pricing_history", {
 });
 export type SurgePricingHistory = typeof surgePricingHistory.$inferSelect;
 export type InsertSurgePricingHistory = typeof surgePricingHistory.$inferInsert;
+
+// Courier-to-Courier Referral Bonuses
+export const courierReferrals = mysqlTable("courier_referrals", {
+  id: int("id").primaryKey().autoincrement(),
+  referrerCourierId: varchar("referrer_courier_id", { length: 255 }).notNull(),
+  referredCourierId: varchar("referred_courier_id", { length: 255 }).notNull(),
+  referralCode: varchar("referral_code", { length: 50 }).notNull().unique(),
+  bonusAmount: decimal("bonus_amount", { precision: 8, scale: 2 }).notNull().default("50.00"), // R50-R100
+  bonusStatus: varchar("bonus_status", { length: 20 }).notNull().default("pending"), // pending, earned, paid
+  referredCourierDeliveries: int("referred_courier_deliveries").notNull().default(0), // Track deliveries
+  deliveryThreshold: int("delivery_threshold").notNull().default(10), // Bonus after 10 deliveries
+  createdAt: timestamp("created_at").defaultNow(),
+  bonusEarnedAt: timestamp("bonus_earned_at"),
+  bonusPaidAt: timestamp("bonus_paid_at"),
+});
+
+export type CourierReferral = typeof courierReferrals.$inferSelect;
+export type InsertCourierReferral = typeof courierReferrals.$inferInsert;
