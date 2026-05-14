@@ -900,3 +900,109 @@ export const payoutSettings = mysqlTable("payout_settings", {
 
 export type PayoutSettings = typeof payoutSettings.$inferSelect;
 export type InsertPayoutSettings = typeof payoutSettings.$inferInsert;
+
+
+/**
+ * Analytics Events - Track all platform events for analytics
+ */
+export const analyticsEvents = mysqlTable("analytics_events", {
+  id: int("id").autoincrement().primaryKey(),
+  eventType: varchar("eventType", { length: 50 }).notNull(), // delivery_completed, user_signup, payout_processed, etc
+  userId: int("userId"),
+  courierId: int("courierId"),
+  customerId: int("customerId"),
+  metadata: varchar("metadata", { length: 1000 }), // JSON string with event details
+  zone: varchar("zone", { length: 100 }),
+  value: decimal("value", { precision: 12, scale: 2 }), // For monetary events
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
+export type InsertAnalyticsEvent = typeof analyticsEvents.$inferInsert;
+
+/**
+ * Daily Metrics - Aggregated daily statistics
+ */
+export const dailyMetrics = mysqlTable("daily_metrics", {
+  id: int("id").autoincrement().primaryKey(),
+  date: varchar("date", { length: 10 }).notNull(), // YYYY-MM-DD
+  zone: varchar("zone", { length: 100 }),
+  totalDeliveries: int("totalDeliveries").default(0),
+  completedDeliveries: int("completedDeliveries").default(0),
+  cancelledDeliveries: int("cancelledDeliveries").default(0),
+  totalRevenue: decimal("totalRevenue", { precision: 12, scale: 2 }).default("0.00"),
+  courierEarnings: decimal("courierEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  platformCommission: decimal("platformCommission", { precision: 12, scale: 2 }).default("0.00"),
+  averageRating: decimal("averageRating", { precision: 3, scale: 2 }).default("0.00"),
+  newCouriers: int("newCouriers").default(0),
+  newCustomers: int("newCustomers").default(0),
+  activeCouriers: int("activeCouriers").default(0),
+  activeCustomers: int("activeCustomers").default(0),
+  averageDeliveryTime: int("averageDeliveryTime").default(0), // in minutes
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DailyMetric = typeof dailyMetrics.$inferSelect;
+export type InsertDailyMetric = typeof dailyMetrics.$inferInsert;
+
+/**
+ * Hourly Metrics - Hourly statistics for surge pricing and demand analysis
+ */
+export const hourlyMetrics = mysqlTable("hourly_metrics", {
+  id: int("id").autoincrement().primaryKey(),
+  date: varchar("date", { length: 10 }).notNull(), // YYYY-MM-DD
+  hour: int("hour").notNull(), // 0-23
+  zone: varchar("zone", { length: 100 }),
+  deliveryRequests: int("deliveryRequests").default(0),
+  completedDeliveries: int("completedDeliveries").default(0),
+  availableCouriers: int("availableCouriers").default(0),
+  demandMultiplier: decimal("demandMultiplier", { precision: 3, scale: 2 }).default("1.00"),
+  averageWaitTime: int("averageWaitTime").default(0), // in seconds
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type HourlyMetric = typeof hourlyMetrics.$inferSelect;
+export type InsertHourlyMetric = typeof hourlyMetrics.$inferInsert;
+
+/**
+ * Courier Performance - Monthly performance metrics for each courier
+ */
+export const courierPerformance = mysqlTable("courier_performance", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  month: varchar("month", { length: 10 }).notNull(), // YYYY-MM-DD (first day of month)
+  deliveriesCompleted: int("deliveriesCompleted").default(0),
+  totalEarnings: decimal("totalEarnings", { precision: 12, scale: 2 }).default("0.00"),
+  averageRating: decimal("averageRating", { precision: 3, scale: 2 }).default("0.00"),
+  cancellationRate: decimal("cancellationRate", { precision: 5, scale: 2 }).default("0.00"), // percentage
+  onTimeDeliveryRate: decimal("onTimeDeliveryRate", { precision: 5, scale: 2 }).default("100.00"), // percentage
+  customerSatisfaction: decimal("customerSatisfaction", { precision: 5, scale: 2 }).default("0.00"), // percentage
+  referralsGenerated: int("referralsGenerated").default(0),
+  starsEarned: int("starsEarned").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierPerformance = typeof courierPerformance.$inferSelect;
+export type InsertCourierPerformance = typeof courierPerformance.$inferInsert;
+
+/**
+ * Customer Behavior - Track customer usage patterns
+ */
+export const customerBehavior = mysqlTable("customer_behavior", {
+  id: int("id").autoincrement().primaryKey(),
+  customerId: int("customerId").notNull(),
+  totalDeliveries: int("totalDeliveries").default(0),
+  totalSpent: decimal("totalSpent", { precision: 12, scale: 2 }).default("0.00"),
+  averageOrderValue: decimal("averageOrderValue", { precision: 12, scale: 2 }).default("0.00"),
+  lastDeliveryDate: timestamp("lastDeliveryDate"),
+  preferredZone: varchar("preferredZone", { length: 100 }),
+  preferredTimeWindow: varchar("preferredTimeWindow", { length: 50 }), // morning, afternoon, evening, night
+  repeatCustomer: boolean("repeatCustomer").default(false),
+  churnRisk: boolean("churnRisk").default(false), // No delivery in 30 days
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CustomerBehavior = typeof customerBehavior.$inferSelect;
+export type InsertCustomerBehavior = typeof customerBehavior.$inferInsert;

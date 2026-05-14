@@ -18,6 +18,7 @@ import ReferralStars from "./pages/ReferralStars";
 import SurgePricingPage from "./pages/SurgePricingInfo";
 import SurgePricingAdmin from "./pages/SurgePricingAdmin";
 import ReferralLeaderboard from "./pages/ReferralLeaderboard";
+import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path={"/pricing/surge"} component={SurgePricingPage} />
       <Route path={"/admin/surge-pricing"} component={SurgePricingAdmin} />
       <Route path={"/referral/leaderboard"} component={ReferralLeaderboard} />
+      <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

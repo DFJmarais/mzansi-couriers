@@ -14,6 +14,7 @@ import { referralRouter } from "./routers/referral";
 import { surgePricingRouter } from "./routers/surge-pricing";
 import { zapierWorkflowsRouter } from "./routers/zapier-workflows";
 import { achievementsRouter } from "./routers/achievements";
+import { analyticsRouter } from "./routers/analytics";
 import { courierReferralRouter } from "./routers/courier-referral";
 
 // ============ ADMIN PROCEDURE ============
@@ -51,6 +52,7 @@ export const appRouter = router({
   courierReferral: courierReferralRouter,
   zapierWorkflows: zapierWorkflowsRouter,
   achievements: achievementsRouter,
+  analytics: analyticsRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

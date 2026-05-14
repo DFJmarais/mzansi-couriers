@@ -1,0 +1,354 @@
+/* Mobile-First Responsive Design Utilities */
+
+/* Touch-friendly button sizes */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  .btn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px;
+  }
+
+  /* Ensure proper spacing for touch targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Mobile-friendly form inputs */
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 12px;
+  }
+
+  /* Mobile navigation */
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    padding: 0;
+  }
+
+  /* Add bottom padding to main content to account for fixed nav */
+  main,
+  [role="main"] {
+    padding-bottom: 70px;
+  }
+
+  /* Mobile-friendly spacing */
+  .container {
+    padding: 16px;
+  }
+
+  /* Responsive grid */
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Mobile card sizing */
+  .card {
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* Mobile text sizing */
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  /* Mobile-friendly modals */
+  [role="dialog"],
+  .modal {
+    max-height: 90vh;
+    border-radius: 16px 16px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  /* Mobile drawer */
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+
+  /* Hamburger menu */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .hamburger span {
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  /* Mobile image optimization */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Lazy loading placeholder */
+  .lazy-image {
+    background: var(--muted);
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Mobile table optimization */
+  table {
+    font-size: 14px;
+    overflow-x: auto;
+    display: block;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+  /* Mobile list optimization */
+  ul,
+  ol {
+    padding-left: 16px;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  /* Mobile form layout */
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  /* Mobile-friendly tabs */
+  [role="tablist"] {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  [role="tab"] {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  [role="tab"][aria-selected="true"] {
+    border-bottom: 2px solid var(--primary);
+  }
+
+  /* Mobile-friendly alerts */
+  .alert {
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
+
+  /* Mobile-friendly badges */
+  .badge {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+
+  /* Mobile-friendly tooltips */
+  [data-tooltip] {
+    position: relative;
+  }
+
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--foreground);
+    color: var(--background);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 8px;
+  }
+
+  /* Reduce animation on low-end devices */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Safe area for notch devices */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+      padding-top: max(16px, env(safe-area-inset-top));
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+
+    nav {
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+  }
+}
+
+/* Tablet optimization (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    max-width: 720px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  main {
+    padding-bottom: 0;
+  }
+
+  nav {
+    position: static;
+    border-top: none;
+    border-left: 1px solid var(--border);
+  }
+}
+
+/* Desktop optimization (1024px+) */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1200px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  button,
+  [role="button"],
+  .btn {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  input,
+  textarea,
+  select {
+    min-height: auto;
+    font-size: 14px;
+  }
+
+  nav {
+    position: static;
+  }
+
+  main,
+  [role="main"] {
+    padding-bottom: 0;
+  }
+}
+
+/* Performance optimization */
+.will-animate {
+  will-change: transform;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Lazy loading */
+img[loading="lazy"] {
+  background: var(--muted);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mobile-friendly focus states */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+  font-size: 16px;
+}
+
+/* Mobile-friendly scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
