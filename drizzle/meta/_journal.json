@@ -64,6 +64,20 @@
       "when": 1778571801191,
       "tag": "0008_cultured_stingray",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1778737194544,
+      "tag": "0009_unusual_silhouette",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1778737359423,
+      "tag": "0010_tiny_reavers",
+      "breakpoints": true
     }
   ]
 }

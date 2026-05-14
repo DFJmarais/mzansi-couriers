@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO delivery_zones (name, region, latitude, longitude, basePricePerKm, minimumCharge, isActive) VALUES\n('Durban', 'KwaZulu-Natal', 29.8587, 31.0192, 10.00, 40.00, true),\n('Pretoria', 'Gauteng', 25.7461, 28.2293, 10.00, 40.00, true),\n('Bloemfontein', 'Free State', 29.1192, 25.5185, 10.00, 40.00, true),\n('Port Elizabeth', 'Eastern Cape', 33.9841, 25.6097, 10.00, 40.00, true),\n('East London', 'Eastern Cape', 33.0156, 27.9116, 10.00, 40.00, true),\n('Pietermaritzburg', 'KwaZulu-Natal', 29.6100, 30.3961, 10.00, 40.00, true),\n('Polokwane', 'Limpopo', 23.9001, 29.4167, 10.00, 40.00, true);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4Y9XDrdN1russzh.9efa080d348c --database nSebzqBtETAo6UmLfNmVJM --execute INSERT INTO delivery_zones (name, region, latitude, longitude, basePricePerKm, minimumCharge, isActive) VALUES\n('Durban', 'KwaZulu-Natal', 29.8587, 31.0192, 10.00, 40.00, true),\n('Pretoria', 'Gauteng', 25.7461, 28.2293, 10.00, 40.00, true),\n('Bloemfontein', 'Free State', 29.1192, 25.5185, 10.00, 40.00, true),\n('Port Elizabeth', 'Eastern Cape', 33.9841, 25.6097, 10.00, 40.00, true),\n('East London', 'Eastern Cape', 33.0156, 27.9116, 10.00, 40.00, true),\n('Pietermaritzburg', 'KwaZulu-Natal', 29.6100, 30.3961, 10.00, 40.00, true),\n('Polokwane', 'Limpopo', 23.9001, 29.4167, 10.00, 40.00, true);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 371
+}

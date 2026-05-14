@@ -13,6 +13,7 @@ import { gpsDisputesRouter } from "./routers/gps-disputes";
 import { referralRouter } from "./routers/referral";
 import { surgePricingRouter } from "./routers/surge-pricing";
 import { zapierWorkflowsRouter } from "./routers/zapier-workflows";
+import { achievementsRouter } from "./routers/achievements";
 import { courierReferralRouter } from "./routers/courier-referral";
 
 // ============ ADMIN PROCEDURE ============
@@ -49,6 +50,7 @@ export const appRouter = router({
   surgePricing: surgePricingRouter,
   courierReferral: courierReferralRouter,
   zapierWorkflows: zapierWorkflowsRouter,
+  achievements: achievementsRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

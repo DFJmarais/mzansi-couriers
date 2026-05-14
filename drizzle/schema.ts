@@ -719,3 +719,184 @@ export const courierReferrals = mysqlTable("courier_referrals", {
 
 export type CourierReferral = typeof courierReferrals.$inferSelect;
 export type InsertCourierReferral = typeof courierReferrals.$inferInsert;
+
+
+/**
+ * Achievements - Gamification system for couriers and customers
+ */
+export const achievements = mysqlTable("achievements", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(), // e.g., "First Delivery", "100 Deliveries"
+  description: varchar("description", { length: 255 }),
+  badge: varchar("badge", { length: 50 }).notNull(), // e.g., "bronze", "silver", "gold", "platinum"
+  category: mysqlEnum("category", ["courier", "customer", "both"]).default("both"),
+  triggerType: mysqlEnum("triggerType", [
+    "delivery_count",
+    "rating",
+    "referral_count",
+    "earnings",
+    "completion_rate",
+    "response_time",
+    "customer_satisfaction",
+    "milestone",
+  ]).notNull(),
+  triggerValue: int("triggerValue").notNull(), // e.g., 100 for 100 deliveries
+  reward: int("reward").default(0), // Bonus points or currency
+  icon: varchar("icon", { length: 255 }), // SVG or emoji
+  isActive: boolean("isActive").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Achievement = typeof achievements.$inferSelect;
+export type InsertAchievement = typeof achievements.$inferInsert;
+
+/**
+ * User Achievements - Track which achievements each user has unlocked
+ */
+export const userAchievements = mysqlTable("user_achievements", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  achievementId: int("achievementId").notNull(),
+  unlockedAt: timestamp("unlockedAt").defaultNow().notNull(),
+  notificationSent: boolean("notificationSent").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type UserAchievement = typeof userAchievements.$inferSelect;
+export type InsertUserAchievement = typeof userAchievements.$inferInsert;
+
+/**
+ * Advanced Leaderboards - Track rankings across multiple categories
+ */
+export const leaderboards = mysqlTable("leaderboards", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  category: mysqlEnum("category", [
+    "total_deliveries",
+    "total_earnings",
+    "average_rating",
+    "referrals",
+    "completion_rate",
+    "response_time",
+    "customer_satisfaction",
+    "weekly_earnings",
+    "monthly_earnings",
+  ]).notNull(),
+  rank: int("rank").notNull(),
+  score: decimal("score", { precision: 12, scale: 2 }).notNull(),
+  period: mysqlEnum("period", ["all_time", "monthly", "weekly"]).default("all_time"),
+  zone: varchar("zone", { length: 100 }), // Optional: zone-specific leaderboards
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Leaderboard = typeof leaderboards.$inferSelect;
+export type InsertLeaderboard = typeof leaderboards.$inferInsert;
+
+/**
+ * Seasonal Competitions - Monthly/weekly competitions with prizes
+ */
+export const seasonalCompetitions = mysqlTable("seasonal_competitions", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: varchar("description", { length: 255 }),
+  category: mysqlEnum("category", [
+    "deliveries",
+    "earnings",
+    "ratings",
+    "referrals",
+    "customer_satisfaction",
+  ]).notNull(),
+  period: mysqlEnum("period", ["weekly", "monthly", "quarterly"]).notNull(),
+  startDate: timestamp("startDate").notNull(),
+  endDate: timestamp("endDate").notNull(),
+  prizePool: decimal("prizePool", { precision: 12, scale: 2 }).notNull(),
+  firstPrize: decimal("firstPrize", { precision: 12, scale: 2 }),
+  secondPrize: decimal("secondPrize", { precision: 12, scale: 2 }),
+  thirdPrize: decimal("thirdPrize", { precision: 12, scale: 2 }),
+  isActive: boolean("isActive").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SeasonalCompetition = typeof seasonalCompetitions.$inferSelect;
+export type InsertSeasonalCompetition = typeof seasonalCompetitions.$inferInsert;
+
+/**
+ * Competition Results - Track winners and scores for each competition
+ */
+export const competitionResults = mysqlTable("competition_results", {
+  id: int("id").autoincrement().primaryKey(),
+  competitionId: int("competitionId").notNull(),
+  userId: int("userId").notNull(),
+  rank: int("rank").notNull(),
+  score: decimal("score", { precision: 12, scale: 2 }).notNull(),
+  prizeAwarded: decimal("prizeAwarded", { precision: 12, scale: 2 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type CompetitionResult = typeof competitionResults.$inferSelect;
+export type InsertCompetitionResult = typeof competitionResults.$inferInsert;
+
+
+/**
+ * Courier Payouts - Track weekly payouts to couriers via Paystack
+ */
+export const courierPayouts = mysqlTable("courier_payouts", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("ZAR"),
+  payoutDate: timestamp("payoutDate").notNull(),
+  status: mysqlEnum("status", ["pending", "processing", "completed", "failed", "cancelled"]).default("pending"),
+  paystackTransferId: varchar("paystackTransferId", { length: 255 }), // Paystack transfer ID
+  bankAccount: varchar("bankAccount", { length: 255 }), // Encrypted bank account
+  recipientCode: varchar("recipientCode", { length: 255 }), // Paystack recipient code
+  failureReason: varchar("failureReason", { length: 255 }), // Reason if payout failed
+  deliveryCount: int("deliveryCount").default(0), // Number of deliveries in this payout period
+  platformCommission: decimal("platformCommission", { precision: 12, scale: 2 }).default("0.00"),
+  netAmount: decimal("netAmount", { precision: 12, scale: 2 }), // Amount after commission
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CourierPayout = typeof courierPayouts.$inferSelect;
+export type InsertCourierPayout = typeof courierPayouts.$inferInsert;
+
+/**
+ * Payout History - Audit trail for all payouts
+ */
+export const payoutHistory = mysqlTable("payout_history", {
+  id: int("id").autoincrement().primaryKey(),
+  payoutId: int("payoutId").notNull(),
+  previousStatus: varchar("previousStatus", { length: 50 }),
+  newStatus: varchar("newStatus", { length: 50 }).notNull(),
+  notes: varchar("notes", { length: 255 }),
+  changedBy: varchar("changedBy", { length: 255 }), // Admin or system
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PayoutHistory = typeof payoutHistory.$inferSelect;
+export type InsertPayoutHistory = typeof payoutHistory.$inferInsert;
+
+/**
+ * Payout Settings - Courier bank account and payout preferences
+ */
+export const payoutSettings = mysqlTable("payout_settings", {
+  id: int("id").autoincrement().primaryKey(),
+  courierId: int("courierId").notNull(),
+  bankName: varchar("bankName", { length: 100 }).notNull(),
+  accountName: varchar("accountName", { length: 100 }).notNull(),
+  accountNumber: varchar("accountNumber", { length: 50 }).notNull(), // Encrypted
+  accountType: mysqlEnum("accountType", ["savings", "cheque"]).default("savings"),
+  paystackRecipientCode: varchar("paystackRecipientCode", { length: 255 }), // Paystack recipient code
+  isVerified: boolean("isVerified").default(false),
+  payoutFrequency: mysqlEnum("payoutFrequency", ["weekly", "biweekly", "monthly"]).default("weekly"),
+  payoutDay: int("payoutDay").default(4), // 0=Monday, 4=Friday
+  minimumPayoutAmount: decimal("minimumPayoutAmount", { precision: 12, scale: 2 }).default("100.00"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PayoutSettings = typeof payoutSettings.$inferSelect;
+export type InsertPayoutSettings = typeof payoutSettings.$inferInsert;

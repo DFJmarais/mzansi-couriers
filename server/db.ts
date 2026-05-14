@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser, users, courierProfiles, addresses, deliveries, deliveryTracking,
   notifications, ratings, pricingConfig, InsertDelivery, InsertCourierProfile,
-  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics,
+  InsertAddress, InsertNotification, InsertRating, InsertDeliveryTracking, deliveryZones, regionalPricing, paymentMethods, userPreferences, communityMetrics, achievements, userAchievements, leaderboards, seasonalCompetitions, competitionResults,
   referralCodes, userStars, starHistory, surgePricingConfig, surgePricingHistory, courierReferrals,
   InsertReferralCode, InsertUserStars, InsertStarHistory, InsertSurgePricingConfig, InsertSurgePricingHistory, InsertCourierReferral
 } from "../drizzle/schema";
@@ -613,4 +613,127 @@ export async function getCourierReferralStats(courierId: string) {
     pendingBonuses,
     earnedBonuses
   };
+}
+
+
+// ============ PHASE 3: Achievements & Leaderboards ============
+
+export async function createAchievement(achievement: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.insert(achievements).values(achievement);
+  return result;
+}
+
+export async function getAchievements(category?: string): Promise<any[]> {
+  const db = await getDb();
+  if (!db) return [];
+  if (category) {
+    return db.select().from(achievements).where(and(eq(achievements.isActive, true), eq(achievements.category, category as any)));
+  }
+  return db.select().from(achievements).where(eq(achievements.isActive, true));
+}
+
+export async function unlockAchievement(userId: number, achievementId: number): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  // Check if already unlocked
+  const existing = await db.select().from(userAchievements)
+    .where(and(eq(userAchievements.userId, userId), eq(userAchievements.achievementId, achievementId)))
+    .limit(1);
+  
+  if (existing.length > 0) {
+    return existing[0]; // Already unlocked
+  }
+  
+  const result = await db.insert(userAchievements).values({
+    userId,
+    achievementId,
+  });
+  return result;
+}
+
+export async function getUserAchievements(userId: number): Promise<any[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(userAchievements).where(eq(userAchievements.userId, userId));
+}
+
+export async function updateLeaderboard(userId: number, category: string, score: number, period: string = "all_time", zone?: string): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const existing = await db.select().from(leaderboards)
+    .where(and(
+      eq(leaderboards.userId, userId),
+      eq(leaderboards.category, category as any),
+      eq(leaderboards.period, period as any)
+    ))
+    .limit(1);
+  
+  if (existing.length > 0) {
+    // Update existing
+    return db.update(leaderboards).set({ score: score.toString() as any }).where(eq(leaderboards.id, existing[0].id));
+  } else {
+    // Create new
+    return db.insert(leaderboards).values({
+      userId,
+      category: category as any,
+      score: score.toString() as any,
+      period: period as any,
+      rank: 0,
+      zone,
+    });
+  }
+}
+
+export async function getLeaderboard(category: string, period: string = "all_time", limit: number = 10, zone?: string): Promise<any[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  if (zone) {
+    return db.select().from(leaderboards)
+      .where(and(
+        eq(leaderboards.category, category as any),
+        eq(leaderboards.period, period as any),
+        eq(leaderboards.zone, zone)
+      ))
+      .orderBy(desc(leaderboards.score))
+      .limit(limit);
+  }
+  
+  return db.select().from(leaderboards)
+    .where(and(
+      eq(leaderboards.category, category as any),
+      eq(leaderboards.period, period as any)
+    ))
+    .orderBy(desc(leaderboards.score))
+    .limit(limit);
+}
+
+export async function createSeasonalCompetition(competition: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  return db.insert(seasonalCompetitions).values(competition);
+}
+
+export async function getActiveCompetitions(): Promise<any[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(seasonalCompetitions).where(eq(seasonalCompetitions.isActive, true));
+}
+
+export async function recordCompetitionResult(result: any): Promise<any> {
+  const db = await getDb();
+  if (!db) return undefined;
+  return db.insert(competitionResults).values(result);
+}
+
+export async function getCompetitionResults(competitionId: number): Promise<any[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(competitionResults)
+    .where(eq(competitionResults.competitionId, competitionId))
+    .orderBy(asc(competitionResults.rank));
 }
