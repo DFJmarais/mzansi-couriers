@@ -16,6 +16,7 @@ import { zapierWorkflowsRouter } from "./routers/zapier-workflows";
 import { achievementsRouter } from "./routers/achievements";
 import { analyticsRouter } from "./routers/analytics";
 import { courierReferralRouter } from "./routers/courier-referral";
+import { adminAuthRouter } from "./routers/admin-auth";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -53,6 +54,7 @@ export const appRouter = router({
   zapierWorkflows: zapierWorkflowsRouter,
   achievements: achievementsRouter,
   analytics: analyticsRouter,
+  adminAuth: adminAuthRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

@@ -19,11 +19,13 @@ import SurgePricingPage from "./pages/SurgePricingInfo";
 import SurgePricingAdmin from "./pages/SurgePricingAdmin";
 import ReferralLeaderboard from "./pages/ReferralLeaderboard";
 import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
+import { AdminLogin } from "./pages/AdminLogin";
 
 function Router() {
   return (
     <Switch>
       <Route path={""} component={Home} />
+      <Route path={"/admin/login"} component={AdminLogin} />
       <Route path={"/onboarding"} component={Onboarding} />
       <Route path={"/courier/onboarding"} component={CourierOnboarding} />
       <Route path={"/admin/onboarding"} component={AdminOnboarding} />

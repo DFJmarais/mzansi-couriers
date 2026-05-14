@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { useLocation } from "wouter";
-import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, Shield } from "lucide-react";
+import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, Shield, Lock } from "lucide-react";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
@@ -44,6 +44,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setLocation("/admin/login")}
+              className="flex items-center gap-2 text-xs"
+            >
+              <Lock className="w-4 h-4" />
+              Admin
+            </Button>
             {isAuthenticated ? (
               <>
                 <span className="text-sm text-muted-foreground">Sawubona, {user?.name}</span>
