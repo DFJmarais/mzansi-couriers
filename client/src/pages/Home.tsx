@@ -188,10 +188,10 @@ export default function Home() {
 
         <div className="grid md:grid-cols-4 gap-6">
           {[
-            { zone: "Johannesburg", rate: "R2.50/km", region: "Gauteng" },
-            { zone: "Cape Town", rate: "R2.75/km", region: "Western Cape" },
-            { zone: "Durban", rate: "R2.50/km", region: "KwaZulu-Natal" },
-            { zone: "Pretoria", rate: "R2.50/km", region: "Gauteng" }
+            { zone: "Johannesburg", rate: "R10/km", region: "Gauteng" },
+            { zone: "Cape Town", rate: "R10/km", region: "Western Cape" },
+            { zone: "Durban", rate: "R10/km", region: "KwaZulu-Natal" },
+            { zone: "Pretoria", rate: "R10/km", region: "Gauteng" }
           ].map((pricing, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all">
               <CardContent className="pt-6">

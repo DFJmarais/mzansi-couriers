@@ -109,11 +109,11 @@ export default function CustomerDashboard() {
             <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Base fare</span>
-                <span className="font-semibold">R35</span>
+                <span className="font-semibold">R40</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Distance (12 km)</span>
-                <span className="font-semibold">R54</span>
+                <span className="text-sm text-muted-foreground">Distance (12 km @ R10/km)</span>
+                <span className="font-semibold">R120</span>
               </div>
               {/* Surge Pricing Indicator */}
               <div className="flex items-center justify-between p-2 bg-orange-50 border border-orange-200 rounded">
