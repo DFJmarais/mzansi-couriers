@@ -20,6 +20,8 @@ import SurgePricingAdmin from "./pages/SurgePricingAdmin";
 import ReferralLeaderboard from "./pages/ReferralLeaderboard";
 import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
 import { AdminLogin } from "./pages/AdminLogin";
+import AutomationMonitoring from "./pages/AutomationMonitoring";
+import SupportBotDashboard from "./pages/SupportBotDashboard";
 
 function Router() {
   return (
@@ -38,8 +40,10 @@ function Router() {
       <Route path={"/pricing/surge"} component={SurgePricingPage} />
       <Route path={"/admin/surge-pricing"} component={SurgePricingAdmin} />
       <Route path={"/referral/leaderboard"} component={ReferralLeaderboard} />
-      <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
+      <Route path="/admin/automation" component={AutomationMonitoring} />
+      <Route path="/admin/support-bot" component={SupportBotDashboard} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
