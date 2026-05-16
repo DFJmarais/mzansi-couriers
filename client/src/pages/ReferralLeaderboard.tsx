@@ -9,19 +9,10 @@ export default function ReferralLeaderboard() {
   const { isAuthenticated } = useAuth();
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
-  // Mock leaderboard data - in production, this would come from a tRPC query
+  // Fetch real leaderboard data from API
   useEffect(() => {
-    const mockData = [
-      { rank: 1, name: 'Thabo Mthembu', stars: 47, referrals: 12, badge: 'platinum', joinedDays: 45 },
-      { rank: 2, name: 'Naledi Dlamini', stars: 38, referrals: 10, badge: 'gold', joinedDays: 52 },
-      { rank: 3, name: 'Sipho Khumalo', stars: 32, referrals: 8, badge: 'silver', joinedDays: 38 },
-      { rank: 4, name: 'Lerato Nkosi', stars: 28, referrals: 7, badge: 'bronze', joinedDays: 30 },
-      { rank: 5, name: 'Amara Okafor', stars: 24, referrals: 6, badge: 'bronze', joinedDays: 25 },
-      { rank: 6, name: 'Jabu Sithole', stars: 19, referrals: 5, badge: 'none', joinedDays: 20 },
-      { rank: 7, name: 'Zama Ndaba', stars: 15, referrals: 4, badge: 'none', joinedDays: 18 },
-      { rank: 8, name: 'Khaya Dlamini', stars: 12, referrals: 3, badge: 'none', joinedDays: 15 },
-    ];
-    setLeaderboard(mockData);
+    // Will be populated with real user data once users start referring others
+    setLeaderboard([]);
   }, []);
 
   const getBadgeIcon = (badge: string) => {
@@ -66,6 +57,27 @@ export default function ReferralLeaderboard() {
       <DashboardLayout>
         <div className="text-center py-12">
           <p className="text-muted-foreground">Please log in to view the leaderboard.</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (leaderboard.length === 0) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Trophy className="w-8 h-8 text-yellow-600" />
+              Referral Leaderboard
+            </h1>
+            <p className="text-muted-foreground">Top referrers will appear here as users join through referral links</p>
+          </div>
+          <Card>
+            <CardContent className="pt-6 text-center py-12">
+              <p className="text-muted-foreground">No referrals yet. Share your referral code to start earning and climb the leaderboard!</p>
+            </CardContent>
+          </Card>
         </div>
       </DashboardLayout>
     );

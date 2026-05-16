@@ -74,10 +74,9 @@ export default function CourierDashboard() {
         {/* Stats */}
         <div className="grid md:grid-cols-4 gap-4">
           {[
-            { icon: TrendingUp, label: "Today's Earnings", value: "R450", subtext: "3 deliveries" },
-            { icon: Clock, label: "Active Deliveries", value: "2", subtext: "On the way" },
-            { icon: Zap, label: "Total Deliveries", value: "247", subtext: "This month" },
-            { icon: Star, label: "Rating", value: "4.9", subtext: "Based on 156 reviews" }
+            { icon: TrendingUp, label: "Today's Earnings", value: "R0", subtext: "No deliveries yet" },
+            { icon: Clock, label: "Active Deliveries", value: "0", subtext: "None in progress" },
+            { icon: Zap, label: "Total Deliveries", value: "0", subtext: "Complete deliveries to earn" }
           ].map((stat, i) => (
             <Card key={i} className="border-border/50 hover:border-accent/50 transition-all hover:shadow-md">
               <CardContent className="pt-6">

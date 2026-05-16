@@ -220,35 +220,7 @@ export default function Home() {
           <p className="text-muted-foreground">Real feedback from customers and couriers</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            {
-              name: "Thabo Mthembu",
-              role: "Customer",
-              quote: "Straightforward service. My packages arrive on time and I can track them the whole way."
-            },
-            {
-              name: "Naledi Khumalo",
-              role: "Courier",
-              quote: "Good earning opportunity with flexible hours. The app is easy to use and payments are reliable."
-            },
-            {
-              name: "Sipho Ndlela",
-              role: "Business Owner",
-              quote: "We use Mzansi Couriers for all our deliveries. Consistent service and professional couriers."
-            }
-          ].map((testimonial, i) => (
-            <Card key={i} className="border-border/50">
-              <CardContent className="pt-6">
-                <p className="text-muted-foreground mb-4">"{testimonial.quote}"</p>
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Testimonials section removed - will be populated with real user reviews once app is live */}
       </section>
 
       {/* CTA Section */}

@@ -27,44 +27,10 @@ export default function CourierPerformance() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockMetrics: Metric = {
-      completionRate: 98.5,
-      responseTime: 2.3,
-      cancellationRate: 1.2,
-      averageRating: 4.7,
-      totalDeliveries: 247
-    };
-
-    const mockRatings: Rating[] = [
-      {
-        id: "1",
-        courierId: "courier1",
-        customerId: "cust1",
-        rating: 5,
-        comment: "Fast and professional delivery. Highly recommended!",
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
-      },
-      {
-        id: "2",
-        courierId: "courier1",
-        customerId: "cust2",
-        rating: 4,
-        comment: "Good service, arrived on time.",
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
-      },
-      {
-        id: "3",
-        courierId: "courier1",
-        customerId: "cust3",
-        rating: 5,
-        comment: "Excellent! Package handled with care.",
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-      }
-    ];
-
-    setMetrics(mockMetrics);
-    setRatings(mockRatings);
+    // Fetch real performance data from API
+    // For now, show empty state until user has actual deliveries and ratings
+    setMetrics(null);
+    setRatings([]);
     setLoading(false);
   }, []);
 
@@ -218,7 +184,7 @@ export default function CourierPerformance() {
           </CardHeader>
           <CardContent className="space-y-4">
             {ratings.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">No reviews yet. Complete more deliveries to get feedback!</p>
+              <p className="text-muted-foreground text-center py-8">No reviews yet. Complete more deliveries to receive feedback from customers!</p>
             ) : (
               ratings.map((rating) => (
                 <div key={rating.id} className="border-b pb-4 last:border-0">

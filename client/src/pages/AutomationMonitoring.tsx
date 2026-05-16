@@ -20,29 +20,10 @@ export default function AutomationMonitoring() {
   const [loading, setLoading] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
-  // Mock data for demonstration
-  const mockStats = {
-    total: 1247,
-    queued: 12,
-    processing: 5,
-    completed: 1180,
-    failed: 50,
-    retried: 25,
-    avgDuration: 245,
-    successRate: 94.6,
-  };
-
-  const mockEvents = [
-    { jobId: 'payment-PAY-001', queueName: 'payment-success', status: 'completed', duration: 234, timestamp: Date.now() - 60000 },
-    { jobId: 'delivery-DEL-001-in_transit', queueName: 'delivery-status', status: 'completed', duration: 189, timestamp: Date.now() - 120000 },
-    { jobId: 'courier-assigned-DEL-002', queueName: 'courier-assigned', status: 'completed', duration: 267, timestamp: Date.now() - 180000 },
-    { jobId: 'earnings-COURIER-001-2026-05-16', queueName: 'daily-earnings', status: 'completed', duration: 312, timestamp: Date.now() - 240000 },
-    { jobId: 'ticket-TICKET-001', queueName: 'support-ticket', status: 'failed', duration: 450, timestamp: Date.now() - 300000 },
-  ];
-
   useEffect(() => {
-    setStats(mockStats);
-    setEvents(mockEvents);
+    // Fetch real automation stats from API
+    setStats(null);
+    setEvents([]);
     setLoading(false);
 
     // Auto-refresh every 5 seconds if enabled
@@ -71,7 +52,7 @@ export default function AutomationMonitoring() {
     { name: 'Failed', value: stats.failed, color: '#ef4444' },
   ];
 
-  const recentEventsData = mockEvents.slice(0, 5).map((event, i) => ({
+  const recentEventsData = events.slice(0, 5).map((event, i) => ({
     name: `Job ${i + 1}`,
     duration: event.duration,
   }));
