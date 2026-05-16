@@ -1,0 +1,1 @@
+ALTER TABLE `referral_codes` MODIFY COLUMN `code` varchar(50) NOT NULL;

@@ -2,12 +2,11 @@ import { useAuth } from '@/_core/hooks/useAuth';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { trpc } from '@/lib/trpc';
 import { useState, useEffect } from 'react';
 import { Trophy, Star, Zap, Target } from 'lucide-react';
 
 export default function ReferralLeaderboard() {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
   // Mock leaderboard data - in production, this would come from a tRPC query

@@ -634,7 +634,7 @@ export type InsertDisputeComment = typeof disputeComments.$inferInsert;
 export const referralCodes = mysqlTable("referral_codes", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull().references(() => users.id),
-  code: varchar("code", { length: 20 }).notNull().unique(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
   isActive: boolean("isActive").default(true),
   expiresAt: timestamp("expiresAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

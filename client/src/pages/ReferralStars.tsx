@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useAuth } from '@/_core/hooks/useAuth';
 import { Copy, Share2, MessageCircle, Loader2 } from 'lucide-react';
 
 export default function ReferralStars() {
-  const { user } = useAuth();
   const [copied, setCopied] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
 
