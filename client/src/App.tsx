@@ -22,6 +22,7 @@ import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
 import { AdminLogin } from "./pages/AdminLogin";
 import AutomationMonitoring from "./pages/AutomationMonitoring";
 import SupportBotDashboard from "./pages/SupportBotDashboard";
+import OutreachCampaigns from "./pages/OutreachCampaigns";
 
 function Router() {
   return (
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
       <Route path="/admin/automation" component={AutomationMonitoring} />
       <Route path="/admin/support-bot" component={SupportBotDashboard} />
+      <Route path="/admin/outreach" component={OutreachCampaigns} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

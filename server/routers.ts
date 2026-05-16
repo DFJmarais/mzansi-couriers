@@ -19,6 +19,7 @@ import { courierReferralRouter } from "./routers/courier-referral";
 import { adminAuthRouter } from "./routers/admin-auth";
 import { automationRouter } from "./automation/router";
 import { aiRouter } from "./ai/router";
+import { outreachRouter } from "./ai/outreach-router";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -59,6 +60,7 @@ export const appRouter = router({
   adminAuth: adminAuthRouter,
   automation: automationRouter,
   ai: aiRouter,
+  outreach: outreachRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
