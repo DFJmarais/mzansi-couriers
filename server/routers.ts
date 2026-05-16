@@ -20,6 +20,9 @@ import { adminAuthRouter } from "./routers/admin-auth";
 import { automationRouter } from "./automation/router";
 import { aiRouter } from "./ai/router";
 import { outreachRouter } from "./ai/outreach-router";
+import { loyaltyRouter } from "./loyalty/loyalty-router";
+import { notificationRouter as notificationRouter2 } from "./notifications/notification-router";
+import { reportingRouter } from "./reporting/reporting-router";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -61,6 +64,9 @@ export const appRouter = router({
   automation: automationRouter,
   ai: aiRouter,
   outreach: outreachRouter,
+  loyalty: loyaltyRouter,
+  notificationSettings: notificationRouter2,
+  reporting: reportingRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

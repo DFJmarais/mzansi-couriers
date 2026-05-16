@@ -587,3 +587,49 @@
 - [x] Create awareness analytics dashboard
 - [x] Test awareness messages
 - [x] Document awareness bot API
+
+
+
+
+## Phase 24: Loyalty Program System
+
+- [x] Design loyalty points system
+- [x] Create tier system (Bronze, Silver, Gold, Platinum)
+- [x] Build points earning rules
+- [x] Create rewards catalog
+- [x] Build redemption system
+- [x] Create loyalty dashboard for customers
+- [x] Create loyalty dashboard for couriers
+- [x] Integrate with BullMQ for points calculation
+- [x] Build referral bonus system
+- [x] Create loyalty analytics
+- [x] Document loyalty program API
+
+## Phase 25: Real-time Notifications System
+
+- [x] Design notification architecture
+- [x] Build notification types (delivery, payment, promo, system)
+- [x] Create notification preferences system
+- [x] Build push notification service
+- [x] Create in-app notification system
+- [x] Build email notification system
+- [x] Create SMS notification system
+- [x] Build notification dashboard
+- [x] Integrate with BullMQ for notification scheduling
+- [x] Create notification analytics
+- [x] Document notifications API
+
+## Phase 26: Advanced Reporting System
+
+- [x] Design reporting architecture
+- [x] Build financial reports
+- [x] Create operational reports
+- [x] Build performance reports
+- [x] Create courier analytics reports
+- [x] Build customer analytics reports
+- [x] Create export functionality (PDF, CSV, Excel)
+- [x] Build scheduled reports
+- [x] Create custom report builder
+- [x] Build reporting dashboard
+- [x] Integrate with BullMQ for scheduled reports
+- [x] Document reporting API
