@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/DashboardLayout";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from "recharts";
-import { TrendingUp, Users, Package, DollarSign, AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { TrendingUp, Users, Package, DollarSign, AlertCircle, CheckCircle2, Clock, Send, Mail } from "lucide-react";
 import { LanguageSwitcher, NotificationPreferences } from "@/components/Phase2Features";
 import { useState } from "react";
+
 
 const chartData = [
   { name: "Mon", deliveries: 45, revenue: 2250, active: 120 },
@@ -26,12 +27,26 @@ const statusData = [
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
+  const [sendingEarnings, setSendingEarnings] = useState(false);
   // Language managed by LocalizationContext
   // const [currentLanguage, setCurrentLanguage] = useState('en');
 
   if (!isAuthenticated || user?.role !== 'admin') {
     return <div>Access denied</div>;
   }
+
+  const handleSendDailyEarnings = async (courierId: string, courierName: string) => {
+    setSendingEarnings(true);
+    try {
+      // In production, this would call a tRPC mutation to queue the job
+      console.log(`Sending daily earnings summary to ${courierName}`);
+      // await trpc.automation.queueDailyEarnings.mutate({ courierId, courierName });
+    } catch (error) {
+      console.error('Failed to send earnings summary:', error);
+    } finally {
+      setSendingEarnings(false);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -257,6 +272,63 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
+        {/* Daily Earnings Summary Management */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">Daily Earnings Summary Management</h2>
+          <Card className="border-border/50">
+            <CardHeader>
+              <CardTitle>Send Earnings Reports to Couriers</CardTitle>
+              <CardDescription>Manually trigger daily earnings summaries via WhatsApp and Email</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { id: "courier-001", name: "John Mthembu", email: "john@example.com", phone: "+27123456789", deliveries: 12, earnings: "R1,200", bonus: "R100" },
+                  { id: "courier-002", name: "Sarah Nkosi", email: "sarah@example.com", phone: "+27987654321", deliveries: 15, earnings: "R1,500", bonus: "R150" },
+                  { id: "courier-003", name: "Thabo Dlamini", email: "thabo@example.com", phone: "+27555555555", deliveries: 10, earnings: "R1,000", bonus: "R75" }
+                ].map((courier, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 border border-border/50 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <p className="font-semibold">{courier.name}</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{courier.deliveries} deliveries today • R{courier.earnings} + R{courier.bonus} bonus</p>
+                      <p className="text-xs text-muted-foreground mt-1">{courier.email} • {courier.phone}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleSendDailyEarnings(courier.id, courier.name)}
+                        disabled={sendingEarnings}
+                        className="gap-2"
+                      >
+                        <Send className="w-4 h-4" />
+                        Send WhatsApp
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleSendDailyEarnings(courier.id, courier.name)}
+                        disabled={sendingEarnings}
+                        className="gap-2"
+                      >
+                        <Mail className="w-4 h-4" />
+                        Email
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-blue-900 dark:text-blue-200">
+                  💡 <strong>Tip:</strong> These summaries are automatically sent daily at 6 PM via the BullMQ automation engine. Use this to manually trigger reports for specific couriers.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* System Alerts */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold">System Alerts</h2>
@@ -264,7 +336,7 @@ export default function AdminDashboard() {
             {[
               { type: "warning", icon: AlertCircle, message: "3 couriers pending verification", action: "Review" },
               { type: "success", icon: CheckCircle2, message: "All systems operational", action: "View" },
-              { type: "info", icon: Clock, message: "Peak hours: 12-2 PM, 5-7 PM", action: "Manage" }
+              { type: "info", icon: Clock, message: "BullMQ automation engine running smoothly", action: "Monitor" }
             ].map((alert, i) => (
               <Card key={i} className={`border-l-4 ${
                 alert.type === 'warning' ? 'border-l-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/10' :

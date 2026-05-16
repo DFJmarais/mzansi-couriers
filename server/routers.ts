@@ -1,4 +1,4 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME } from "../shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
@@ -17,6 +17,7 @@ import { achievementsRouter } from "./routers/achievements";
 import { analyticsRouter } from "./routers/analytics";
 import { courierReferralRouter } from "./routers/courier-referral";
 import { adminAuthRouter } from "./routers/admin-auth";
+import { automationRouter } from "./automation/router";
 
 // ============ ADMIN PROCEDURE ============
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -55,6 +56,7 @@ export const appRouter = router({
   achievements: achievementsRouter,
   analytics: analyticsRouter,
   adminAuth: adminAuthRouter,
+  automation: automationRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
