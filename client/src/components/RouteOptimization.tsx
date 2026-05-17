@@ -53,7 +53,7 @@ export default function RouteOptimization() {
 
       setRoute(mockRoute);
     } catch (error) {
-      console.error('Error optimizing route:', error);
+      // Route optimization failed silently
     } finally {
       setLoading(false);
     }

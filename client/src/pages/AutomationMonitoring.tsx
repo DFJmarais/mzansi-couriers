@@ -30,7 +30,6 @@ export default function AutomationMonitoring() {
     if (autoRefresh) {
       const interval = setInterval(() => {
         // In production, fetch real data from trpc.automation.getStats()
-        console.log('Refreshing automation stats...');
       }, 5000);
 
       return () => clearInterval(interval);

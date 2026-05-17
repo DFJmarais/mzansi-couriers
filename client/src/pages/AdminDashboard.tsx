@@ -39,10 +39,9 @@ export default function AdminDashboard() {
     setSendingEarnings(true);
     try {
       // In production, this would call a tRPC mutation to queue the job
-      console.log(`Sending daily earnings summary to ${courierName}`);
       // await trpc.automation.queueDailyEarnings.mutate({ courierId, courierName });
     } catch (error) {
-      console.error('Failed to send earnings summary:', error);
+      // Failed to send earnings summary
     } finally {
       setSendingEarnings(false);
     }

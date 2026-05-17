@@ -38,7 +38,7 @@ export default function AdminOnboarding() {
       refetch();
       setSelectedApplication(null);
     } catch (error) {
-      console.error('Failed to approve:', error);
+      // Failed to approve application
     }
   };
 
@@ -54,7 +54,7 @@ export default function AdminOnboarding() {
       setRejectReason('');
       setShowRejectForm(false);
     } catch (error) {
-      console.error('Failed to reject:', error);
+      // Failed to reject application
     }
   };
 

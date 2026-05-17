@@ -2,6 +2,7 @@ import { COOKIE_NAME } from "../shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { standardRateLimiter, strictRateLimiter, lenientRateLimiter, startRateLimitCleanup } from "./middleware/rateLimiter";
 import { z } from "zod";
 import * as db from "./db";
 import { notificationRouter } from "./notifications";
@@ -24,27 +25,36 @@ import { loyaltyRouter } from "./loyalty/loyalty-router";
 import { notificationRouter as notificationRouter2 } from "./notifications/notification-router";
 import { reportingRouter } from "./reporting/reporting-router";
 
+// Start rate limit cleanup on module load
+startRateLimitCleanup();
+
 // ============ ADMIN PROCEDURE ============
-const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   if (ctx.user.role !== 'admin') {
     throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' });
   }
+  // Apply standard rate limiting
+  await standardRateLimiter(String(ctx.user.id));
   return next({ ctx });
 });
 
 // ============ COURIER PROCEDURE ============
-const courierProcedure = protectedProcedure.use(({ ctx, next }) => {
+const courierProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   if (ctx.user.role !== 'courier') {
     throw new TRPCError({ code: 'FORBIDDEN', message: 'Courier access required' });
   }
+  // Apply standard rate limiting
+  await standardRateLimiter(String(ctx.user.id));
   return next({ ctx });
 });
 
 // ============ CUSTOMER PROCEDURE ============
-const customerProcedure = protectedProcedure.use(({ ctx, next }) => {
+const customerProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   if (ctx.user.role !== 'customer') {
     throw new TRPCError({ code: 'FORBIDDEN', message: 'Customer access required' });
   }
+  // Apply standard rate limiting
+  await standardRateLimiter(String(ctx.user.id));
   return next({ ctx });
 });
 

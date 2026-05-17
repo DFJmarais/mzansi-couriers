@@ -48,7 +48,6 @@ export const sendWhatsAppNotification = async (payload: NotificationPayload): Pr
       timestamp: new Date()
     };
   } catch (error) {
-    console.error('WhatsApp notification error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -85,7 +84,6 @@ export const sendSMSNotification = async (payload: NotificationPayload): Promise
       timestamp: new Date()
     };
   } catch (error) {
-    console.error('SMS notification error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
