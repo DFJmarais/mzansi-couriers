@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -28,8 +29,6 @@ const statusData = [
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
   const [sendingEarnings, setSendingEarnings] = useState(false);
-  // Language managed by LocalizationContext
-  // const [currentLanguage, setCurrentLanguage] = useState('en');
 
   if (!isAuthenticated || user?.role !== 'admin') {
     return <div>Access denied</div>;
@@ -98,14 +97,8 @@ export default function AdminDashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="name" stroke="var(--muted-foreground)" />
                   <YAxis stroke="var(--muted-foreground)" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "0.5rem"
-                    }}
-                  />
-                  <Bar dataKey="deliveries" fill="var(--accent)" radius={[8, 8, 0, 0]} />
+                  <Tooltip contentStyle={{ backgroundColor: "var(--background)", border: "1px solid var(--border)" }} />
+                  <Bar dataKey="deliveries" fill="#FF6B35" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -114,8 +107,8 @@ export default function AdminDashboard() {
           {/* Revenue Chart */}
           <Card className="border-border/50">
             <CardHeader>
-              <CardTitle>Revenue This Week</CardTitle>
-              <CardDescription>Daily platform revenue</CardDescription>
+              <CardTitle>Revenue Trend</CardTitle>
+              <CardDescription>Weekly revenue in Rand</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -123,62 +116,37 @@ export default function AdminDashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="name" stroke="var(--muted-foreground)" />
                   <YAxis stroke="var(--muted-foreground)" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "0.5rem"
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="revenue" 
-                    stroke="var(--accent)" 
-                    strokeWidth={2}
-                    dot={{ fill: "var(--accent)", r: 4 }}
-                  />
+                  <Tooltip contentStyle={{ backgroundColor: "var(--background)", border: "1px solid var(--border)" }} />
+                  <Line type="monotone" dataKey="revenue" stroke="#FF6B35" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Status Distribution & Active Couriers */}
-        <div className="grid lg:grid-cols-2 gap-6">
           {/* Status Distribution */}
           <Card className="border-border/50">
             <CardHeader>
-              <CardTitle>Delivery Status Distribution</CardTitle>
-              <CardDescription>Current delivery statuses</CardDescription>
+              <CardTitle>Delivery Status</CardTitle>
+              <CardDescription>Current delivery states</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
-                  <Pie
-                    data={statusData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
+                  <Pie data={statusData} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}`} outerRadius={80} fill="#8884d8" dataKey="value">
                     {statusData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          {/* Active Couriers Trend */}
+          {/* Active Couriers Chart */}
           <Card className="border-border/50">
             <CardHeader>
-              <CardTitle>Active Couriers Trend</CardTitle>
-              <CardDescription>Courier availability throughout the week</CardDescription>
+              <CardTitle>Active Couriers</CardTitle>
+              <CardDescription>Couriers online this week</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -186,56 +154,10 @@ export default function AdminDashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="name" stroke="var(--muted-foreground)" />
                   <YAxis stroke="var(--muted-foreground)" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "0.5rem"
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="active" 
-                    stroke="#3b82f6" 
-                    strokeWidth={2}
-                    dot={{ fill: "#3b82f6", r: 4 }}
-                  />
+                  <Tooltip contentStyle={{ backgroundColor: "var(--background)", border: "1px solid var(--border)" }} />
+                  <Line type="monotone" dataKey="active" stroke="#10b981" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Pending Deliveries */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold">Pending Deliveries</h2>
-          <Card className="border-border/50">
-            <CardContent className="pt-6">
-              <div className="space-y-3">
-                {[
-                  { id: "DEL-001", from: "Sandton", to: "Midrand", status: "assigned", time: "2 mins ago", courier: "John M." },
-                  { id: "DEL-002", from: "Rosebank", to: "Bryanston", status: "in-transit", time: "5 mins ago", courier: "Sarah N." },
-                  { id: "DEL-003", from: "Fourways", to: "Sunninghill", status: "pending", time: "8 mins ago", courier: "Unassigned" }
-                ].map((delivery, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 border border-border/50 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <p className="font-semibold text-sm">{delivery.id}</p>
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          delivery.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                          delivery.status === 'assigned' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                          'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-                        }`}>
-                          {delivery.status}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{delivery.from} → {delivery.to}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{delivery.courier} • {delivery.time}</p>
-                    </div>
-                    <Button size="sm" variant="outline">View</Button>
-                  </div>
-                ))}
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -246,26 +168,7 @@ export default function AdminDashboard() {
           <Card className="border-border/50">
             <CardContent className="pt-6">
               <div className="space-y-3">
-                {[
-                  { name: "John Mthembu", deliveries: 127, rating: 4.9, status: "online", earnings: "R8,890" },
-                  { name: "Sarah Nkosi", deliveries: 115, rating: 4.8, status: "online", earnings: "R8,050" },
-                  { name: "Thabo Dlamini", deliveries: 98, rating: 4.7, status: "offline", earnings: "R6,860" }
-                ].map((courier, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 border border-border/50 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-semibold">{courier.name}</p>
-                        <div className={`w-2 h-2 rounded-full ${courier.status === 'online' ? 'bg-green-500' : 'bg-muted-foreground'}`}></div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{courier.deliveries} deliveries • {courier.rating}★ rating</p>
-                      <p className="text-xs text-accent font-semibold mt-1">{courier.earnings} this month</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline">Suspend</Button>
-                      <Button size="sm" variant="outline">Details</Button>
-                    </div>
-                  </div>
-                ))}
+                <p className="text-sm text-muted-foreground">Top performing couriers will be displayed here once they complete deliveries.</p>
               </div>
             </CardContent>
           </Card>
@@ -281,43 +184,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {[
-                  { id: "courier-001", name: "John Mthembu", email: "john@example.com", phone: "+27123456789", deliveries: 12, earnings: "R1,200", bonus: "R100" },
-                  { id: "courier-002", name: "Sarah Nkosi", email: "sarah@example.com", phone: "+27987654321", deliveries: 15, earnings: "R1,500", bonus: "R150" },
-                  { id: "courier-003", name: "Thabo Dlamini", email: "thabo@example.com", phone: "+27555555555", deliveries: 10, earnings: "R1,000", bonus: "R75" }
-                ].map((courier, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 border border-border/50 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <p className="font-semibold">{courier.name}</p>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{courier.deliveries} deliveries today • R{courier.earnings} + R{courier.bonus} bonus</p>
-                      <p className="text-xs text-muted-foreground mt-1">{courier.email} • {courier.phone}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleSendDailyEarnings(courier.id, courier.name)}
-                        disabled={sendingEarnings}
-                        className="gap-2"
-                      >
-                        <Send className="w-4 h-4" />
-                        Send WhatsApp
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleSendDailyEarnings(courier.id, courier.name)}
-                        disabled={sendingEarnings}
-                        className="gap-2"
-                      >
-                        <Mail className="w-4 h-4" />
-                        Email
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                <p className="text-sm text-muted-foreground">Daily earnings summaries for couriers will be displayed here. Use the automation system to send reports.</p>
               </div>
               <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                 <p className="text-sm text-blue-900 dark:text-blue-200">
@@ -332,29 +199,17 @@ export default function AdminDashboard() {
         <div className="space-y-4">
           <h2 className="text-xl font-bold">System Alerts</h2>
           <div className="space-y-3">
-            {[
-              { type: "warning", icon: AlertCircle, message: "3 couriers pending verification", action: "Review" },
-              { type: "success", icon: CheckCircle2, message: "All systems operational", action: "View" },
-              { type: "info", icon: Clock, message: "BullMQ automation engine running smoothly", action: "Monitor" }
-            ].map((alert, i) => (
-              <Card key={i} className={`border-l-4 ${
-                alert.type === 'warning' ? 'border-l-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/10' :
-                alert.type === 'success' ? 'border-l-green-500 bg-green-50/50 dark:bg-green-900/10' :
-                'border-l-blue-500 bg-blue-50/50 dark:bg-blue-900/10'
-              }`}>
-                <CardContent className="pt-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <alert.icon className={`w-5 h-5 ${
-                      alert.type === 'warning' ? 'text-yellow-600' :
-                      alert.type === 'success' ? 'text-green-600' :
-                      'text-blue-600'
-                    }`} />
-                    <p className="text-sm font-medium">{alert.message}</p>
+            <Card className="border-border/50 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20">
+              <CardContent className="pt-6">
+                <div className="flex gap-4">
+                  <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-yellow-900 dark:text-yellow-100">High demand detected</p>
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200 mt-1">Peak delivery hours detected. Consider surge pricing activation.</p>
                   </div>
-                  <Button size="sm" variant="ghost">{alert.action}</Button>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
