@@ -6,7 +6,15 @@ import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import { getLoginUrl } from "./const";
+import { useServiceWorker } from "./hooks/useServiceWorker";
 import "./index.css";
+
+// Register service worker for offline support and caching
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch((err) => {
+    console.warn('[SW] Registration failed:', err);
+  });
+}
 
 // Lazy load App component for faster initial load
 const App = lazy(() => import("./App"));

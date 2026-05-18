@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { AlertCircle, Lock, User } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 
-export function AdminLogin() {
+function AdminLogin() {
   const [, setLocation] = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -134,3 +134,5 @@ export function AdminLogin() {
     </div>
   );
 }
+
+export default AdminLogin;

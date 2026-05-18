@@ -19,7 +19,7 @@ import SurgePricingPage from "./pages/SurgePricingInfo";
 import SurgePricingAdmin from "./pages/SurgePricingAdmin";
 import ReferralLeaderboard from "./pages/ReferralLeaderboard";
 import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
-import { AdminLogin } from "./pages/AdminLogin";
+import AdminLogin from "./pages/AdminLogin";
 import AutomationMonitoring from "./pages/AutomationMonitoring";
 import SupportBotDashboard from "./pages/SupportBotDashboard";
 import OutreachCampaigns from "./pages/OutreachCampaigns";
