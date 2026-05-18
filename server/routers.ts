@@ -24,6 +24,7 @@ import { outreachRouter } from "./ai/outreach-router";
 import { loyaltyRouter } from "./loyalty/loyalty-router";
 import { notificationRouter as notificationRouter2 } from "./notifications/notification-router";
 import { reportingRouter } from "./reporting/reporting-router";
+import { paymentRouter } from "./payments/payment-router";
 
 // Start rate limit cleanup on module load
 startRateLimitCleanup();
@@ -77,6 +78,7 @@ export const appRouter = router({
   loyalty: loyaltyRouter,
   notificationSettings: notificationRouter2,
   reporting: reportingRouter,
+  payments: paymentRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
