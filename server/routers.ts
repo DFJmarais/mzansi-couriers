@@ -428,7 +428,7 @@ export const appRouter = router({
   // ============ PHASE 2: Regional Pricing (getRegional added to pricing router above) ============
 
   // ============ PHASE 2: Payment Methods ============
-  payments: router({
+  paymentMethods: router({
     addMethod: protectedProcedure.input(z.object({
       type: z.enum(['eft', 'capitec', 'card', 'wallet']),
       accountName: z.string().optional(),
