@@ -170,15 +170,29 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'wouter'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-popover'],
-          'vendor-charts': ['recharts'],
-          'vendor-utils': ['zod', 'superjson', 'clsx'],
+          "vendor-react": ["react", "react-dom", "wouter"],
+          "vendor-ui": ["@radix-ui/react-dialog", "@radix-ui/react-popover", "@radix-ui/react-select"],
+          "vendor-charts": ["recharts"],
+          "vendor-utils": ["zod", "superjson", "clsx"],
+          "vendor-forms": ["react-hook-form", "@hookform/resolvers"],
+          "vendor-query": ["@tanstack/react-query", "@trpc/react-query"],
         },
       },
     },
     chunkSizeWarningLimit: 600,
-    minify: 'terser',
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        passes: 2,
+      },
+      mangle: true,
+      format: {
+        comments: false,
+      },
+    },
+    sourcemap: false,
+    reportCompressedSize: false,
   },
   server: {
     host: true,
@@ -195,5 +209,9 @@ export default defineConfig({
       strict: true,
       deny: ["**/.*"],
     },
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "@trpc/client", "@trpc/react-query"],
+    exclude: ["bullmq", "ioredis"],
   },
 });
