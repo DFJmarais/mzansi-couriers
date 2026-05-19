@@ -23,6 +23,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AutomationMonitoring from "./pages/AutomationMonitoring";
 import SupportBotDashboard from "./pages/SupportBotDashboard";
 import OutreachCampaigns from "./pages/OutreachCampaigns";
+import Legal from "./pages/Legal";
 
 function Router() {
   return (
@@ -45,6 +46,9 @@ function Router() {
       <Route path="/admin/automation" component={AutomationMonitoring} />
       <Route path="/admin/support-bot" component={SupportBotDashboard} />
       <Route path="/admin/outreach" component={OutreachCampaigns} />
+      <Route path="/legal" component={Legal} />
+      <Route path="/terms" component={Legal} />
+      <Route path="/privacy" component={Legal} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
