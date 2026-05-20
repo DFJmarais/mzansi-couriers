@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { useLocation } from "wouter";
+import { toast } from "sonner";
 import { Zap, MapPin, TrendingUp, Users, Award, Clock, ArrowRight, CheckCircle2, Truck, Shield, Lock } from "lucide-react";
 
 export default function Home() {
@@ -14,18 +15,40 @@ export default function Home() {
   };
 
   const handleGetStarted = () => {
-    if (isAuthenticated) {
-      setLocation("/onboarding");
-    } else {
+    if (!isAuthenticated) {
       window.location.href = getLoginUrl();
+      return;
+    }
+    
+    // Route based on user role
+    if (user?.role === 'customer') {
+      setLocation("/customer/dashboard");
+    } else if (user?.role === 'courier') {
+      toast.error("Couriers cannot book deliveries. Use the courier dashboard to accept jobs.");
+    } else if (user?.role === 'admin') {
+      toast.error("Admins cannot book deliveries.");
+    } else {
+      // No role yet, go to onboarding
+      setLocation("/onboarding");
     }
   };
 
   const handleBecomeCourier = () => {
-    if (isAuthenticated) {
-      setLocation("/courier/onboarding");
-    } else {
+    if (!isAuthenticated) {
       window.location.href = getLoginUrl();
+      return;
+    }
+    
+    // Route based on user role
+    if (user?.role === 'courier') {
+      setLocation("/courier/dashboard");
+    } else if (user?.role === 'customer') {
+      toast.error("You're currently a customer. Contact support to switch to courier.");
+    } else if (user?.role === 'admin') {
+      toast.error("Admins cannot become couriers.");
+    } else {
+      // No role yet, go to courier onboarding
+      setLocation("/courier/onboarding");
     }
   };
 

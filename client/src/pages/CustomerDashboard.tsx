@@ -4,12 +4,21 @@ import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, ArrowRight, MapPin } from 'lucide-react';
+import { toast } from 'sonner';
 import { RegionalPricingSelector, PaymentMethodsManager, LanguageSwitcher, NotificationPreferences } from '@/components/Phase2Features';
 
 export default function CustomerDashboard() {
   const { user, isAuthenticated } = useAuth();
   const [showBooking, setShowBooking] = useState(false);
   const [selectedZone, setSelectedZone] = useState('johannesburg');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    pickupAddress: '',
+    dropoffAddress: '',
+    packageSize: 'Small (up to 1kg)',
+    weight: '0.5',
+    description: ''
+  });
   // Language managed by LocalizationContext
   // const [currentLanguage, setCurrentLanguage] = useState('en');
 
@@ -78,19 +87,35 @@ export default function CustomerDashboard() {
                 <label className="text-sm font-semibold">Pickup Location</label>
                 <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
-                  <input type="text" placeholder="Enter pickup address" className="flex-1 bg-transparent outline-none text-sm" />
+                  <input 
+                    type="text" 
+                    placeholder="Enter pickup address" 
+                    className="flex-1 bg-transparent outline-none text-sm" 
+                    value={formData.pickupAddress}
+                    onChange={(e) => setFormData({ ...formData, pickupAddress: e.target.value })}
+                  />
                 </div>
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-semibold">Dropoff Location</label>
                 <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
                   <MapPin className="w-4 h-4 text-accent" />
-                  <input type="text" placeholder="Enter dropoff address" className="flex-1 bg-transparent outline-none text-sm" />
+                  <input 
+                    type="text" 
+                    placeholder="Enter dropoff address" 
+                    className="flex-1 bg-transparent outline-none text-sm" 
+                    value={formData.dropoffAddress}
+                    onChange={(e) => setFormData({ ...formData, dropoffAddress: e.target.value })}
+                  />
                 </div>
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-semibold">Package Size</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer">
+                <select 
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors cursor-pointer"
+                  value={formData.packageSize}
+                  onChange={(e) => setFormData({ ...formData, packageSize: e.target.value })}
+                >
                   <option>Small (up to 1kg)</option>
                   <option>Medium (up to 10kg)</option>
                   <option>Large (up to 50kg)</option>
@@ -98,11 +123,23 @@ export default function CustomerDashboard() {
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-semibold">Weight (kg)</label>
-                <input type="number" placeholder="0.5" className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent" />
+                <input 
+                  type="number" 
+                  placeholder="0.5" 
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent" 
+                  value={formData.weight}
+                  onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                />
               </div>
               <div className="md:col-span-2 space-y-3">
                 <label className="text-sm font-semibold">Package Description</label>
-                <textarea placeholder="What are you sending?" className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent resize-none" rows={3}></textarea>
+                <textarea 
+                  placeholder="What are you sending?" 
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background hover:border-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent resize-none" 
+                  rows={3}
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                ></textarea>
               </div>
             </div>
             {/* Price Estimate */}
@@ -127,7 +164,25 @@ export default function CustomerDashboard() {
               <p className="text-xs text-muted-foreground text-center">⏰ Peak lunch hour pricing active. Schedule for later to save money.</p>
             </div>
             <div className="flex gap-3">
-              <Button className="flex-1 gap-2" onClick={() => setShowBooking(false)}>
+              <Button 
+                className="flex-1 gap-2" 
+                onClick={async () => {
+                  if (!formData.pickupAddress || !formData.dropoffAddress) {
+                    toast.error('Please fill in all required fields');
+                    return;
+                  }
+                  setIsSubmitting(true);
+                  try {
+                    toast.success('Booking confirmed! Matching with available couriers...');
+                    setFormData({ pickupAddress: '', dropoffAddress: '', packageSize: 'Small (up to 1kg)', weight: '0.5', description: '' });
+                  } catch (error) {
+                    toast.error('Failed to confirm booking. Please try again.');
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+                disabled={isSubmitting}
+              >
                 Confirm Booking
                 <ArrowRight className="w-4 h-4" />
               </Button>

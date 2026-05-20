@@ -20,22 +20,27 @@ export default function Onboarding() {
 
   // Check if user has a role and redirect
   useEffect(() => {
-    if (!isAuthenticated) {
-      setLocation("/");
-      return;
-    }
-
-    if (user?.role && ['customer', 'courier', 'admin'].includes(user.role)) {
+    // If user is authenticated AND has a role, redirect to their dashboard
+    if (isAuthenticated && user?.role && ['customer', 'courier', 'admin'].includes(user.role)) {
       setHasRole(true);
       if (user.role === 'customer') setLocation("/customer/dashboard");
       if (user.role === 'courier') setLocation("/courier/dashboard");
       if (user.role === 'admin') setLocation("/admin/dashboard");
     }
+    // If not authenticated, allow them to stay on onboarding to select role
+    // They will be prompted to login after selecting a role
   }, [isAuthenticated, user, setLocation]);
 
   const handleRoleSelection = async (role: string) => {
     if (role === 'admin') {
       toast.error("Admin access is restricted. Please contact support.");
+      return;
+    }
+
+    // If not authenticated, redirect to login first
+    if (!isAuthenticated) {
+      toast.info("Please log in to continue");
+      setLocation("/");
       return;
     }
 
@@ -84,7 +89,8 @@ export default function Onboarding() {
     }
   }, [selectRoleMutation.isSuccess, selectedRole, setLocation, showReferralInput]);
 
-  if (!isAuthenticated || hasRole) {
+  // Show nothing if user already has a role
+  if (hasRole) {
     return null;
   }
 
@@ -102,7 +108,7 @@ export default function Onboarding() {
               <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">MC</div>
               <span className="font-bold text-lg">Mzansi Couriers</span>
             </div>
-            <div className="text-sm text-muted-foreground">Welcome, {user?.name}</div>
+            <div className="text-sm text-muted-foreground">{isAuthenticated ? `Welcome, ${user?.name}` : 'Select your role'}</div>
           </div>
         </div>
 

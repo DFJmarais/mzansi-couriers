@@ -28,7 +28,7 @@ import Legal from "./pages/Legal";
 function Router() {
   return (
     <Switch>
-      <Route path={""} component={Home} />
+      <Route path={"/"} component={Home} />
       <Route path={"/admin/login"} component={AdminLogin} />
       <Route path={"/onboarding"} component={Onboarding} />
       <Route path={"/courier/onboarding"} component={CourierOnboarding} />
