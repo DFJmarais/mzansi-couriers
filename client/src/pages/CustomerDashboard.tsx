@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/_core/hooks/useAuth';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,23 @@ export default function CustomerDashboard() {
     weight: '0.5',
     description: ''
   });
+
+  // Load form data from localStorage on mount
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('bookingFormData');
+    if (savedFormData) {
+      try {
+        setFormData(JSON.parse(savedFormData));
+      } catch (error) {
+        console.error('Failed to load saved form data:', error);
+      }
+    }
+  }, []);
+
+  // Save form data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('bookingFormData', JSON.stringify(formData));
+  }, [formData]);
   // Language managed by LocalizationContext
   // const [currentLanguage, setCurrentLanguage] = useState('en');
 
@@ -174,6 +191,8 @@ export default function CustomerDashboard() {
                   setIsSubmitting(true);
                   try {
                     toast.success('Booking confirmed! Matching with available couriers...');
+                    // Clear saved form data after successful booking
+                    localStorage.removeItem('bookingFormData');
                     setFormData({ pickupAddress: '', dropoffAddress: '', packageSize: 'Small (up to 1kg)', weight: '0.5', description: '' });
                   } catch (error) {
                     toast.error('Failed to confirm booking. Please try again.');

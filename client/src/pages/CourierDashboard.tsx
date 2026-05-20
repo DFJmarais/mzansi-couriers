@@ -13,8 +13,26 @@ export default function CourierDashboard() {
   // Language managed by LocalizationContext
   // const [currentLanguage, setCurrentLanguage] = useState('en');
 
-  if (!isAuthenticated || user?.role !== 'courier') {
-    return <div>Access denied</div>;
+  if (!isAuthenticated) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Please log in to access the courier dashboard.</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Allow admin to view courier dashboard for testing/monitoring
+  // Only courier and admin roles can access
+  if (user?.role !== 'courier' && user?.role !== 'admin') {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">You don't have permission to access the courier dashboard.</p>
+        </div>
+      </DashboardLayout>
+    );
   }
 
   return (
