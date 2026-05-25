@@ -6,6 +6,7 @@ import { MapPin, Zap, TrendingUp, Clock, Star, Navigation, CheckCircle2, XCircle
 import { useState } from "react";
 import { LanguageSwitcher, NotificationPreferences, PaymentMethodsManager } from "@/components/Phase2Features";
 import CourierReferralSection from "@/components/CourierReferralSection";
+import ActiveDeliveries from "@/components/ActiveDeliveries";
 
 export default function CourierDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -215,18 +216,10 @@ export default function CourierDashboard() {
           )}
         </div>
 
-        {/* Active Deliveries */}
+        {/* Active Deliveries with Map Navigation */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold">Active Deliveries</h2>
-          <Card className="border-border/50">
-            <CardContent className="pt-12 pb-12 text-center space-y-4">
-              <Clock className="w-12 h-12 mx-auto text-muted-foreground/50" />
-              <div>
-                <p className="font-semibold">No active deliveries</p>
-                <p className="text-sm text-muted-foreground mt-1">Accept a job to start earning</p>
-              </div>
-            </CardContent>
-          </Card>
+          <h2 className="text-xl font-bold">Active Deliveries & Navigation</h2>
+          <ActiveDeliveries />
         </div>
 
         {/* Earnings Summary */}
