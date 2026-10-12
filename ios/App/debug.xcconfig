@@ -1,0 +1,4 @@
+// Mzansi Couriers native build configuration.
+// Release versioning and Info.plist settings are defined in the Xcode target.
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG

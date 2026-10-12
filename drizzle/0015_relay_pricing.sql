@@ -1,0 +1,63 @@
+CREATE TABLE `courier_zones` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(100) NOT NULL,
+	`centerLat` decimal(10,8) NOT NULL,
+	`centerLng` decimal(11,8) NOT NULL,
+	`radiusKm` int NOT NULL DEFAULT 110,
+	`province` varchar(50) NOT NULL,
+	`city` varchar(100) NOT NULL,
+	`isActive` boolean NOT NULL DEFAULT true,
+	`courierCount` int DEFAULT 0,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `courier_zones_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `route_segments` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`deliveryId` int NOT NULL,
+	`legNumber` int NOT NULL,
+	`fromZoneId` int,
+	`toZoneId` int,
+	`fromLat` decimal(10,8) NOT NULL,
+	`fromLng` decimal(11,8) NOT NULL,
+	`toLat` decimal(10,8) NOT NULL,
+	`toLng` decimal(11,8) NOT NULL,
+	`distanceKm` decimal(8,2) NOT NULL,
+	`legType` varchar(20) NOT NULL,
+	`legCost` decimal(8,2) NOT NULL,
+	`courierAssigned` int,
+	`status` varchar(20) NOT NULL DEFAULT 'pending',
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `route_segments_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `relay_pricing_quotes` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`customerId` int NOT NULL,
+	`pickupLat` decimal(10,8) NOT NULL,
+	`pickupLng` decimal(11,8) NOT NULL,
+	`dropoffLat` decimal(10,8) NOT NULL,
+	`dropoffLng` decimal(11,8) NOT NULL,
+	`totalDistanceKm` decimal(8,2) NOT NULL,
+	`estimatedLegs` int NOT NULL,
+	`pickupFee` decimal(8,2) NOT NULL,
+	`legsCost` decimal(8,2) NOT NULL,
+	`weightCost` decimal(8,2) NOT NULL,
+	`surcharges` decimal(8,2) DEFAULT '0.00',
+	`subtotal` decimal(8,2) NOT NULL,
+	`serviceMultiplier` decimal(3,2) DEFAULT '1.00',
+	`finalPrice` decimal(8,2) NOT NULL,
+	`weight` decimal(8,2),
+	`volumetricWeight` decimal(8,2),
+	`serviceLevel` varchar(20) DEFAULT 'economy',
+	`isFragile` boolean DEFAULT false,
+	`hasInsurance` boolean DEFAULT false,
+	`isRemoteArea` boolean DEFAULT false,
+	`isOversized` boolean DEFAULT false,
+	`needsManualHandling` boolean DEFAULT false,
+	`expiresAt` timestamp NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `relay_pricing_quotes_id` PRIMARY KEY(`id`)
+);

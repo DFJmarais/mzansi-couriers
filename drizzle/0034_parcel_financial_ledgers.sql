@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS `parcel_financial_ledgers` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `deliveryId` int NOT NULL,
+  `currency` varchar(3) NOT NULL DEFAULT 'ZAR',
+  `customerPayment` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `platformAllocation` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `courierPoolAllocation` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `reservedAmount` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `allocatedToCouriers` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `refunds` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `cancellationAdjustments` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `replacementLegCosts` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `paymentCosts` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `payoutCosts` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `finalPlatformContribution` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `finalCourierEarnings` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `status` enum('open','settled','void') NOT NULL DEFAULT 'open',
+  `version` int NOT NULL DEFAULT 0,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `parcel_financial_ledgers_deliveryId_unique` UNIQUE(`deliveryId`)
+);
+CREATE TABLE IF NOT EXISTS `parcel_financial_ledger_entries` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `ledgerId` int NOT NULL,
+  `deliveryId` int NOT NULL,
+  `eventKey` varchar(180) NOT NULL,
+  `eventType` enum('customer_payment','platform_allocation','courier_pool','reserve','leg_allocation','refund','cancellation','replacement_leg','payment_cost','payout_cost','settlement') NOT NULL,
+  `amount` decimal(12,2) NOT NULL,
+  `courierId` int,
+  `relayLegId` int,
+  `reference` varchar(255),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `parcel_financial_ledger_entries_eventKey_unique` UNIQUE(`eventKey`)
+);

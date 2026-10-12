@@ -1,0 +1,20 @@
+import { useLocation } from "wouter";
+import { ArrowLeft, CheckCircle2, ShieldAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { toast } from "sonner";
+
+export default function AdminSafetyIncidents() {
+  const { user, loading } = useAuth({ redirectOnUnauthenticated: true, redirectPath: "/auth" });
+  const [, navigate] = useLocation();
+  const incidents = trpc.courierSafety.adminOpenIncidents.useQuery(undefined, { enabled: user?.role === "admin" });
+  const resolve = trpc.courierSafety.adminResolveIncident.useMutation({ onSuccess: () => { toast.success("Safety incident updated"); void incidents.refetch(); } });
+  const [notes, setNotes] = useState<Record<number, string>>({});
+  if (loading || !user) return <main className="ios-screen grid min-h-screen place-items-center">Loading safety queue…</main>;
+  if (user.role !== "admin") return <main className="ios-screen grid min-h-screen place-items-center p-6 text-center">Owner access is required to review courier safety incidents.</main>;
+  return <main className="ios-screen min-h-screen px-4 pb-10 sm:px-6"><div className="mx-auto max-w-3xl space-y-5"><header className="ios-header -mx-4 flex items-center justify-between border-b px-4 py-3 sm:-mx-6 sm:px-6"><div><p className="ios-eyebrow">Operations</p><h1 className="text-xl font-bold">Safety incident queue</h1></div><Button variant="ghost" onClick={() => navigate("/admin")}><ArrowLeft className="mr-2 h-4 w-4" />Back</Button></header><Card className="border-amber-200 bg-amber-50"><CardContent className="flex gap-3 p-4 text-sm text-amber-950"><ShieldAlert className="h-5 w-5 shrink-0 text-amber-700" /><p>Urgent incidents must be acknowledged promptly. This queue records the operational response; it does not replace SAPS, ambulance, or roadside emergency services.</p></CardContent></Card>{incidents.data?.length ? incidents.data.map(({ incident, courier }) => <Card key={incident.id} className={incident.urgency === "urgent" ? "border-red-300" : ""}><CardHeader><CardTitle className="flex items-start justify-between gap-3 text-base"><span className="capitalize">{incident.type.replaceAll("_", " ")}</span><span className="text-xs font-normal uppercase tracking-wide text-muted-foreground">{incident.urgency}</span></CardTitle><p className="text-sm text-muted-foreground">Courier: {courier.name || courier.email || `#${courier.id}`} {courier.phone ? `· ${courier.phone}` : ""}</p></CardHeader><CardContent className="space-y-3"><p className="text-sm">{incident.description}</p><p className="text-xs text-muted-foreground">Opened {new Date(incident.createdAt).toLocaleString()}{incident.latitude && incident.longitude ? ` · Location ${incident.latitude}, ${incident.longitude}` : ""}</p><Textarea value={notes[incident.id] ?? ""} onChange={(e) => setNotes((current) => ({ ...current, [incident.id]: e.target.value }))} placeholder="Record the action taken or resolution" /><div className="flex flex-wrap gap-2"><Button variant="outline" onClick={() => resolve.mutate({ incidentId: incident.id, status: "acknowledged", resolutionNote: notes[incident.id] || "Operations acknowledged the incident and is following up." })}>Acknowledge</Button><Button variant="outline" onClick={() => resolve.mutate({ incidentId: incident.id, status: "in_review", resolutionNote: notes[incident.id] || "Operations review in progress." })}>Mark in review</Button><Button onClick={() => resolve.mutate({ incidentId: incident.id, status: "resolved", resolutionNote: notes[incident.id] || "Operations resolved the incident." })}><CheckCircle2 className="mr-2 h-4 w-4" />Resolve</Button></div></CardContent></Card>) : <Card><CardContent className="p-6 text-center text-sm text-muted-foreground">No open courier safety incidents.</CardContent></Card>}</div></main>;
+}

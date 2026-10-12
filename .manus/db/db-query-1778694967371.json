@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE delivery_zones SET basePricePerKm = 10.00, minimumCharge = 40.00 WHERE isActive = true;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4Y9XDrdN1russzh.9efa080d348c --database nSebzqBtETAo6UmLfNmVJM --execute UPDATE delivery_zones SET basePricePerKm = 10.00, minimumCharge = 40.00 WHERE isActive = true;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 383
+}

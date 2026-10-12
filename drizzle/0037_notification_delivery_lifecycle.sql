@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS `notification_deliveries` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `userId` int NULL,
+  `deliveryId` int NULL,
+  `runId` int NULL,
+  `channel` enum('in_app','email','sms','whatsapp','push') NOT NULL,
+  `eventType` varchar(80) NOT NULL,
+  `recipientRef` varchar(160) NOT NULL,
+  `provider` varchar(40) NOT NULL,
+  `providerMessageId` varchar(160) NULL,
+  `status` enum('queued','submitted','provider_accepted','delivered','failed','rejected','undeliverable','expired') NOT NULL DEFAULT 'queued',
+  `attemptCount` int NOT NULL DEFAULT 0,
+  `lastErrorCode` varchar(80) NULL,
+  `lastErrorMessage` varchar(255) NULL,
+  `queuedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `submittedAt` timestamp NULL,
+  `acceptedAt` timestamp NULL,
+  `deliveredAt` timestamp NULL,
+  `failedAt` timestamp NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `notification_deliveries_provider_message_id_uq` (`provider`,`providerMessageId`),
+  KEY `notification_deliveries_user_idx` (`userId`),
+  KEY `notification_deliveries_delivery_idx` (`deliveryId`),
+  KEY `notification_deliveries_status_idx` (`status`)
+);
+
+CREATE TABLE IF NOT EXISTS `notification_delivery_events` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `notificationDeliveryId` int NOT NULL,
+  `providerEventId` varchar(160) NOT NULL,
+  `providerStatus` varchar(40) NOT NULL,
+  `mappedStatus` varchar(40) NOT NULL,
+  `signatureVerified` boolean NOT NULL DEFAULT false,
+  `receivedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `notification_delivery_events_delivery_event_uq` (`notificationDeliveryId`,`providerEventId`),
+  KEY `notification_delivery_events_provider_event_idx` (`providerEventId`)
+);

@@ -1,0 +1,3 @@
+# Hybrid Relay Verification Findings
+
+The courier dashboard renders successfully at a 390x844 mobile viewport. The primary courier workflow remains at the top, while the relay-offers panel is placed immediately below it and safely renders an empty state when no handoff offer exists. The admin route correctly presents the protected admin sign-in screen on the same mobile viewport. The hybrid relay API and handoff selector passed TypeScript validation and focused tests. The full suite had one unrelated environment-dependent Paystack credential failure; 1,336 of 1,337 tests passed. The production build passed independently.

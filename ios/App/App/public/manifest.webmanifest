@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "Mzansi Couriers - SA Peer-to-Peer Logistics Platform",
+  "short_name": "Mzansi Couriers",
+  "description": "South Africa's peer-to-peer delivery network.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f3ea",
+  "theme_color": "#062d27",
+  "icons": [
+    {
+      "src": "/mzansi-couriers-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/mzansi-couriers-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

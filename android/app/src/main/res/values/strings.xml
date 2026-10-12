@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mzansi Couriers</string>
+    <string name="title_activity_main">Mzansi Couriers</string>
+    <string name="package_name">com.mzansi.couriers</string>
+    <string name="custom_url_scheme">com.mzansi.couriers</string>
+</resources>

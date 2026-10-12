@@ -1,0 +1,70 @@
+441:- [ ] Implement Paystack integration in server - Initialize Paystack client
+442:- [ ] Create tRPC procedure for initiating payouts - calculateAndInitiatePayout
+443:- [ ] Implement payout webhook handler - Handle Paystack payout callbacks
+444:- [ ] Create payout schedule logic - Weekly payouts (Thursdays)
+445:- [ ] Implement payout status tracking - pending, processing, completed, failed
+446:- [ ] Create payout history UI - Display payout records in courier dashboard
+447:- [ ] Implement payout retry logic - Retry failed payouts
+448:- [ ] Add payout notifications - WhatsApp/SMS payout confirmations
+449:- [ ] Create payout reconciliation report - Finance team audit trail
+450:- [ ] Test payout flow end-to-end - Verify payments process correctly
+506:- [ ] Test analytics dashboard - All charts, filters, exports
+507:- [ ] Load test with 1,000 users - Response times, error rates
+508:- [ ] Load test with 5,000 users - System stability, database performance
+509:- [ ] Load test with 10,000 users - Scaling behavior, bottleneck identification
+510:- [ ] Load test with 20,000 users - Maximum capacity testing
+511:- [ ] Performance profiling - Identify slow endpoints, optimize queries
+516:- [ ] Integration testing - Twilio, Paystack, Google Maps, Firebase
+517:- [ ] Database integrity testing - Verify data consistency, relationships
+518:- [ ] Concurrent user testing - Multiple users same action simultaneously
+519:- [ ] Edge case testing - Boundary conditions, unusual inputs
+521:- [ ] User acceptance testing - Real user scenarios
+522:- [ ] Generate testing report - Document findings, recommendations
+647:- [ ] Test on iOS (iPhone 12, 14, 15)
+648:- [ ] Test on Android (Samsung, Pixel)
+650:- [ ] Optimize touch target sizes (minimum 44x44px)
+651:- [ ] Fix mobile form interactions
+652:- [ ] Test GPS and location services on mobile
+653:- [ ] Optimize mobile map experience
+654:- [ ] Test mobile performance (< 3s load time)
+655:- [ ] Fix mobile notification delivery
+656:- [ ] Test mobile accessibility (VoiceOver, TalkBack)
+657:- [ ] Fix mobile-specific bugs
+658:- [ ] Create mobile deployment checklist
+802:- [ ] Test requirements check form saves to database
+803:- [ ] Test verification document upload saves to database
+804:- [ ] Test quiz submission saves to database
+805:- [ ] Test agreements form saves to database
+808:- [ ] Create BankAccountForm component
+809:- [ ] Add bank account fields to courier profile
+810:- [ ] Integrate with Paystack bank verification API
+811:- [ ] Add account verification step to onboarding
+812:- [ ] Test bank account validation
+830:- [ ] Create CourierProfile.tsx component
+832:- [ ] Collect emergency contact info
+833:- [ ] Collect service area preferences
+834:- [ ] Add profile photo upload
+845:- [ ] Test complete flow: signup → onboarding → admin approval → activation
+846:- [ ] Test document upload and verification
+847:- [ ] Test bank account validation
+848:- [ ] Test courier receives first job after activation
+849:- [ ] Test notifications at each step
+850:- [ ] Test error handling and edge cases
+853:- [ ] Create checkpoint
+854:- [ ] Document onboarding process
+855:- [ ] Create admin guide for courier approval
+856:- [ ] Test on staging environment
+857:- [ ] Ready for production launch
+861:- [ ] Fix app launch error (displays error on launch)
+862:- [ ] Add App Tracking Transparency (ATT) permission request
+863:- [ ] Replace placeholder app icons with finalized icons
+864:- [ ] Test all fixes on iOS simulator
+865:- [ ] Prepare for App Store resubmission
+928:- [ ] Integrate with CourierProfile page
+931:- [ ] Create unit tests for encryption
+932:- [ ] Create integration tests for API procedures
+933:- [ ] Test QR code generation and verification
+935:- [ ] Test download functionality
+936:- [ ] Verify security features (encryption, expiry, logging)
+937:- [ ] Test on mobile devices
+938:- [ ] Document API endpoints

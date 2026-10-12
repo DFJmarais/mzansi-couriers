@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE `deliveries` ADD COLUMN `trackingCode` varchar(20) NOT NULL UNIQUE;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4Y9XDrdN1russzh.9efa080d348c --database nSebzqBtETAo6UmLfNmVJM --execute ALTER TABLE `deliveries` ADD COLUMN `trackingCode` varchar(20) NOT NULL UNIQUE;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 8200 (HY000) at line 1: unsupported add column 'trackingcode' constraint UNIQUE KEY when altering 'nSebzqBtETAo6UmLfNmVJM.deliveries'"
+  ]
+}
